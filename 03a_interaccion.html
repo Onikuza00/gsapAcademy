@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03a. Interacción UI - GSAP Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #070707; --acc: #8800ff; --acc-alt: #00ff88; --txt: #f0f0f0;
+            --glass: rgba(255,255,255,0.02); --border: rgba(136,0,255,0.2);
+            --space: clamp(2rem, 5vw, 4rem);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--txt); font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+        h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; margin-bottom: 1rem; line-height: 1.1; letter-spacing: -1px;}
+        .highlight { color: var(--acc); }
+        
+        .header { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items:center; position: fixed; width: 100%; z-index: 1000; background: rgba(7,7,7,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+        .header h3 { font-family: 'Space Grotesk', sans-serif;}
+        .nav-links { display: flex; gap: 10px; }
+        .header a { color: var(--acc); text-decoration: none; border: 1px solid var(--border); padding: 8px 16px; border-radius: 4px; font-weight: 600; font-family:'Space Grotesk'; font-size: 0.9rem;}
+        .header a.active { background: rgba(136,0,255,0.1); }
+        .header a:hover { background: var(--acc); color: var(--bg); }
+        
+        .section { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space); padding: calc(80px + var(--space)) var(--space) var(--space) var(--space); border-bottom: 1px dashed var(--border);}
+        @media (max-width: 900px) { .section { grid-template-columns: 1fr; } }
+        
+        .panel { background: var(--glass); border: 1px solid var(--border); border-radius: 12px; padding: var(--space); display: flex; flex-direction: column; justify-content: center; position: relative;}
+        .panel.code { background: #0a0a0a; border-color:#222;}
+        .panel.demo { align-items: center; overflow: hidden; background: radial-gradient(circle at center, rgba(136,0,255,0.05) 0%, transparent 70%); }
+        
+        pre { background: #000; padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; color: #a6accd; border: 1px solid #222; overflow-x: auto; margin-top: 1rem; font-family: monospace; line-height: 1.5;}
+        .com { color: #697098; font-style: italic; } .str { color: #c3e88d; } .fn { color: #82aaff; } .key { color: #c792ea; }
+
+        /* CUSTOM CURSOR GLOBAL */
+        .cursor-dot { width: 8px; height: 8px; background: var(--txt); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);}
+        .cursor-ring { width: 40px; height: 40px; border: 2px solid var(--acc); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, border-color 0.3s;}
+        
+        /* 1. QUICKTO */
+        .mag-wrap { padding: 80px; border-radius: 50%; border: 1px dashed var(--border); display:flex; align-items:center; justify-content:center;}
+        .mag-btn { border: 1px solid var(--acc); background: var(--bg); color: var(--acc); padding: 20px 40px; border-radius: 50px; font-family: 'Space Grotesk'; font-size: 1.2rem; display:inline-block; }
+
+        /* 2. DRAGGABLE */
+        .drag-bounds { width: 100%; height: 300px; border: 2px dashed var(--border); border-radius: 12px; position: relative; overflow: hidden; display:flex; align-items:center; padding: 20px;}
+        .drag-slider { display: flex; gap: 20px; width: max-content; }
+        .drag-card { width: 250px; height: 180px; background: #222; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-family: 'Space Grotesk'; user-select: none; box-shadow: 0 10px 20px rgba(0,0,0,0.5);}
+
+        /* 3. MARQUEE INFINITO DIRECCIONAL */
+        .marquee-wrapper { width: 100vw; margin-left: calc(-1 * var(--space)); overflow: hidden; background: var(--acc); padding: 20px 0; transform: rotate(-2deg); margin-top: 50px; }
+        .marquee-inner { display: flex; width: max-content; }
+        .marquee-txt { font-size: 4rem; font-family: 'Space Grotesk'; font-weight: 800; color: #fff; padding: 0 20px; white-space: nowrap; text-transform: uppercase; }
+
+        /* 4. LIQUID RIPPLE BTN */
+        .ripple-btn { position: relative; overflow: hidden; background: transparent; border: 1px solid var(--acc); color: var(--acc); padding: 20px 50px; border-radius: 50px; font-family: 'Space Grotesk'; font-size: 1.2rem; font-weight:700; z-index: 1;}
+        .ripple-btn .fill { position: absolute; background: var(--acc); border-radius: 50%; width: 10px; height: 10px; transform: scale(0); opacity: 1; z-index: -1;}
+        
+    </style>
+</head>
+<body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <header class="header hover-target">
+        <h3>GSAP <span class="highlight">Interacción (Parte 5)</span></h3>
+        <div class="nav-links">
+            <a href="index.html">Hub</a>
+            <a href="02d_imagenes.html" class="mag-element">← Parte 4</a>
+            <a href="03a_interaccion.html" class="active">Parte 5</a>
+            <a href="03b_interaccion.html" class="mag-element">Parte 6 →</a>
+        </div>
+    </header>
+
+    <!-- 1. QUICKTO (MAGNETIC) -->
+    <section class="section" style="padding-top:15vh;">
+        <div class="panel code hover-target">
+            <h2>01. Botón Magnético <span class="highlight">(quickTo)</span></h2>
+            <p>Los Trackers masivos necesitan Bypasses puros al motor. Enlaza un multiplicador atenuador (<code>* 0.4</code>) para un imán perfecto.</p>
+            <pre><code><span class="com">// Tuberías pre-compiladas</span>
+<span class="key">const</span> xTo = <span class="fn">gsap</span>.quickTo(<span class="str">".mag-btn"</span>, <span class="str">"x"</span>, {duration: 0.4, ease: <span class="str">"power3"</span>});
+<span class="key">const</span> yTo = <span class="fn">gsap</span>.quickTo(<span class="str">".mag-btn"</span>, <span class="str">"y"</span>, {duration: 0.4, ease: <span class="str">"power3"</span>});
+
+<span class="fn">document</span>.querySelector(<span class="str">".mag-wrap"</span>).addEventListener(<span class="str">"mousemove"</span>, e => {
+  <span class="com">// Alimentamos coordenadas relativas atenuadas al centro del botón</span>
+  xTo((e.clientX - centerX) * 0.4);
+  yTo((e.clientY - centerY) * 0.4);
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="mag-wrap hover-target">
+                <div class="mag-btn">Atrápame</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. DRAGGABLE -->
+    <section class="section">
+        <div class="panel demo hover-target" style="padding: 0; background:transparent;">
+            <div class="drag-bounds">
+                <div class="drag-slider">
+                    <div class="drag-card hover-target" style="background:#111;">Arrastra</div>
+                    <div class="drag-card hover-target" style="background:var(--acc); color:#000;">Inercia</div>
+                    <div class="drag-card hover-target" style="background:var(--acc-alt); color:#000;">Rebote</div>
+                </div>
+            </div>
+        </div>
+        <div class="panel code hover-target">
+            <h2>02. Track <span class="highlight">Físico (Draggable)</span></h2>
+            <p>Plugin rey de las interacciones táctiles en Mobile. Implementa resistencia de goma en los bordes y fricción en el deslizamiento libre.</p>
+            <pre><code><span class="fn">Draggable</span>.create(<span class="str">".drag-slider"</span>, {
+  type: <span class="str">"x"</span>,
+  bounds: <span class="str">".drag-bounds"</span>, <span class="com">// Límites parentales nativos</span>
+  inertia: <span class="key">true</span>,          <span class="com">// Fricción de lanzamiento del dedo </span>
+  edgeResistance: 0.65    <span class="com">// Sensación de "tirar de una goma"</span>
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 3. MARQUEE DIRECCIONAL -->
+    <section class="section hover-target" style="padding-left:0; padding-right:0;">
+        <h2 style="text-align:center; padding: 0 40px;">03. Marquesina <span class="highlight">Infinita Direccional</span></h2>
+        <div class="marquee-wrapper">
+            <div class="marquee-inner">
+                <div class="marquee-txt">MÁS FLUIDO QUE EL AGUA - RENDIMIENTO CERO ESTRÉS - GSAP ELITE - </div>
+                <div class="marquee-txt">MÁS FLUIDO QUE EL AGUA - RENDIMIENTO CERO ESTRÉS - GSAP ELITE - </div>
+            </div>
+        </div>
+        <div class="panel code" style="width: 80%; margin: 0 auto;">
+            <p>Alterando <code>timeScale</code> en tiempo real sobre una línea temporal en repetición infinita conseguimos un <i>Ticker</i> ininterrumpible.</p>
+            <pre><code><span class="key">const</span> tl = <span class="fn">gsap</span>.to(".marquee-inner", { xPercent: -50, repeat: -1, ease: <span class="str">"none"</span> });
+
+<span class="fn">ScrollTrigger</span>.create({
+  onUpdate: (self) => {
+    <span class="com">// Cambiamos la dirección (+ / -) y lo aceleramos durante el scroll activamente</span>
+    <span class="fn">gsap</span>.to(tl, { timeScale: self.direction * 1.5, overwrite: <span class="key">true</span> });
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 4. RIPPLE HOVER -->
+    <section class="section">
+        <div class="panel code hover-target">
+            <h2>04. Botón Líquido <span class="highlight">(Ripple)</span></h2>
+            <p>Al situar el ratón encima, calculamos las coordenadas `offsetX/Y` y expandimos un círculo de fondo desde ese origen exacto hasta llenar el botón.</p>
+            <pre><code>btn.addEventListener(<span class="str">"mouseenter"</span>, (e) => {
+  <span class="fn">gsap</span>.fromTo(fill, 
+    { x: e.offsetX, y: e.offsetY, scale: 0 }, 
+    { scale: 50, duration: 1.0, ease: <span class="str">"power3.in"</span> }
+  );
+});
+<span class="com">// Retorno Inverso con onLeave.</span></code></pre>
+        </div>
+        <div class="panel demo hover-target">
+            <div class="ripple-btn hover-target">
+                <span style="position:relative; z-index:2; transition: color 0.3s;" class="rtxt">Líquido</span>
+                <span class="fill"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. CURSOR GLOBAL -->
+    <section class="section" style="border-bottom:none;">
+        <div class="panel demo" style="text-align:center;">
+            <h2 class="hover-target">MI CURSOR VUELA LIBRE</h2>
+        </div>
+        <div class="panel code hover-target">
+            <h2>05. Seguidor <span class="highlight">GSAP Global</span></h2>
+            <p>Usado en todo este módulo. Un punto duro directo a las coordenadas del MouseEvent y un círculo retardado que sigue al punto.</p>
+            <pre><code><span class="com">// Set CSS General: `cursor: none;`</span>
+<span class="key">const</span> xTo = <span class="fn">gsap</span>.quickTo(".cursor-ring", <span class="str">"x"</span>, {duration: 0.15});
+<span class="key">const</span> yTo = <span class="fn">gsap</span>.quickTo(".cursor-ring", <span class="str">"y"</span>, {duration: 0.15});
+
+<span class="fn">window</span>.addEventListener(<span class="str">"mousemove"</span>, e => {
+  <span class="fn">gsap</span>.set(".cursor-dot", { x: e.clientX, y: e.clientY });
+  xTo(e.clientX);
+  yTo(e.clientY);
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/InertiaPlugin.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin);
+
+        // --- 5. GLOBAL CURSOR QUICKTO ---
+        // (Debe estar arriba para dominar la pantalla)
+        const curX = gsap.quickTo(".cursor-ring", "x", {duration: 0.15, ease: "power3"});
+        const curY = gsap.quickTo(".cursor-ring", "y", {duration: 0.15, ease: "power3"});
+        
+        window.addEventListener("mousemove", (e) => {
+            gsap.set(".cursor-dot", { x: e.clientX, y: e.clientY });
+            curX(e.clientX);
+            curY(e.clientY);
+        });
+
+        // Hover effect for the cursor
+        const hoverTargets = document.querySelectorAll(".hover-target");
+        hoverTargets.forEach(target => {
+            target.addEventListener("mouseenter", () => {
+                gsap.to(".cursor-ring", { width: 60, height: 60, borderColor: "var(--acc-alt)", duration: 0.3 });
+                gsap.to(".cursor-dot", { scale: 0, duration: 0.3 });
+            });
+            target.addEventListener("mouseleave", () => {
+                gsap.to(".cursor-ring", { width: 40, height: 40, borderColor: "var(--acc)", duration: 0.3 });
+                gsap.to(".cursor-dot", { scale: 1, duration: 0.3 });
+            });
+        });
+
+
+        // --- 1. MAGNETIC BUTTON ---
+        const wrapBtn = document.querySelector(".mag-wrap");
+        const magBtn = document.querySelector(".mag-btn");
+        const mX = gsap.quickTo(magBtn, "x", {duration: 0.4, ease: "power3", overwrite:"auto"});
+        const mY = gsap.quickTo(magBtn, "y", {duration: 0.4, ease: "power3", overwrite:"auto"});
+
+        wrapBtn.addEventListener("mousemove", (e) => {
+            const rect = wrapBtn.getBoundingClientRect();
+            mX((e.clientX - rect.left - rect.width/2) * 0.4);
+            mY((e.clientY - rect.top - rect.height/2) * 0.4);
+        });
+        wrapBtn.addEventListener("mouseleave", () => {
+            gsap.to(magBtn, { x: 0, y: 0, duration: 0.8, ease: "elastic.out(1, 0.4)", overwrite: "auto"});
+        });
+
+        // --- 2. DRAGGABLE ---
+        Draggable.create(".drag-slider", {
+            type: "x",
+            bounds: ".drag-bounds",
+            inertia: true,
+            edgeResistance: 0.65
+        });
+
+        // --- 3. MARQUEE ---
+        const inner = document.querySelector(".marquee-inner");
+        inner.innerHTML += inner.innerHTML; // Duplicar para loop puro
+        const tlMarquee = gsap.to(".marquee-inner", { xPercent: -50, repeat: -1, duration: 15, ease: "none" });
+
+        ScrollTrigger.create({
+            start: 0, end: "max",
+            onUpdate: (self) => {
+                gsap.to(tlMarquee, { timeScale: self.direction * 1.5, duration: 0.5, overwrite: "auto", ease: "power1.inOut" });
+            }
+        });
+        ScrollTrigger.addEventListener("scrollEnd", () => {
+             const curDir = tlMarquee.timeScale() > 0 ? 1 : -1;
+             gsap.to(tlMarquee, { timeScale: curDir * 1, duration: 0.5, overwrite: "auto", ease: "power1.inOut" });
+        });
+
+        // --- 4. RIPPLE LIQUID BTN ---
+        const rBtn = document.querySelector(".ripple-btn");
+        const rFill = document.querySelector(".fill");
+        const rTxt = document.querySelector(".rtxt");
+        
+        rBtn.addEventListener("mouseenter", (e) => {
+            // Posición relativa al padre
+            const rect = rBtn.getBoundingClientRect();
+            const relX = e.clientX - rect.left;
+            const relY = e.clientY - rect.top;
+            
+            gsap.fromTo(rFill, 
+                { x: relX, y: relY, scale: 0 }, 
+                { scale: 50, duration: 1.0, ease: "power3.in", overwrite: "auto" }
+            );
+            gsap.to(rTxt, { color: "var(--bg)", duration: 0.3 });
+        });
+        
+        rBtn.addEventListener("mouseleave", (e) => {
+            const rect = rBtn.getBoundingClientRect();
+            const relX = e.clientX - rect.left;
+            const relY = e.clientY - rect.top;
+            
+            gsap.to(rFill, { scale: 0, x: relX, y: relY, duration: 0.4, ease: "power3.out", overwrite: "auto" });
+            gsap.to(rTxt, { color: "var(--acc)", duration: 0.3 });
+        });
+
+    </script>
+</body>
+</html>
