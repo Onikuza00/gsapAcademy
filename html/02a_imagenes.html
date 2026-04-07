@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02a. Scroll & Imágenes - GSAP Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../css/02a_imagenes.css">
+</head>
+<body>
+    <header class="header">
+        <h3>GSAP <span class="highlight">Visuals (1/2)</span></h3>
+        <div class="nav-links">
+            <a href="../index.html">Hub</a>
+            <a href="02a_imagenes.html" class="active">P1</a>
+            <a href="02b_imagenes.html">P2</a>
+        </div>
+    </header>
+
+    <!-- 1. PARALLAX -->
+    <section class="section" style="padding-top: 15vh;">
+        <div class="panel code">
+            <h2>01. Parallax <span class="highlight">Sub-Elemento</span></h2>
+            <p>La imagen interna (160% altura) asciende progresivamente engañando al ojo dentro de su máscara restrictiva.</p>
+            <pre><code><span class="fn">gsap</span>.to(".img-parallax", {
+  yPercent: 80,     <span class="com">// Movimiento extremo (Parallax agresivo)</span>
+  scale: 1.15,      <span class="com">// Zoom inmersivo</span>
+  ease: <span class="str">"none"</span>,
+  scrollTrigger: {
+    trigger: ".img-mask",
+    start: <span class="str">"top bottom"</span>,
+    end: <span class="str">"bottom top"</span>,
+    scrub: <span class="key">true</span>
+  }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="img-mask">
+                <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800" class="img-parallax" alt="Parallax">
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. SCROLL HORIZONTAL (FIXED) -->
+    <section class="section horizontal-sec">
+        <div class="panel demo">
+            <div class="hs-wrapper">
+                <!-- Se han añadido más imágenes (mínimo 5) para un scroll más largo y ocupando todo el alto -->
+                <img class="hs-item" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800" alt="Slide 1">
+                <img class="hs-item" src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=800" alt="Slide 2">
+                <img class="hs-item" src="https://images.unsplash.com/photo-1550684848-86a5d8727436?q=80&w=800" alt="Slide 3">
+                <img class="hs-item" src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800" alt="Slide 4">
+                <img class="hs-item" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800" alt="Slide 5">
+                <img class="hs-item" src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800" alt="Slide 6">
+            </div>
+        </div>
+        <div class="panel code">
+            <h2>02. Scroll <span class="highlight">Horizontal</span> Puro</h2>
+            <p>Solución al área negra: Desplazamos la caja horizontalizando el excedente real que no cabe en la vista (`wrapper.scrollWidth - wrapper.clientWidth`).</p>
+            <pre><code><span class="key">const</span> wrap = <span class="fn">document</span>.querySelector(".hs-wrapper");
+<span class="key">const</span> dist = wrap.scrollWidth - wrap.clientWidth;
+
+<span class="fn">gsap</span>.to(wrap, {
+  x: -dist,
+  ease: <span class="str">"none"</span>,
+  scrollTrigger: {
+    trigger: ".horizontal-sec",
+    pin: <span class="key">true</span>,      <span class="com">// Fija toda la sección en la pantalla</span>
+    scrub: 1,       <span class="com">// Smooth delay</span>
+    end: () => <span class="str">"+="</span> + dist
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 3. STACKING -->
+    <section class="section">
+        <div class="panel code">
+            <h2>03. CSS/GSAP <span class="highlight">Stacking</span></h2>
+            <p>Aprovechamos que CSS aporta <code>position: sticky</code> sin JS, y ScrollTrigger añade la compresión o escalado (`scale: 0.9`) para la percepción de peso.</p>
+            <pre><code><span class="com">/* CSS: Escalonado de 25px */</span>
+.sc1 { background: #ff0080; top: 10%; }
+.sc2 { background: #7928ca; top: calc(10% + 25px); }
+.sc3 { background: #0070f3; top: calc(10% + 50px); }
+
+<span class="com">// JS: Animamos escala mientras entra el siguiente</span>
+<span class="fn">gsap</span>.to(card, {
+  scale: 0.9, opacity: 0.4,
+  scrollTrigger: {
+    trigger: cards[i + 1],
+    scroller: <span class="str">".stack-wrap"</span>,
+    start: <span class="str">"top bottom"</span>, end: <span class="str">"top top"</span>,
+    scrub: <span class="key">true</span>
+  }
+});</code></pre>
+        </div>
+        <div class="panel demo" style="padding:0; background:transparent;">
+            <div class="stack-wrap">
+                <div style="height: 10vh;"></div>
+                <div class="scard sc1">ALPHA</div>
+                <div class="scard sc2">BETA</div>
+                <div class="scard sc3">GAMMA</div>
+                <div class="scard sc4">DELTA</div>
+                <div class="scard sc5">EPSILON</div>
+                <div class="scard sc6">ZETA</div>
+                <div style="height: 60vh;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. ZOOM OUT -->
+    <section class="section">
+        <div class="panel demo" style="padding:0;">
+            <div class="zoom-mask">
+                <img src="https://images.unsplash.com/photo-1550684376-efcbd6e3f031?q=80&w=800" class="zoom-img">
+            </div>
+        </div>
+        <div class="panel code">
+            <h2>04. Retrospectiva <span class="highlight">(Zoom-Out)</span></h2>
+            <p>La imagen carga súper aumentada (`scale: 3`), y en cuanto arrastra pantalla se asienta sobre su tamaño natural encajando en su marco delimitador.</p>
+            <pre><code><span class="fn">gsap</span>.to(".zoom-img", {
+  scale: 1,         <span class="com">// Reducción definitiva al tamaño original</span>
+  ease: <span class="str">"power2.out"</span>,
+  scrollTrigger: {
+    trigger: ".zoom-mask",
+    start: <span class="str">"top 80%"</span>, 
+    end: <span class="str">"top 20%"</span>,
+    scrub: 1
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 5. WIPE REVEAL -->
+    <section class="section" style="border-bottom:none;">
+        <div class="panel code">
+            <h2>05. Enmascaramiento <span class="highlight">(Clip-Wipe)</span></h2>
+            <p>Un barrido puro y veloz empleando polígonos vectoriales nativos del navegador <code>clip-path: polygon()</code>. Rendimiento estelar en aceleración gráfica.</p>
+            <pre><code><span class="fn">gsap</span>.to(".wipe-img", {
+  <span class="com">// Animamos de 0% de anchura a 100% de anchura en sus vértices</span>
+  clipPath: <span class="str">"polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"</span>,
+  duration: 1.5,
+  ease: <span class="str">"power3.inOut"</span>,
+  scrollTrigger: {
+    start: "top 70%",
+    end: "bottom 30%",
+    scrub: 1         <span class="com">// Reversible al scroll up</span>
+  }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="wipe-mask">
+                <h3 style="font-family:'Space Grotesk'; opacity:0.3; position:absolute; z-index:0;">REVELANDO CONTENIDO...</h3>
+                <img src="https://images.unsplash.com/photo-1542626991-cbc4e32524cc?q=80&w=800" class="wipe-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- Espaciador final para permitir que el scroll se complete en la última demo -->
+    <div style="height: 50vh;"></div>
+
+    <!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+        <script src="../js/02a_imagenes.js"></script>
+</body>
+</html>

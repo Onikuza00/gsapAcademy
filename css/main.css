@@ -1,0 +1,179 @@
+:root {
+  --bg-base: #0a0a0a;
+  --text-main: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --c-txt: #00ff88;
+  --c-img: #00b3ff;
+  --c-int: #bd00ff;
+  --c-bdk: #ff4400;
+  --cursor-size: 20px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: none;
+}
+body {
+  background: var(--bg-base);
+  color: var(--text-main);
+  font-family: "Outfit", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Fondo Interactivo (Hover de Pantalla) */
+.hero-interaction {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.hero-shape {
+  position: absolute;
+  width: 300px;
+  height: 450px;
+  border-radius: 200px; /* Forma de óvalo similar a Champions */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+  opacity: 0.4;
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--cursor-size);
+  height: var(--cursor-size);
+  background-color: white;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transition: transform 0.15s ease-out;
+}
+.custom-cursor.active {
+  transform: scale(4);
+}
+
+.container {
+  position: relative;
+  padding: 8rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1.title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(3rem, 15vw, 10rem);
+  text-align: center;
+  margin-bottom: 5rem;
+  line-height: 0.85;
+  text-transform: uppercase;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 3rem;
+  width: 100%;
+  max-width: 1400px;
+  perspective: 1000px;
+}
+
+.card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 30px;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+  transition: border-color 0.4s ease;
+}
+
+.card:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 10px 40px -10px var(--accent-color);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, var(--accent-color, transparent) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+.card:hover::before {
+  opacity: 0.25;
+}
+.card.txt {
+  --accent-color: var(--c-txt);
+  border-color: rgba(0, 255, 136, 0.3);
+}
+.card.img {
+  --accent-color: var(--c-img);
+  border-color: rgba(0, 179, 255, 0.3);
+}
+.card.int {
+  --accent-color: var(--c-int);
+  border-color: rgba(189, 0, 255, 0.3);
+}
+.card.bdk {
+  --accent-color: var(--c-bdk);
+  border-color: rgba(255, 68, 0, 0.3);
+}
+
+.card h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  color: var(--accent-color);
+  overflow: hidden;
+}
+.char {
+  display: inline-block;
+}
+.card p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+  flex-grow: 1;
+}
+.btn-group {
+  display: flex;
+  gap: 15px;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 100px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  flex: 1;
+  text-align: center;
+  transition: 0.3s;
+}
+.btn:hover {
+  background: var(--accent-color);
+  color: var(--bg-base);
+}

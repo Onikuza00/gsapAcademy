@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03b. Interacción Avanzada - GSAP Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../css/03b_interaccion.css">
+</head>
+<body>
+    <header class="header">
+        <h3>GSAP <span class="highlight">Interacción (Parte 6)</span></h3>
+        <div class="nav-links">
+            <a href="../index.html">Hub</a>
+            <a href="03a_interaccion.html">← Parte 5</a>
+            <a href="03b_interaccion.html" class="active">Parte 6</a>
+            <a href="03c_interaccion.html">Parte 7 →</a>
+        </div>
+    </header>
+
+    <!-- 6. F.L.I.P TRANSITIONS -->
+    <section class="section" style="padding-top:15vh;">
+        <div class="panel code">
+            <h2>06. Expansiones Web <span class="highlight">(FLIP)</span></h2>
+            <p><strong>First, Last, Invert, Play.</strong> Capturamos el estado original del elemento, lo movemos por el DOM o cambiamos su clase, y dejamos que GSAP interpole todo mágicamente.</p>
+            <pre><code><span class="com">// 1. Capturamos estado base geométrico</span>
+<span class="key">const</span> state = <span class="fn">Flip</span>.getState(".flip-box");
+
+<span class="com">// 2. Hacemos el cambio de Layout (Añadimos clase, reseteamos estilos...)</span>
+<span class="key">const</span> isFull = box.parentNode === stateB;
+(isFull ? stateA : stateB).appendChild(box);
+
+<span class="com">// 3. Flip interpola desde el estado del paso 1 al Layout del paso 2</span>
+<span class="fn">Flip</span>.from(state, {
+  duration: 1,
+  ease: <span class="str">"power3.inOut"</span>,
+  absolute: <span class="key">true</span>  <span class="com">// Para transiciones fluidas en medio del aire</span>
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="flip-group">
+                <div class="state-a" id="fa">
+                    <div class="flip-box">F.L.I.P</div>
+                </div>
+                <div class="state-b" id="fb" style="pointer-events: none; border-color: rgba(255,255,255,0.05);"></div>
+            </div>
+            <button class="btn" style="z-index: 100;" onclick="toggleFlip()">Transform Layout</button>
+        </div>
+    </section>
+
+    <!-- 7. MORPH SVG -->
+    <section class="section">
+        <div class="panel demo">
+            <!-- Triangulo Play a Cuadrado Stop -->
+            <svg viewBox="0 0 100 100" width="150" height="150">
+                <path class="s-path" id="play" d="M 20 20 L 80 50 L 20 80 Z" />
+                <!-- Hidden target shape -->
+                <path id="stop" d="M 20 20 L 80 20 L 80 80 L 20 80 Z" style="visibility:hidden;"/>
+                <path id="circle" d="M 50 10 A 40 40 0 1 1 49.9 10 Z" style="visibility:hidden;"/>
+            </svg>
+            <button class="btn" onclick="morphShape()">Morph!</button>
+        </div>
+        <div class="panel code">
+            <h2>07. Interpolación SVG <span class="highlight">(MorphSVG)</span></h2>
+            <p>La metamorfosis vectorial. No importa si la forma base tiene 3 puntos y la de destino tiene 100, GSAP empareja los vectores y los dobla perfectamente.</p>
+            <pre><code><span class="fn">gsap</span>.to("#play", {
+  duration: 1.5,
+  morphSVG: <span class="str">"#circle"</span>, <span class="com">// ID del SVG destino (oculto)</span>
+  ease: <span class="str">"elastic.out(1, 0.4)"</span>
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 8. DRAW SVG -->
+    <section class="section">
+        <div class="panel code">
+            <h2>08. Trazos Procedimentales <span class="highlight">(DrawSVG)</span></h2>
+            <p>Revela los contornos (<code>stroke</code>) de rutas complejas o firmas. Maneja secretamente los <code>stroke_dasharray</code> y <code>dashoffset</code> nativos de SVG.</p>
+            <pre><code><span class="com">// De 0% a 100% como si se dibujase con boli</span>
+<span class="fn">gsap</span>.fromTo(".draw-path", 
+  { drawSVG: <span class="str">"0%"</span> }, 
+  { drawSVG: <span class="str">"100%"</span>, duration: 2, ease: <span class="str">"power2.inOut"</span> }
+);</code></pre>
+        </div>
+        <div class="panel demo">
+            <svg viewBox="0 0 300 200" width="300" height="200">
+                <path class="draw-path" d="M 50 100 C 50 20, 250 20, 250 100 C 250 180, 50 180, 50 100 Z" />
+            </svg>
+            <button class="btn" onclick="drawIt()">Dibujar</button>
+        </div>
+    </section>
+
+    <!-- 9. ROTATION DRAGGABLE -->
+    <section class="section">
+        <div class="panel demo">
+            <div class="dial-wrap">
+                <h3 style="font-family:'Space Grotesk'; opacity:0.3; text-align:center;">Volumen<br><span id="vol">0</span></h3>
+                <div class="dial-knob"></div>
+            </div>
+            <p style="margin-top:20px; opacity:0.5;">* Arrastra el anillo verde girándolo en círculos.</p>
+        </div>
+        <div class="panel code">
+            <h2>09. Knobs Físicos <span class="highlight">(Spin/Rotation)</span></h2>
+            <p>Usando el clásico Draggable en modo <code>rotation</code> en lugar de ejes X/Y.</p>
+            <pre><code><span class="fn">Draggable</span>.create(".dial-wrap", {
+  type: <span class="str">"rotation"</span>,  <span class="com">// Seguimiento angular</span>
+  inertia: <span class="key">true</span>,     
+  onDrag: <span class="key">function</span>() {
+    <span class="com">// Puedes leer la rotación en tiempo real</span>
+    <span class="fn">console</span>.log(Math.round(<span class="key">this</span>.rotation));
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 10. TOOLTIP CURSOR -->
+    <section class="section" style="border-bottom:none;">
+        <div class="panel code">
+            <h2>10. Tooltips Custom <span class="highlight">(Seguidor Aislado)</span></h2>
+            <p>Escondemos los tooltips clásicos, detectamos la entrada en zonas de acción (`track-zone`), revelamos la caja y la anudamos al `clientX/Y` con un smooth puro.</p>
+            <pre><code><span class="key">const</span> xTo = <span class="fn">gsap</span>.quickTo(tooltip, <span class="str">"x"</span>, {duration: 0.2});
+
+zone.addEventListener(<span class="str">"mouseenter"</span>, () => {
+  <span class="fn">gsap</span>.to(tooltip, { opacity: 1, scale: 1 });
+});
+
+zone.addEventListener(<span class="str">"mousemove"</span>, e => {
+  <span class="com">// Posición absoluta del mouse menos container offset</span>
+  xTo(e.clientX - rect.left);
+});</code></pre>
+        </div>
+        <div class="panel demo" style="padding:0;">
+            <div class="track-zone">
+                <h2 style="pointer-events:none; opacity:0.5;">Pasa el ratón por aquí</h2>
+                <div class="tooltip">Ver Proyecto</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- CodePen Trials for Club Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/Flip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/MorphSVGPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/DrawSVGPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/InertiaPlugin.min.js"></script>
+
+        <script src="../js/03b_interaccion.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01b. Tipografía Avanzada - GSAP Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../css/01b_texto.css">
+</head>
+<body>
+    <header class="header">
+        <h3>GSAP <span class="highlight">Typography (2/3)</span></h3>
+        <div class="nav-links">
+            <a href="../index.html">Hub</a>
+            <a href="01a_texto.html">P1</a>
+            <a href="01b_texto.html" class="active">P2</a>
+            <a href="01c_texto.html">P3</a>
+            <a href="01d_texto.html">P4</a>
+        </div>
+    </header>
+
+    <!-- 6. SUBRAYADO (HIGHLIGHT MARKER) -->
+    <section class="section">
+        <div class="panel code">
+            <h2>06. Subrayado <span class="highlight">Dibujado</span></h2>
+            <p>Un clásico para enfatizar palabras clave. Posicionamos un bloque de color en absoluto por detrás del texto (<code>z-index: -1</code>) y animamos su <code>width</code>.</p>
+            <pre><code><span class="com">// Elemento .marker es un div absoluto debajo del texto</span>
+<span class="fn">gsap</span>.to(".marker", {
+  width: <span class="str">"110%"</span>,      <span class="com">// Sobresale un poco para estética de rotulador</span>
+  ease: <span class="str">"power3.inOut"</span>,
+  duration: 1
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <h1 class="mark-txt">GSAP PREMIUM<div class="marker"></div></h1>
+            <button class="btn" onclick="playS6()">Replay</button>
+        </div>
+    </section>
+
+    <!-- 7. WIGGLE HOVER -->
+    <section class="section">
+        <div class="panel demo">
+            <div class="wiggle-txt">INTERACTÚA</div>
+        </div>
+        <div class="panel code">
+            <h2>07. Elastic <span class="highlight">Hover (Wiggle)</span></h2>
+            <p>Rompemos la palabra y atamos un Tween hiper-elástico de GSAP al evento <code>mouseenter</code> de cada carácter individual.</p>
+            <pre><code><span class="key">const</span> split = <span class="key">new</span> <span class="fn">SplitText</span>(".wiggle-txt", { type: <span class="str">"chars"</span> });
+
+split.chars.forEach(char => {
+  char.addEventListener(<span class="str">"mouseenter"</span>, () => {
+    <span class="fn">gsap</span>.fromTo(char, 
+      { y: -20, scale: 1.2 }, 
+      { y: 0, scale: 1, ease: <span class="str">"elastic.out(1, 0.3)"</span>, duration: 1.5, overwrite: <span class="key">true</span> }
+    );
+  });
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 8. CLIP-PATH REACTIVO -->
+    <section class="section">
+        <div class="panel code">
+            <h2>08. Fondo Inyectado <span class="highlight">(Clip-Path)</span></h2>
+            <p>Usando <code>-webkit-background-clip: text</code>, el texto se vuelve transparente y muestra la imagen de fondo. GSAP anima el posicionamiento de ese fondo infinito.</p>
+            <pre><code><span class="com">// Movemos el background-position 100% en el eje X</span>
+<span class="fn">gsap</span>.to(".clip-txt", {
+  backgroundPosition: <span class="str">"100% 50%"</span>, 
+  ease: <span class="str">"none"</span>,
+  duration: 10,
+  repeat: -1,         <span class="com">// Bucle perpetuo</span>
+  yoyo: <span class="key">true</span>
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="clip-txt">HACKER<br>STATE</div>
+        </div>
+    </section>
+
+    <!-- 9. GLITCH CIBERNÉTICO -->
+    <section class="section">
+        <div class="panel demo">
+            <div class="glitch-txt">ERROR 500</div>
+            <button class="btn" onclick="playS9()">Glitch!</button>
+        </div>
+        <div class="panel code">
+            <h2>09. Glitch Analógico <span class="highlight">(RoughEase)</span></h2>
+            <p>Utilizamos iteraciones rápidas y el potente <code>CustomEase</code> o valores aleatorios en un bucle cerrado para desestabilizar la matrix.</p>
+            <pre><code><span class="com">// La mejor forma de simular Glithes rápidos es repitiendo un tween errático</span>
+<span class="fn">gsap</span>.to(".glitch-txt", {
+  x: () => Math.random() * 20 - 10, <span class="com">// Saltos horizontales</span>
+  skewX: () => Math.random() * 20 - 10,
+  opacity: () => Math.random(),
+  duration: 0.05,
+  repeat: 10,  <span class="com">// Repite la inestabilidad 10 veces</span>
+  onComplete: () => {
+    <span class="fn">gsap</span>.set(".glitch-txt", { x: 0, skewX: 0, opacity: 1 });
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 10. TEXTO CIRCULAR GIRO -->
+    <section class="section" style="border-bottom:none;">
+        <div class="panel code">
+            <h2>10. Círculos <span class="highlight">Rotatorios</span></h2>
+            <p>Dividimos el texto, y usando pura matemática calculamos una rotación rotunda en 360 grados distribuyendo los caracteres a través de la fórmula del Seno/Coseno.</p>
+            <pre><code><span class="com">// Rotación infinita del contenedor entero una vez formado el círculo</span>
+<span class="fn">gsap</span>.to(".circ-wrap", {
+  rotation: 360,
+  duration: 10,
+  ease: <span class="str">"none"</span>,
+  repeat: -1
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="circ-wrap" id="circle-text"></div>
+        </div>
+    </section>
+
+    <!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js"></script>
+
+        <script src="../js/01b_texto.js"></script>
+</body>
+</html>

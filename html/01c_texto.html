@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01c. Tipografía Master (VIP) - GSAP Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&family=Space+Grotesk:wght@600;700;800&family=Syne:wght@800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../css/01c_texto.css">
+</head>
+<body>
+    <header class="header">
+        <h3>GSAP ACADEMY <span class="highlight">TYPOGRAPHY (3/3)</span></h3>
+        <div class="nav-links">
+            <a href="../index.html">HUB</a>
+            <a href="01a_texto.html">P1</a>
+            <a href="01b_texto.html">P2</a>
+            <a href="01c_texto.html" class="active">P3</a>
+            <a href="01d_texto.html">P4</a>
+        </div>
+    </header>
+
+    <!-- 11. CINEMATIC VIDEO MASK REVEAL -->
+    <section class="section" style="padding-top:15vh;">
+        <div class="panel code">
+            <h2>11. Cinematic <span class="highlight">Scale Mask</span></h2>
+            <p>Efecto de impacto extremo. El texto actúa como máscara de una imagen 4K, escalando desde x3 hasta su posición natural mientras se revela la textura.</p>
+            <pre><code><span class="fn">gsap</span>.to(".mask-txt", {
+  scale: 1, opacity: 1, 
+  backgroundSize: <span class="str">"100%"</span>,
+  scrollTrigger: { trigger: ".mask-wrap", scrub: 1 }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="mask-wrap">
+                <div class="mask-txt">VOID</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. 3D STAIRWAY PERSPECTIVE -->
+    <section class="section">
+        <div class="panel demo">
+            <div class="stairway-wrap">
+                <div class="stairway-txt">STAIRWAY</div>
+            </div>
+        </div>
+        <div class="panel code">
+            <h2>12. 3D <span class="highlight">Stairway</span></h2>
+            <p>Arquitectura tridimensional. Los caracteres suben un escalón invisible desde la profundidad del eje Z hasta alinearse perfectamente.</p>
+            <pre><code><span class="fn">gsap</span>.to(".s-char", {
+  y: 0, z: 0, rotateX: 0, opacity: 1,
+  stagger: 0.1, scrollTrigger: { trigger: ".stairway-txt", scrub: 1 }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 13. COLLISION FLY-IN STASH -->
+    <section class="section">
+        <div class="panel code">
+            <h2>13. Collision <span class="highlight">Snapping</span></h2>
+            <p>Impacto físico controlado. Las letras vuelan desde las esquinas y colisionan en el centro con un rebote elástico pesado.</p>
+            <pre><code><span class="fn">gsap</span>.from(".c-char", {
+  x: () => Math.random() * 2000 - 1000,
+  y: () => Math.random() * 1000, rotate: 360
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="coll-txt">COLLISION</div>
+            <button class="btn-collide" onclick="playS13()">Collide Now</button>
+        </div>
+    </section>
+
+    <!-- 14. 3D TILE GRID FLIP -->
+    <section class="section">
+        <div class="panel demo">
+            <div class="tile-grid">
+                <div class="tile">G</div><div class="tile">S</div><div class="tile">A</div><div class="tile">P</div><div class="tile">A</div><div class="tile">C</div><div class="tile">A</div>
+                <div class="tile">D</div><div class="tile">E</div><div class="tile">M</div><div class="tile">Y</div><div class="tile">V</div><div class="tile">I</div><div class="tile">P</div>
+            </div>
+        </div>
+        <div class="panel code">
+            <h2>14. 3D <span class="highlight">Long Tiles</span></h2>
+            <p>Retícula de datos expandida. El texto GSAP ACADEMY VIP se descompone en 14 tejas pequeñas con un volteo tridimensional sincronizado.</p>
+            <pre><code><span class="fn">gsap</span>.to(".tile", {
+  rotateY: 0, opacity: 1, 
+  stagger: { amount: 1.5, grid: [2, 7] },
+  scrollTrigger: { trigger: ".tile-grid" }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 15. RAINBOW SPIRAL FLOW -->
+    <section class="section" style="border-bottom:none;">
+        <div class="panel code">
+            <h2>15. Rainbow <span class="highlight">Spiral Path</span></h2>
+            <p>Flujo cromático infinito. El texto recorre un trazado complejo en espiral mientras cambia de color mediante un ciclo HSL dinámico.</p>
+            <pre><code><span class="fn">gsap</span>.to("#m-path", {
+  attr: { startOffset: "100%" },
+  scrollTrigger: { trigger: ".p-svg", scrub: 1 }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <svg class="p-svg" viewBox="0 0 1000 400">
+                <path id="curve-spiral" d="M0,200 C100,0 300,400 500,200 C700,0 900,400 1000,200" fill="none" />
+                <text class="p-txt">
+                    <textPath id="m-path" href="#curve-spiral" startOffset="-10%">
+                        GSAP ACADEMY • RAINBOW MASTER TYPOGRAPHY EXPERIENCE • 
+                    </textPath>
+                </text>
+            </svg>
+        </div>
+    </section>
+
+    <!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+
+        <script src="../js/01c_texto.js"></script>
+</body>
+</html>

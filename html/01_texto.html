@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01. Tipografía Viva - GSAP Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Syne:wght@600;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../css/01_texto.css">
+</head>
+<body>
+    <header class="header">
+        <h3 style="font-family:'Syne'">GSAP <span class="highlight">Academy</span></h3>
+        <a href="../index.html">← Volver al Hub</a>
+    </header>
+
+    <!-- 1. CASCADA -->
+    <section class="section">
+        <div class="panel code">
+            <h2>Cascada Reactiva <span class="highlight">(Chars)</span></h2>
+            <p>Usando <code>SplitText</code> para trocear el nodo en caracteres únicos sin perder el flujo semántico nativo.</p>
+            <pre><code><span class="com">// Rompemos el texto en elementos div independientes (letras)</span>
+const split = new <span class="fn">SplitText</span>(".txt-cascade", { type: <span class="str">"chars"</span> });
+
+<span class="com">// Coreografiamos la entrada en cascada usando 'stagger'</span>
+<span class="fn">gsap</span>.from(split.chars, {
+  y: 80,              <span class="com">// Empieza muy por debajo de su linea base</span>
+  rotationX: -90,     <span class="com">// Orientación en 3D (Z)</span>
+  opacity: 0,
+  stagger: 0.05,      <span class="com">// Retraso de 50ms entre cada letra para la ola</span>
+  duration: 1,
+  ease: <span class="str">"back.out(2)"</span> <span class="com">// Tira un 200% y rebota hiper-elástico</span>
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="txt-cascade">IMPACTO<br>TEXTUAL</div>
+            <button class="btn" onclick="playS1()">Replay</button>
+        </div>
+    </section>
+
+    <!-- 2. REVELACION -->
+    <section class="section">
+        <div class="panel demo">
+            <div class="reveal-wrap">
+                <div class="reveal-line"><p class="txt-reveal">Menos ruido,</p></div>
+                <div class="reveal-line"><p class="txt-reveal highlight">más claridad.</p></div>
+                <div class="reveal-line"><p class="txt-reveal">Puro diseño.</p></div>
+            </div>
+            <button class="btn" onclick="playS2()">Replay</button>
+        </div>
+        <div class="panel code">
+            <h2>Mask Reveal <span class="highlight">(Words)</span></h2>
+            <p>El estándar de los premios "Site of the Day". El contenedor tiene <code>overflow: hidden</code>, y las palabras surgen cortadas de la nada.</p>
+            <pre><code><span class="com">// Aislamos agrupando por PALABRAS, no por letras.</span>
+const split = new <span class="fn">SplitText</span>(".txt-reveal", { type: <span class="str">"words"</span> });
+
+<span class="com">// Forzamos el empuje desde un 120% del contenedor padre (que está oculto)</span>
+<span class="fn">gsap</span>.from(split.words, {
+  yPercent: 120,      <span class="com">// yPercent responde mejor que los px fijos al Responsive</span>
+  stagger: 0.05,      <span class="com">// Ola de fluidez extrema</span>
+  duration: 0.8,
+  ease: <span class="str">"expo.out"</span>    <span class="com">// Salida explosiva, curva limpia (sin rebotes)</span>
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 3. TYPEWRITER -->
+    <section class="section">
+        <div class="panel code">
+            <h2>Efecto Terminal <span class="highlight">(TextPlugin)</span></h2>
+            <p>Reescribir el DOM mediante strings, gestionando la inserción artificial asincrónica.</p>
+            <pre><code><span class="com">// Array objetivo</span>
+const msgs = [<span class="str">"Frontend Developer"</span>, <span class="str">"GSAP Master"</span>, <span class="str">"UX Engineer"</span>];
+
+<span class="com">// repeat: -1 es un bucle perpetuo</span>
+const tl = <span class="fn">gsap</span>.timeline({ repeat: -1 });
+
+msgs.forEach(msg => {
+  tl.to(".term-target", {
+      text: msg,      <span class="com">// textPlugin escribe char-a-char automáticamente</span>
+      duration: 1.5, ease: <span class="str">"none"</span>, delay: 0.5
+    })
+    .to(".term-target", {
+      text: <span class="str">""</span>,       <span class="com">// Retroceso de borrado</span>
+      duration: 0.5, ease: <span class="str">"none"</span>, delay: 2
+    });
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="term">
+                > Role: <br>> <span class="term-target"></span><span class="cursor"></span>
+            </div>
+            <button class="btn" style="opacity: 0.5; pointer-events: none;">Auto Loop</button>
+        </div>
+    </section>
+
+    <!-- 4. SCRAMBLE -->
+    <section class="section">
+        <div class="panel demo">
+            <div class="scramble-txt">ENCRIPTADO</div>
+            <button class="btn" onclick="playS4()">Replay</button>
+        </div>
+        <div class="panel code">
+            <h2>Matrix Decode <span class="highlight">(ScrambleTex)</span></h2>
+            <p>El plugin premium usado en estética Cyberpunk para mezclar letras aleatorias hasta fijar la palabra.</p>
+            <pre><code><span class="com">// Aplicamos Scramble (requiere registro de Plugin previo)</span>
+<span class="fn">gsap</span>.to(".scramble-txt", {
+  duration: 2,
+  scrambleText: {
+    text: <span class="str">"GSAP SUPREME"</span>,  <span class="com">// Destino final</span>
+    chars: <span class="str">"lowerCase"</span>,    <span class="com">// Caracteres falsos a usar</span>
+    revealDelay: 0.5,      <span class="com">// Segundos de espera antes de que las letras correctas formen la base</span>
+    tweenLength: false     <span class="com">// Mantiene longitud estática de las palabras si es posible</span>
+  },
+  ease: <span class="str">"power3.inOut"</span>
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+    <!-- CodePen Trials for Club Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrambleTextPlugin.min.js"></script>
+
+        <script src="../js/01_texto.js"></script>
+</body>
+</html>
