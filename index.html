@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSAP Master Academy - Premium Demos</title>
+    <!-- Importación de fuentes premium para un look más profesional y moderno -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #0a0a0a; 
+            --text-main: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.02); 
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --c-txt: #00ff88; --c-img: #00b3ff; --c-int: #bd00ff; --c-bdk: #ff4400;
+            --cursor-size: 20px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body { background: var(--bg-base); color: var(--text-main); font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+
+        /* Fondo Interactivo (Hover de Pantalla) */
+        .hero-interaction {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .hero-shape {
+            position: absolute;
+            width: 300px;
+            height: 450px;
+            border-radius: 200px; /* Forma de óvalo similar a Champions */
+            border: 1px solid rgba(255,255,255,0.05);
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+            opacity: 0.4;
+        }
+
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: var(--cursor-size); height: var(--cursor-size);
+            background-color: white; border-radius: 50%; pointer-events: none; z-index: 9999;
+            mix-blend-mode: difference; transition: transform 0.15s ease-out;
+        }
+        .custom-cursor.active { transform: scale(4); }
+
+        .container { 
+            position: relative;
+            padding: 8rem 2rem; 
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        h1.title { 
+            font-family: 'Space Grotesk', sans-serif; font-size: clamp(3rem, 15vw, 10rem); 
+            text-align: center; margin-bottom: 5rem; line-height: 0.85; text-transform: uppercase;
+        }
+
+        .grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 3rem; width: 100%; max-width: 1400px; perspective: 1000px;
+        }
+        
+        .card { 
+            background: var(--glass-bg); border: 1px solid var(--glass-border); 
+            border-radius: 30px; padding: 3rem; display: flex; flex-direction: column; 
+            position: relative; overflow: hidden; backdrop-filter: blur(5px);
+            transition: border-color 0.4s ease;
+        }
+
+        .card:hover { 
+            border-color: var(--accent-color); 
+            box-shadow: 0 10px 40px -10px var(--accent-color);
+        }
+
+        .card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at center, var(--accent-color, transparent) 0%, transparent 70%);
+            opacity: 0; transition: opacity 0.6s ease; pointer-events: none;
+        }
+        .card:hover::before { opacity: 0.25; }
+        .card.txt { --accent-color: var(--c-txt); border-color: rgba(0, 255, 136, 0.3); }
+        .card.img { --accent-color: var(--c-img); border-color: rgba(0, 179, 255, 0.3); }
+        .card.int { --accent-color: var(--c-int); border-color: rgba(189, 0, 255, 0.3); }
+        .card.bdk { --accent-color: var(--c-bdk); border-color: rgba(255, 68, 0, 0.3); }
+
+        .card h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; margin-bottom: 1.5rem; color: var(--accent-color); overflow: hidden; }
+        .char { display: inline-block; }
+        .card p { color: rgba(255,255,255,0.5); font-size: 1.1rem; line-height: 1.6; margin-bottom: 3rem; flex-grow: 1; }
+        .btn-group { display: flex; gap: 15px; }
+
+        .btn { 
+            text-decoration: none; padding: 12px 20px; border-radius: 100px; 
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 700; 
+            border: 1px solid var(--accent-color); color: var(--accent-color);
+            flex: 1; text-align: center; transition: 0.3s;
+        }
+        .btn:hover { background: var(--accent-color); color: var(--bg-base); }
+
+    </style>
+</head>
+<body>
+    <!-- Cursor Personalizado -->
+    <div class="custom-cursor"></div>
+
+    <!-- Fondo Interactivo (Hover Pantalla) -->
+    <div class="hero-interaction">
+        <div class="hero-shape" style="top: 10%; left: 5%;" data-speed="0.05"></div>
+        <div class="hero-shape" style="top: 50%; left: 80%; width: 200px; height: 300px;" data-speed="0.08"></div>
+        <div class="hero-shape" style="top: 70%; left: 15%; width: 250px; height: 400px;" data-speed="0.03"></div>
+    </div>
+
+    <div class="container">
+        <h1 class="title mag-element">GSAP <br><span style="font-weight: 300; opacity: 0.2;">Academy</span></h1>
+        
+        <div class="grid">
+            <!-- TIPOGRAFÍA -->
+            <div class="card txt">
+                <h2>01. Tipografía</h2>
+                <p>Domina el arte de fragmentar texto. SplitText, máscaras cinemáticas y efectos de glitch que reaccionan al scroll.</p>
+                <div class="btn-group">
+                    <a href="01a_texto.html" class="btn mag-element">Parte 1</a>
+                    <a href="01b_texto.html" class="btn mag-element">Parte 2</a>
+                    <a href="01c_texto.html" class="btn mag-element">Parte 3</a>
+                </div>
+            </div>
+            <!-- SCROLL (ANTERIOR VISUALS) -->
+            <div class="card img">
+                <h2>02. Scroll</h2>
+                <p>Parallax multinivel, zooms inmersivos y layouts que cobran vida al interactuar con el scroll y el ratón.</p>
+                <div class="btn-group" style="flex-wrap: wrap;">
+                    <a href="02a_imagenes.html" class="btn mag-element">Parte 1</a>
+                    <a href="02b_imagenes.html" class="btn mag-element">Parte 2</a>
+                    <a href="02c_imagenes.html" class="btn mag-element">Parte 3</a>
+                </div>
+            </div>
+            <!-- SCROLL (ANTERIOR INTERACCIÓN) -->
+            <div class="card int">
+                <h2>03. Scroll</h2>
+                <p>La magia del `quickTo`. Micro-interacciones magnéticas, sistemas de arrastre y navegaciones no lineales.</p>
+                <div class="btn-group" style="flex-wrap: wrap;">
+                    <a href="03a_interaccion.html" class="btn mag-element">Parte 4</a>
+                    <a href="03b_interaccion.html" class="btn mag-element">Parte 5</a>
+                    <a href="03c_interaccion.html" class="btn mag-element">Parte 6</a>
+                    <a href="03d_interaccion.html" class="btn mag-element">Parte 7</a>
+                </div>
+            </div>
+            <!-- BRUTALISMO -->
+            <div class="card bdk">
+                <h2>04. Brutalismo</h2>
+                <p>Estética cruda de alto impacto. Velocity Skew, transiciones elásticas y morphing de formas orgánicas.</p>
+                <div class="btn-group">
+                    <a href="04a_bodak.html" class="btn mag-element">Parte 1</a>
+                    <a href="04b_bodak.html" class="btn mag-element">Parte 2</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARGA DE LIBRERÍAS GSAP Y SPLIT-TYPE -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+
+    <script>
+        // --- 1. CONFIGURACIÓN DEL CURSOR PERSONALIZADO ---
+        const cursor = document.querySelector('.custom-cursor');
+        const xToCursor = gsap.quickTo(cursor, "x", {duration: 0.15, ease: "power3"});
+        const yToCursor = gsap.quickTo(cursor, "y", {duration: 0.15, ease: "power3"});
+
+        window.addEventListener("mousemove", e => {
+            xToCursor(e.clientX - 10);
+            yToCursor(e.clientY - 10);
+        });
+
+        // --- 2. INTERACCIÓN DE PANTALLA (HERO HOVER) ---
+        const shapes = document.querySelectorAll('.hero-shape');
+        
+        window.addEventListener("mousemove", (e) => {
+            const { clientX, clientY } = e;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            // Óvalos de fondo
+            shapes.forEach(shape => {
+                const speed = parseFloat(shape.getAttribute('data-speed'));
+                gsap.to(shape, {
+                    x: (clientX - centerX) * speed,
+                    y: (clientY - centerY) * speed,
+                    duration: 1.5, ease: "power2.out", overwrite: "auto"
+                });
+            });
+        });
+
+        // --- 3. EFECTOS DE TEXTO Y HOVER DE TARJETAS ---
+        const textTitles = new SplitType('h2', { types: 'chars' });
+        
+        document.querySelectorAll('.card').forEach(card => {
+            const chars = card.querySelectorAll('.char');
+            
+            card.addEventListener('mouseenter', () => {
+                cursor.classList.add('active');
+                gsap.to(chars, { y: -10, stagger: 0.02, duration: 0.3, ease: "back.out(2)", color: "white" });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                cursor.classList.remove('active');
+                gsap.to(chars, { y: 0, stagger: 0.02, duration: 0.3, ease: "power2.in", color: "" });
+            });
+            
+            card.addEventListener('mousemove', (e) => {
+                const { left, top, width, height } = card.getBoundingClientRect();
+                const x = (e.clientX - left) / width - 0.5;
+                const y = (e.clientY - top) / height - 0.5;
+                gsap.to(card, { rotationY: x * 15, rotationX: -y * 15, transformPerspective: 1000, duration: 0.6, ease: "power3.out" });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, { rotationY: 0, rotationX: 0, scale: 1, duration: 0.8, ease: "elastic.out(1, 0.3)" });
+            });
+        });
+
+        // --- 4. BOTONES MAGNÉTICOS ---
+        document.querySelectorAll('.mag-element').forEach(btn => {
+            const mX = gsap.quickTo(btn, "x", {duration: 0.4, ease: "power3"});
+            const mY = gsap.quickTo(btn, "y", {duration: 0.4, ease: "power3"});
+
+            btn.addEventListener('mousemove', (e) => {
+                const { left, top, width, height } = btn.getBoundingClientRect();
+                const x = e.clientX - (left + width / 2);
+                const y = e.clientY - (top + height / 2);
+                mX(x * 0.4); mY(y * 0.4);
+            });
+
+            btn.addEventListener('mouseleave', () => { mX(0); mY(0); });
+        });
+
+        // --- 5. ANIMACIÓN DE ENTRADA ---
+        gsap.from(".card", { opacity: 0, y: 100, duration: 1, stagger: 0.15, ease: "expo.out", delay: 0.4 });
+        gsap.from(".title", { opacity: 0, y: -30, duration: 1.5, ease: "power4.out" });
+    </script>
+</body>
+</html>

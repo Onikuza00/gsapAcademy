@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03c. Interacción UI (P3) - GSAP Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400&family=Space+Grotesk:wght@600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #070707; --acc: #8800ff; --acc-alt: #00ff88; --txt: #f0f0f0;
+            --glass: rgba(255,255,255,0.02); --border: rgba(136,0,255,0.2);
+            --space: clamp(2rem, 5vw, 4rem);
+            --gold: #ffc107;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--txt); font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+        h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; margin-bottom: 1rem; line-height: 1.1; letter-spacing: -1px;}
+        .highlight { color: var(--acc); }
+        
+        .header { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items:center; position: fixed; width: 100%; z-index: 1000; background: rgba(7,7,7,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+        .header h3 { font-family: 'Space Grotesk', sans-serif;}
+        .nav-links { display: flex; gap: 10px; }
+        .header a { color: var(--acc); text-decoration: none; border: 1px solid var(--border); padding: 8px 16px; border-radius: 4px; font-weight: 600; font-family:'Space Grotesk'; font-size: 0.9rem;}
+        .header a.active { background: rgba(136,0,255,0.1); }
+        .header a:hover { background: var(--acc); color: var(--bg); }
+        
+        .section { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space); padding: calc(80px + var(--space)) var(--space) var(--space) var(--space); border-bottom: 1px dashed var(--border);}
+        @media (max-width: 900px) { .section { grid-template-columns: 1fr; } }
+        
+        .panel { background: var(--glass); border: 1px solid var(--border); border-radius: 12px; padding: var(--space); display: flex; flex-direction: column; justify-content: center; position: relative;}
+        .panel.code { background: #0a0a0a; border-color:#222;}
+        .panel.demo { align-items: center; overflow: hidden; background: radial-gradient(circle at center, rgba(136,0,255,0.05) 0%, transparent 70%); }
+        
+        pre { background: #000; padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; color: #a6accd; border: 1px solid #222; overflow-x: auto; margin-top: 1rem; font-family: 'Fira Code', monospace; line-height: 1.5;}
+        .com { color: #697098; font-style: italic; } .str { color: #c3e88d; } .fn { color: #82aaff; } .key { color: #c792ea; }
+
+        /* CUSTOM CURSOR GLOBAL */
+        .cursor-dot { width: 8px; height: 8px; background: var(--txt); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);}
+        .cursor-ring { width: 40px; height: 40px; border: 2px solid var(--acc); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, border-color 0.3s;}
+        
+        /* 11. ADMIN TECH SCAN (EL EFECTO 7VISION CORE) */
+        .tech-card {
+            width: 280px; height: 400px;
+            background: #111;
+            border: 1px solid #222;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+        }
+        .tech-poster {
+            position: absolute; inset: 0;
+            background: url('https://image.tmdb.org/t/p/w500/8GxvA9zO0U7AVbcsyS3B3syvqiM.jpg') center/cover;
+            opacity: 0.6;
+            transition: 0.5s;
+        }
+        .tech-card:hover .tech-poster { opacity: 0.2; filter: grayscale(1); }
+        
+        .scan-laser {
+            position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: var(--gold);
+            box-shadow: 0 0 15px var(--gold);
+            opacity: 0;
+            z-index: 10;
+        }
+        .tech-card:hover .scan-laser { opacity: 0.8; }
+
+        .corner { position: absolute; width: 10px; height: 10px; border: 2px solid var(--gold); opacity: 0.4; }
+        .tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+        .tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+        .bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+        .br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+        .tech-card:hover .corner { opacity: 1; }
+
+        .tech-info { position: relative; z-index: 5; transform: translateY(20px); opacity: 0; transition: 0.4s; }
+        .tech-card:hover .tech-info { transform: translateY(0); opacity: 1; }
+        .tech-label { font-size: 0.6rem; color: var(--gold); display: block; margin-bottom: 5px; font-weight: 700;}
+        .tech-title { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
+        .tech-specs { display: flex; gap: 10px; font-size: 0.7rem; color: #777; }
+        
+    </style>
+</head>
+<body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <header class="header hover-target">
+        <h3>GSAP <span class="highlight">Scrolls (Parte 6)</span></h3>
+        <div class="nav-links">
+            <a href="index.html">Hub</a>
+            <a href="03b_interaccion.html">← Parte 5</a>
+            <a href="03c_interaccion.html" class="active">Parte 6</a>
+            <a href="03d_interaccion.html">Parte 7 →</a>
+        </div>
+    </header> <!-- 11. ADMIN TECH SCAN (7VISION) -->
+    <section class="section" style="padding-top:15vh;">
+        <div class="panel code hover-target">
+            <h2>11. Escaneo Técnico <span class="highlight">(Laser)</span></h2>
+            <p>Efecto de inspección de datos. Un láser recorre la superficie mientras se revelan los metadatos.</p>
+            <pre><code><span class="fn">gsap</span>.to(".scan-laser", {
+  top: "100%", duration: 2.5, repeat: -1, ease: "none"
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="tech-card hover-target">
+                <div class="tech-poster"></div>
+                <div class="corner tl"></div><div class="corner tr"></div>
+                <div class="corner bl"></div><div class="corner br"></div>
+                <div class="scan-laser"></div>
+                
+                <div class="tech-info">
+                    <span class="tech-label">> DATA_IDENTIFIER: MOV_0842</span>
+                    <h3 class="tech-title">CHAMPIONS PROJECT</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. HERO GROW MASK (BALL REVEAL) -->
+    <section class="section">
+        <div class="panel demo" style="background:#000; overflow:hidden;">
+            <div class="reveal-ball-container">
+                <div class="reveal-ball"></div>
+                <h3 class="ball-txt">EL FUTURO <br>ES AHORA</h3>
+            </div>
+            <p style="margin-top:2rem; opacity:0.5;">* Scroll para expandir la bola negra *</p>
+        </div>
+        <div class="panel code hover-target">
+            <h2>12. Expand Reveal <span class="highlight">(Hero Ball)</span></h2>
+            <p>Un círculo que crece proporcionalmente al scroll hasta cubrir el viewport, revelando una nueva capa de contenido.</p>
+            <pre><code><span class="fn">gsap</span>.to(".reveal-ball", {
+  scale: 15,
+  scrollTrigger: {
+    trigger: ".reveal-ball-container",
+    scrub: true,
+    pin: true
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 13. TOOLTIP MOUSE FOLLOW (ATHLETE STYLE) -->
+    <section class="section">
+        <div class="panel code hover-target">
+            <h2>13. Tooltip Premium <span class="highlight">(Athletes)</span></h2>
+            <p>Un seguidor de ratón que muestra información dinámica sobre elementos específicos con un retraso físico elegante.</p>
+            <pre><code><span class="com">// Seguimiento con quickTo para suavidad</span>
+<span class="key">const</span> xTo = <span class="fn">gsap</span>.quickTo(".ath-tooltip", "x", {duration: 0.5});
+<span class="key">const</span> yTo = <span class="fn">gsap</span>.quickTo(".ath-tooltip", "y", {duration: 0.5});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="ath-list">
+                <div class="ath-item hover-target" data-ath="DEBORAH LEVI" data-role="Olympiasiegerin">Deborah Levi</div>
+                <div class="ath-item hover-target" data-ath="LEO NEUGEBAUER" data-role="World Record Holder">Leo Neugebauer</div>
+                <div class="ath-item hover-target" data-ath="MARCUS EHNING" data-role="Show Jumper">Marcus Ehning</div>
+            </div>
+            <div class="ath-tooltip">
+                <div class="ath-name">Nombre</div>
+                <div class="ath-role">Descripción</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 14. BIO-METRIC PULSE TOGGLE (SURPRISING EFFECT) -->
+    <section class="section">
+        <div class="panel demo" style="display:flex; justify-content:center; background: #000;">
+            <div class="bio-toggle hover-target" id="bio-trigger">
+                <div class="bio-scanner"></div>
+                <div class="bio-ring"></div>
+                <div class="bio-pulse"></div>
+                <div class="bio-icon">
+                    <span id="bio-status">ID_SCAN</span>
+                </div>
+            </div>
+        </div>
+        <div class="panel code hover-target">
+            <h2>14. Bio-Metric <span class="highlight">Pulse Switch</span></h2>
+            <p>Sustituimos el switch plano por una interfaz de autenticación. Incluye un escáner láser infinito y una onda de choque (<i>shockwave</i>) al activarse.</p>
+            <pre><code><span class="com">// Efecto Pulse (Onda de choque)</span>
+<span class="fn">gsap</span>.fromTo(".bio-pulse", 
+  { scale: 1, opacity: 0.5 }, 
+  { scale: 3, opacity: 0, duration: 0.8, ease: "expo.out" }
+);
+
+<span class="com">// Glitch de texto reactivo al estado</span>
+<span class="fn">gsap</span>.to("#bio-status", {
+  scrambleText: { text: isActive ? "ACCESS_GRANTED" : "ID_SCAN", chars: "01*" }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 15. FAN-OUT CARD GALLERY -->
+    <section class="section" style="border-bottom:none;">
+        <div class="panel code hover-target">
+            <h2>15. Fan-out Gallery <span class="highlight">(Members)</span></h2>
+            <p>Las tarjetas se despliegan en abanico al entrar en el viewport, rotando dinámicamente según su índice.</p>
+            <pre><code><span class="fn">gsap</span>.to(".fan-card", {
+  rotate: (i) => (i - 2) * 10,
+  x: (i) => (i - 2) * 20,
+  stagger: 0.1,
+  duration: 1
+});</code></pre>
+        </div>
+        <div class="panel demo" style="height:500px; display:flex; align-items:center; justify-content:center;">
+            <div class="fan-container">
+                <div class="fan-card" style="background:#111;"></div>
+                <div class="fan-card" style="background:#222;"></div>
+                <div class="fan-card" style="background:var(--acc); border-color:#fff;"></div>
+                <div class="fan-card" style="background:#222;"></div>
+                <div class="fan-card" style="background:#111;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* Estilos adicionales para los 5 demos */
+        .reveal-ball-container { position: relative; width: 100%; height: 60vh; background: #050505; display: flex; align-items: center; justify-content: center; z-index:1; border-radius: 20px; border: 1px solid rgba(136,0,255,0.2); }
+        .reveal-ball { width: 80px; height: 80px; background: #fff; border-radius: 50%; z-index: 10; position:relative; box-shadow: 0 0 40px var(--acc); }
+        .ball-txt { position: absolute; z-index: 11; color: #000; text-align: center; font-family: 'Space Grotesk'; font-size: clamp(2rem, 10vw, 5rem); font-weight: 900; pointer-events: none; opacity: 0; line-height: 0.8; }
+        
+        .ath-list { display: flex; flex-direction: column; gap: 15px; width: 80%; }
+        .ath-item { font-family: 'Space Grotesk'; font-size: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 10px; cursor:none; transition: 0.3s; }
+        .ath-item:hover { color: var(--acc-alt); padding-left: 20px; border-bottom-color: var(--acc-alt); }
+        .ath-tooltip { position: fixed; top: 0; left: 0; background: #fff; color: #000; padding: 10px 20px; border-radius: 10px; pointer-events: none; opacity: 0; transition: opacity 0.3s, transform 0.3s; z-index: 10000; text-align:left;}
+        .ath-name { font-weight: 800; font-size: 1rem; }
+        .ath-role { font-size: 0.7rem; opacity: 0.6; }
+
+        .bio-toggle { width: 120px; height: 120px; border-radius: 50%; border: 2px solid rgba(136,0,255,0.3); position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; background: radial-gradient(circle at center, #111 0%, #000 100%); overflow: hidden; transition: 0.4s; }
+        .bio-toggle:hover { border-color: var(--acc); box-shadow: 0 0 30px rgba(136,0,255,0.2); }
+        .bio-scanner { position: absolute; top: -100%; left: 0; width: 100%; height: 40px; background: linear-gradient(to bottom, transparent, var(--acc), transparent); opacity: 0.3; pointer-events: none; z-index: 2; }
+        .bio-ring { position: absolute; width: 100%; height: 100%; border: 4px dashed var(--acc); border-radius: 50%; opacity: 0.1; }
+        .bio-pulse { position: absolute; width: 100%; height: 100%; border: 2px solid var(--acc); border-radius: 50%; opacity: 0; transform: scale(1); pointer-events: none; }
+        .bio-icon { font-family: 'Fira Code', monospace; font-size: 0.6rem; color: var(--acc); z-index: 5; text-align: center; font-weight: 800; letter-spacing: 1px; }
+        .bio-toggle.active { border-color: var(--acc-alt); }
+        .bio-toggle.active .bio-icon { color: var(--acc-alt); }
+        .bio-toggle.active .bio-scanner { background: linear-gradient(to bottom, transparent, var(--acc-alt), transparent); }
+
+        .fan-container { position: relative; width: 200px; height: 300px; }
+        .fan-card { position: absolute; width: 100%; height: 100%; border: 2px solid rgba(255,255,255,0.1); border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform-origin: bottom center; }
+    </style>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- GLOBAL CURSOR ---
+        const curX = gsap.quickTo(".cursor-ring", "x", {duration: 0.15, ease: "power3", overwrite: "auto"});
+        const curY = gsap.quickTo(".cursor-ring", "y", {duration: 0.15, ease: "power3", overwrite: "auto"});
+        
+        window.addEventListener("mousemove", (e) => {
+            gsap.set(".cursor-dot", { x: e.clientX, y: e.clientY });
+            curX(e.clientX);
+            curY(e.clientY);
+        });
+
+        const hoverTargets = document.querySelectorAll(".hover-target");
+        hoverTargets.forEach(target => {
+            target.addEventListener("mouseenter", () => {
+                gsap.to(".cursor-ring", { width: 60, height: 60, borderColor: "var(--acc-alt)", duration: 0.3 });
+                gsap.to(".cursor-dot", { scale: 0, duration: 0.3 });
+            });
+            target.addEventListener("mouseleave", () => {
+                gsap.to(".cursor-ring", { width: 40, height: 40, borderColor: "var(--acc)", duration: 0.3 });
+                gsap.to(".cursor-dot", { scale: 1, duration: 0.3 });
+            });
+        });
+
+        // --- 11. TECH SCAN ---
+        const laserAnim = gsap.fromTo(".scan-laser", { top: "0%" }, { top: "100%", duration: 2.5, repeat: -1, ease: "none", paused: true });
+        document.querySelector(".tech-card").addEventListener("mouseenter", () => laserAnim.play());
+        document.querySelector(".tech-card").addEventListener("mouseleave", () => { laserAnim.pause(); gsap.set(".scan-laser", { top: 0 }); });
+
+        // --- 12. HERO REVEAL BALL (POTENCIADO) ---
+        gsap.timeline({
+            scrollTrigger: { 
+                trigger: ".reveal-ball-container", 
+                start: "top 10%", 
+                end: "+=100%", 
+                scrub: 1, 
+                pin: true 
+            }
+        })
+        .to(".reveal-ball", { scale: 50, duration: 1.5, ease: "power2.in" })
+        .to(".ball-txt", { opacity: 1, duration: 0.5 }, "-=0.2")
+        .to(".reveal-ball-container", { opacity: 0, pointerEvents: "none", duration: 0.5 });
+
+        // --- 13. ATH TOOLTIP ---
+        const aTip = document.querySelector(".ath-tooltip");
+        const atX = gsap.quickTo(aTip, "x", {duration: 0.5, ease: "power3"});
+        const atY = gsap.quickTo(aTip, "y", {duration: 0.5, ease: "power3"});
+
+        document.querySelectorAll(".ath-item").forEach(item => {
+            item.addEventListener("mouseenter", () => {
+                aTip.style.opacity = 1;
+                aTip.querySelector(".ath-name").innerText = item.dataset.ath;
+                aTip.querySelector(".ath-role").innerText = item.dataset.role;
+                gsap.to(aTip, { scale: 1, duration: 0.3 });
+                gsap.to(".cursor-ring", { opacity: 0, duration: 0.2 });
+            });
+            item.addEventListener("mouseleave", () => {
+                aTip.style.opacity = 0;
+                gsap.to(aTip, { scale: 0.8, duration: 0.3 });
+                gsap.to(".cursor-ring", { opacity: 1, duration: 0.2 });
+            });
+            item.addEventListener("mousemove", (e) => {
+                atX(e.clientX + 20);
+                atY(e.clientY + 20);
+            });
+        });
+
+        // --- 14. BIO-METRIC PULSE SWITCH (MEJORADO) ---
+        let bioActive = false;
+        const bioTrigger = document.getElementById("bio-trigger");
+        
+        // Escáner láser persistente
+        gsap.to(".bio-scanner", { top: "150%", duration: 2, repeat: -1, ease: "none" });
+        // Rotación del anillo
+        gsap.to(".bio-ring", { rotation: 360, duration: 10, repeat: -1, ease: "none" });
+
+        bioTrigger.addEventListener("click", () => {
+            bioActive = !bioActive;
+            bioTrigger.classList.toggle("active");
+            
+            // Onda de choque (Pulse)
+            gsap.fromTo(".bio-pulse", 
+                { scale: 1, opacity: 0.8, borderColor: bioActive ? "var(--acc-alt)" : "var(--acc)" }, 
+                { scale: 3, opacity: 0, duration: 0.8, ease: "power4.out" }
+            );
+
+            // Efecto de Glitch/Scramble en el texto
+            gsap.to("#bio-status", {
+                duration: 0.5,
+                scrambleText: {
+                    text: bioActive ? "ACCESS_GRANTED" : "ID_SCAN",
+                    chars: "01X*#@",
+                    revealDelay: 0.1
+                }
+            });
+
+            // Animación de escala al pulsar
+            gsap.fromTo(bioTrigger, { scale: 0.9 }, { scale: 1, duration: 0.4, ease: "elastic.out(1, 0.3)" });
+        });
+
+        // --- 15. FAN GALLERY ---
+        gsap.from(".fan-card", {
+            rotate: 0, x: 0, opacity: 0,
+            scrollTrigger: { trigger: ".fan-container", start: "top 80%", toggleActions: "play none none reverse" }
+        });
+        gsap.to(".fan-card", {
+            rotate: (i) => (i - 2) * 15,
+            x: (i) => (i - 2) * 40,
+            duration: 1.2,
+            ease: "power4.out",
+            scrollTrigger: { trigger: ".fan-container", start: "top 80%", toggleActions: "play none none reverse" }
+        });
+    </script>
+</body>
+</html>
