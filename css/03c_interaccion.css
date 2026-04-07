@@ -1,0 +1,74 @@
+:root {
+            --bg: #070707; --acc: #8800ff; --acc-alt: #00ff88; --txt: #f0f0f0;
+            --glass: rgba(255,255,255,0.02); --border: rgba(136,0,255,0.2);
+            --space: clamp(2rem, 5vw, 4rem);
+            --gold: #ffc107;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--txt); font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+        h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; margin-bottom: 1rem; line-height: 1.1; letter-spacing: -1px;}
+        .highlight { color: var(--acc); }
+        
+        .header { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items:center; position: fixed; width: 100%; z-index: 1000; background: rgba(7,7,7,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+        .header h3 { font-family: 'Space Grotesk', sans-serif;}
+        .nav-links { display: flex; gap: 10px; }
+        .header a { color: var(--acc); text-decoration: none; border: 1px solid var(--border); padding: 8px 16px; border-radius: 4px; font-weight: 600; font-family:'Space Grotesk'; font-size: 0.9rem;}
+        .header a.active { background: rgba(136,0,255,0.1); }
+        .header a:hover { background: var(--acc); color: var(--bg); }
+        
+        .section { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space); padding: calc(80px + var(--space)) var(--space) var(--space) var(--space); border-bottom: 1px dashed var(--border);}
+        @media (max-width: 900px) { .section { grid-template-columns: 1fr; } }
+        
+        .panel { background: var(--glass); border: 1px solid var(--border); border-radius: 12px; padding: var(--space); display: flex; flex-direction: column; justify-content: center; position: relative;}
+        .panel.code { background: #0a0a0a; border-color:#222;}
+        .panel.demo { align-items: center; overflow: hidden; background: radial-gradient(circle at center, rgba(136,0,255,0.05) 0%, transparent 70%); }
+        
+        pre { background: #000; padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; color: #a6accd; border: 1px solid #222; overflow-x: auto; margin-top: 1rem; font-family: 'Fira Code', monospace; line-height: 1.5;}
+        .com { color: #697098; font-style: italic; } .str { color: #c3e88d; } .fn { color: #82aaff; } .key { color: #c792ea; }
+
+        /* CUSTOM CURSOR GLOBAL */
+        .cursor-dot { width: 8px; height: 8px; background: var(--txt); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);}
+        .cursor-ring { width: 40px; height: 40px; border: 2px solid var(--acc); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, border-color 0.3s;}
+        
+        /* 11. ADMIN TECH SCAN (EL EFECTO 7VISION CORE) */
+        .tech-card {
+            width: 280px; height: 400px;
+            background: #111;
+            border: 1px solid #222;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+        }
+        .tech-poster {
+            position: absolute; inset: 0;
+            background: url('https://image.tmdb.org/t/p/w500/8GxvA9zO0U7AVbcsyS3B3syvqiM.jpg') center/cover;
+            opacity: 0.6;
+            transition: 0.5s;
+        }
+        .tech-card:hover .tech-poster { opacity: 0.2; filter: grayscale(1); }
+        
+        .scan-laser {
+            position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: var(--gold);
+            box-shadow: 0 0 15px var(--gold);
+            opacity: 0;
+            z-index: 10;
+        }
+        .tech-card:hover .scan-laser { opacity: 0.8; }
+
+        .corner { position: absolute; width: 10px; height: 10px; border: 2px solid var(--gold); opacity: 0.4; }
+        .tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+        .tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+        .bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+        .br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+        .tech-card:hover .corner { opacity: 1; }
+
+        .tech-info { position: relative; z-index: 5; transform: translateY(20px); opacity: 0; transition: 0.4s; }
+        .tech-card:hover .tech-info { transform: translateY(0); opacity: 1; }
+        .tech-label { font-size: 0.6rem; color: var(--gold); display: block; margin-bottom: 5px; font-weight: 700;}
+        .tech-title { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
+        .tech-specs { display: flex; gap: 10px; font-size: 0.7rem; color: #777; }

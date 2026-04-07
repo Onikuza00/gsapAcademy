@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02c. Visuales de Élite V2 - GSAP Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../css/02c_imagenes.css">
+</head>
+<body>
+    <header class="header">
+        <h3>GSAP <span class="highlight">Scrolls (Parte 3)</span></h3>
+        <div class="nav-links">
+            <a href="../index.html">Hub</a>
+            <a href="02b_imagenes.html">← Parte 2</a>
+            <a href="02c_imagenes.html" class="active">Parte 3</a>
+            <a href="02d_imagenes.html">Parte 4 →</a>
+        </div>
+    </header>
+
+    <!-- 11. 3D CYLINDER BARREL -->
+    <section class="section" style="padding-top:15vh;">
+        <div class="panel code">
+            <h2>11. Tambor <span class="highlight">3D (Vertical)</span></h2>
+            <p>Efecto de carrusel cilíndrico de alta gama. Las imágenes rotan sobre un eje central virtual como una tragaperras premium.</p>
+            <pre><code><span class="fn">gsap</span>.to(".cylinder-wrap", {
+  rotateX: -360,
+  scrollTrigger: {
+    trigger: ".cylinder-wrap",
+    scrub: 1.5,
+    start: "top 80%"
+  }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="cylinder-wrap">
+                <div class="cylinder-item c1"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400"></div>
+                <div class="cylinder-item c2"><img src="https://images.unsplash.com/photo-1550684376-efcbd6e3f031?w=400"></div>
+                <div class="cylinder-item c3"><img src="https://images.unsplash.com/photo-1542626991-cbc4e32524cc?w=400"></div>
+                <div class="cylinder-item c4"><img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. PARALLAX CURTAIN -->
+    <section class="section">
+        <div class="panel demo">
+            <div class="curtain-box">
+                <div class="curtain-bar"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800" class="curtain-img"></div>
+                <div class="curtain-bar"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800" class="curtain-img"></div>
+                <div class="curtain-bar"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800" class="curtain-img"></div>
+                <div class="curtain-bar"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800" class="curtain-img"></div>
+                <div class="curtain-bar"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800" class="curtain-img"></div>
+                <div class="curtain-bar"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800" class="curtain-img"></div>
+                <div class="curtain-bar"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800" class="curtain-img"></div>
+                <div class="curtain-bar"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800" class="curtain-img"></div>
+            </div>
+        </div>
+        <div class="panel code">
+            <h2>12. Cortina <span class="highlight">Sincronizada</span></h2>
+            <p>La imagen se fragmenta en 8 bandas verticales que se desplazan a diferentes velocidades, revelando el contenido de forma cinematográfica.</p>
+            <pre><code><span class="fn">gsap</span>.to(".curtain-img", {
+  y: (i) => i * -40,
+  scrollTrigger: { 
+    scrub: 1, 
+    trigger: ".curtain-box" 
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 13. ORIGAMI UNFOLD -->
+    <section class="section">
+        <div class="panel code">
+            <h2>13. Plegado <span class="highlight">Origami (3D)</span></h2>
+            <p>Despliegue estructural de una imagen. La foto se "abre" en tres pliegues tridimensionales a medida que entras en la sección.</p>
+            <pre><code><span class="fn">gsap</span>.from(".origami-fold", {
+  rotateX: (i) => i === 1 ? 90 : -90,
+  opacity: 0,
+  scrollTrigger: { scrub: 0.5 }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="origami-box">
+                <div class="origami-fold o-top"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600" class="origami-img"></div>
+                <div class="origami-fold o-mid"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600" class="origami-img"></div>
+                <div class="origami-fold o-bot"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600" class="origami-img"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 14. MAGNI-LENS -->
+    <section class="section">
+        <div class="panel demo" style="padding:0;">
+            <div class="lens-area" id="lens-zone">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800" class="lens-img-bg">
+                <div class="lens-visor">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800" class="lens-content" id="lens-c">
+                </div>
+            </div>
+        </div>
+        <div class="panel code">
+            <h2>14. Lente de <span class="highlight">Alta Precisión</span></h2>
+            <p>Control de aumento por coordenadas inversas. Reacciona al ratón con inercia elástica, permitiendo una inspección premium del detalle.</p>
+            <pre><code><span class="com">// Lógica de desplazamiento inverso</span>
+cX(-relX * 1.5 + 200); 
+vX(relX - 90);</code></pre>
+        </div>
+    </section>
+
+    <!-- 15. PARTICLE SWARM -->
+    <section class="section" style="border-bottom:none;">
+        <div class="panel code">
+            <h2>15. Enjambre <span class="highlight">Cinético (Dots)</span></h2>
+            <p>Miles de puntos (representados por una selección orbital) que se sincronizan para formar un marco magnético alrededor del contenido al acercarse.</p>
+            <pre><code><span class="fn">gsap</span>.to(".dot", {
+  x: mouseX,
+  y: mouseY,
+  stagger: 0.01,
+  ease: <span class="str">"back.out"</span>
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="swarm-area" id="swarm-zone">
+                <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?w=600" class="swarm-img" id="s-img">
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+        <script src="../js/02c_imagenes.js"></script>
+</body>
+</html>

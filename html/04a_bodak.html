@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>04a. Bodak Brutalismo - GSAP Academy</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400&family=Space+Grotesk:wght@600;700&family=Syne:wght@800&display=swap"
+      rel="stylesheet"
+    />
+        <link rel="stylesheet" href="../css/04a_bodak.css">
+  </head>
+  <body>
+    <header class="header">
+      <h3>GSAP <span class="highlight">Brutalism (1/2)</span></h3>
+      <div class="nav-links">
+        <a href="../index.html">Hub</a>
+        <a href="04a_bodak.html" class="active">P1</a>
+        <a href="04b_bodak.html">P2</a>
+      </div>
+    </header>
+
+    <!-- 01. CARD SPREAD -->
+    <section class="section" id="spread-sec">
+      <div class="panel code">
+        <h2>01. Card <span class="highlight">Spread</span></h2>
+        <p>
+          Centrifugación asimétrica de capas. Eliminado el recorte de bordes para permitir que las tarjetas escapen del panel.
+        </p>
+        <pre><code><span class="fn">gsap</span>.to(".bdk-c1", {
+  xPercent: -130, rotation: -15, 
+  scrollTrigger: {
+    trigger: ".sc-wrap",
+    start: "top 85%",
+    scrub: 2.5
+  }
+});</code></pre>
+      </div>
+      <div class="panel demo">
+        <div class="sc-wrap">
+          <div class="bdk-card bdk-c1">
+            <img src="https://images.unsplash.com/photo-1542626991-cbc4e32524cc?q=80&w=400" />
+            <h3>PLAN</h3>
+          </div>
+          <div class="bdk-card bdk-c2">
+            <img src="https://images.unsplash.com/photo-1550684376-efcbd6e3f031?q=80&w=400" />
+            <h3>BUILD</h3>
+          </div>
+          <div class="bdk-card bdk-c3">
+            <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=400" />
+            <h3>BODAK</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02. COLOR MORPHING -->
+    <section class="section" id="morph-trigger">
+      <div
+        class="panel demo morph-target"
+        style="padding: 2rem; min-height: 400px; display: flex; align-items: center; justify-content: center"
+      >
+        <h2 style="font-size: 3rem; text-align: center; color: var(--txt); font-family: &quot;Syne&quot;" id="morph-txt">
+          CAMALEÓN<br />VISUAL
+        </h2>
+      </div>
+      <div class="panel code morph-target">
+        <h2>02. Color <span class="highlight">Morph</span></h2>
+        <p>
+          Ejecución retardada (`top 35%`). Al entrar, el cuerpo y los paneles mutan al color Arena, blanqueando bordes para
+          mimetización total.
+        </p>
+        <pre><code><span class="fn">ScrollTrigger</span>.create({
+  trigger: "#morph-trigger",
+  start: "top 35%",
+  onEnter: () => {
+    <span class="fn">gsap</span>.to("body", { backgroundColor: "var(--bg-morph)", color: "#111" });
+    <span class="fn">gsap</span>.to(".morph-target", { borderColor: "rgba(0,0,0,0.1)", backgroundColor: "rgba(0,0,0,0.03)" });
+  }
+});</code></pre>
+      </div>
+    </section>
+
+    <!-- 03. METHOD STACKING -->
+    <section class="section" style="display: block">
+      <div class="panel code morph-target" style="margin-bottom: 40px">
+        <h2>03. Step <span class="highlight">Stacking</span></h2>
+        <p>
+          Animación compactada y texto fluido. Los pasos rotan opacidades mientras las imágenes funden con un `scrub` rápido de
+          0.5.
+        </p>
+        <pre><code><span class="key">const</span> tl = <span class="fn">gsap</span>.timeline({
+  scrollTrigger: {
+    trigger: ".prozess-scroll",
+    start: "top top",
+    end: "bottom bottom",
+    scrub: 0.5
+  }
+});
+tl.to(".pi-1", { opacity: 0 }).to(".pi-2", { opacity: 1 });</code></pre>
+      </div>
+      <div class="prozess-scroll">
+        <div class="prozess-pin">
+          <div class="p-left">
+            <h2 style="margin-bottom: 10px; font-size: 1.8rem; font-family: &quot;Syne&quot;">MÉTODO</h2>
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <div class="p-step ps-1 active">01. BRIEFING</div>
+              <div class="p-step ps-2">02. CONCEPT</div>
+              <div class="p-step ps-3">03. DESIGN</div>
+              <div class="p-step ps-4">04. CODE</div>
+              <div class="p-step ps-5">05. LAUNCH</div>
+            </div>
+          </div>
+          <div class="p-right">
+            <img
+              src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800"
+              class="p-img pi-1"
+              style="opacity: 1"
+            />
+            <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=800" class="p-img pi-2" />
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800" class="p-img pi-3" />
+            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800" class="p-img pi-4" />
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800" class="p-img pi-5" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04. SKEW SCROLL -->
+    <section class="section">
+      <div class="panel demo morph-target">
+        <div class="skew-box">INERCIA SKEW</div>
+      </div>
+      <div class="panel code morph-target">
+        <h2>04. Velocity <span class="highlight">Skewing</span></h2>
+        <p>
+          Deformación física basada en la velocidad de scroll. A más velocidad, más se inclina la caja creando una sensación
+          elástica.
+        </p>
+        <pre><code><span class="key">let</span> velo = <span class="fn">ScrollTrigger</span>.getVelocity() / 300;
+<span class="fn">gsap</span>.to(".skew-box", { 
+  skewY: velo, duration: 0.5, overwrite: "auto" 
+});</code></pre>
+      </div>
+    </section>
+
+    <!-- 05. FOOTER TELÓN -->
+    <section class="section" style="border-bottom: none">
+      <div class="panel demo" style="padding: 0">
+        <div class="curtain-wrap">
+          <div class="curtain-footer">END REVEAL</div>
+          <div class="curtain-scroll">
+            <div class="curtain-solid">
+              <h3 style="font-family: &quot;Space Grotesk&quot;; font-size: 1.5rem; color: #fff; text-align: center">
+                Sigue bajando
+              </h3>
+              <div style="height: 80vh"></div>
+            </div>
+            <div class="curtain-gap"></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel code morph-target">
+        <h2>05. Telón <span class="highlight">Z-Index</span></h2>
+        <p>Revelación del pie de página fijo mediante un "hueco" transparente al final del contenido deslizable.</p>
+        <pre><code><span class="com">/* CSS native stack */</span>
+.curtain-footer { z-index: 1; position: absolute; }
+.curtain-scroll { z-index: 2; position: absolute; }</code></pre>
+      </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+        <script src="../js/04a_bodak.js"></script>
+  </body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02b. Scroll Avanzado - GSAP Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../css/02b_imagenes.css">
+</head>
+<body>
+    <header class="header">
+        <h3 class="mag-element">GSAP <span class="highlight">Scrolls (Parte 2)</span></h3>
+        <div class="nav-links">
+            <a href="../index.html" class="mag-element">Hub</a>
+            <a href="02a_imagenes.html" class="mag-element">← Parte 1</a>
+            <a href="02b_imagenes.html" class="active mag-element">Parte 2</a>
+            <a href="02c_imagenes.html" class="mag-element">Parte 3 →</a>
+        </div>
+    </header>
+
+    <!-- 6. MASK COLOR REVEAL -->
+    <section class="section mask-reveal-sec" style="padding-top:15vh;">
+        <div class="panel code">
+            <h2>06. Mask <span class="highlight">Reveal Color</span></h2>
+            <p>Impacto visual inmediato. Una máscara circular (<code>clip-path</code>) expande un nuevo universo de color y tipografía sobre la base.</p>
+            <pre><code><span class="fn">gsap</span>.to(".mask-bg-reveal", {
+  clipPath: <span class="str">"circle(100% at center)"</span>,
+  ease: <span class="str">"none"</span>,
+  scrollTrigger: {
+    trigger: ".mask-container",
+    start: <span class="str">"top 80%"</span>,
+    end: <span class="str">"center center"</span>,
+    scrub: <span class="key">true</span>
+  }
+});</code></pre>
+        </div>
+        <div class="panel demo" style="padding:0; background:transparent;">
+            <div class="mask-container">
+                <div class="mask-bg-base">
+                    <h2 class="mask-txt dark">GSAP<br>CORE</h2>
+                </div>
+                <div class="mask-bg-reveal">
+                    <h2 class="mask-txt light">SUPER<br>HERO</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. SKEW UP -->
+    <section class="section">
+        <div class="panel demo">
+            <div class="flip-wrap">
+                <div class="flip-card">
+                    <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=800" class="flip-img">
+                </div>
+            </div>
+        </div>
+        <div class="panel code">
+            <h2>07. 3D <span class="highlight">Page Flip</span></h2>
+            <p>Efecto cinemático de apertura. La imagen rota sobre su eje Y desde un ángulo de 90 grados, revelándose como la portada de un libro.</p>
+            <pre><code><span class="fn">gsap</span>.to(".flip-card", {
+  rotateY: 0,
+  opacity: 1,
+  ease: <span class="str">"expo.out"</span>,
+  scrollTrigger: {
+    trigger: ".flip-wrap",
+    start: <span class="str">"top 80%"</span>,
+    scrub: 1
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 8. INFINITE TICKER IMG -->
+    <section class="section">
+        <div class="panel code">
+            <h2>Carrusel <span class="highlight">Continuo</span></h2>
+            <p>Al igual que el texto, se repite la galería fotográfica clonando su interior. Ajustando al scroll para controlar la velocidad.</p>
+            <pre><code><span class="key">const</span> tl = <span class="fn">gsap</span>.to(".img-ticker", {
+  xPercent: -50, repeat: -1, duration: 25, ease: <span class="str">"none"</span>
+});
+
+<span class="com">// Modificador de velocidad en tiempo real al rozar el Scroll</span>
+<span class="fn">ScrollTrigger</span>.create({
+  onUpdate: (self) => {
+    <span class="fn">gsap</span>.to(tl, { timeScale: self.direction * 3, overwrite: <span class="key">true</span> });
+  }
+});</code></pre>
+        </div>
+        <div class="panel demo" style="padding: 0; background: #050505;">
+            <div class="img-ticker">
+                <img src="https://images.unsplash.com/photo-1542626991-cbc4e32524cc?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1550684376-efcbd6e3f031?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400">
+                <!-- Clones para Scroll Infinito -->
+                <img src="https://images.unsplash.com/photo-1542626991-cbc4e32524cc?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1550684376-efcbd6e3f031?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400">
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. GRAYSCALE REVEAL -->
+    <section class="section">
+            <div class="blur-focus-wrap">
+                <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=800" class="blur-img">
+            </div>
+        <div class="panel code">
+            <h2>09. Lens <span class="highlight">Blur Focus</span></h2>
+            <p>Simulación de enfoque óptico. La imagen emerge de un desenfoque profundo de 30px hacia una nitidez cristalina.</p>
+            <pre><code><span class="fn">gsap</span>.to(".blur-img", {
+  filter: <span class="str">"blur(0px)"</span>, 
+  scale: 1,
+  scrollTrigger: {
+    trigger: ".blur-focus-wrap",
+    start: <span class="str">"top 80%"</span>, 
+    end: <span class="str">"top 20%"</span>,
+    scrub: <span class="key">true</span> 
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 10. LEFT PINNING -->
+    <section class="section" style="border-bottom:none;">
+        <div class="panel code">
+            <h2>10. Split <span class="highlight">Window Reveal</span></h2>
+            <p>Apertura mecánica de visor. Dos mitades de la misma imagen se separan coordinadamente para revelar la profundidad total.</p>
+            <pre><code><span class="fn">gsap</span>.to(".left .reveal-img", { xPercent: -25 });
+<span class="fn">gsap</span>.to(".right .reveal-img", { xPercent: 25 });</code></pre>
+        </div>
+            <div class="split-reveal-wrap">
+                <div class="reveal-side left"><img src="https://images.unsplash.com/photo-1542626991-cbc4e32524cc?q=80&w=1200" class="reveal-img"></div>
+                <div class="reveal-side right"><img src="https://images.unsplash.com/photo-1542626991-cbc4e32524cc?q=80&w=1200" class="reveal-img"></div>
+            </div>
+    </section>
+
+    <!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+        <script src="../js/02b_imagenes.js"></script>
+</body>
+</html>

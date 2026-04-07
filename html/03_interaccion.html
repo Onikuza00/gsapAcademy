@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03. Interacción UI - GSAP Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Syne:wght@600;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../css/03_interaccion.css">
+</head>
+<body>
+    <header class="header">
+        <h3 style="font-family:'Syne'">GSAP <span class="highlight">Academy</span></h3>
+        <a href="../index.html">← Volver al Hub</a>
+    </header>
+
+    <!-- 1. DRAGGABLE -->
+    <section class="section grid-2" style="padding-top: 150px;">
+        <div class="panel code">
+            <h2>Draggable con <span class="highlight">Inercia</span></h2>
+            <p>Usado para sliders de productos o galerías premium. No solo sigue al ratón, sino que la inercia (InertiaPlugin) simula el peso del contenido al soltar, como el iPadOS.</p>
+            <pre><code><span class="com">// Hacemos que el '.drag-slider' sea arrastrable solo en el eje X</span>
+<span class="fn">Draggable</span>.create(".drag-slider", {
+  type: <span class="str">"x"</span>,
+  bounds: ".drag-bounds", <span class="com">// Limita el movimiento a su padre</span>
+  inertia: true,          <span class="com">// Requiere el plugin de Inercia físico</span>
+  edgeResistance: 0.65,   <span class="com">// Efecto goma cuando intentas tirar más allá del límite</span>
+  onDragStart: () => console.log("Lanzado!")
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="drag-bounds">
+                <div class="drag-slider">
+                    <div class="drag-card" style="background:#00b3ff; color:#000;">Drag Me 1</div>
+                    <div class="drag-card" style="background:var(--acc2);">Slide 2</div>
+                    <div class="drag-card" style="background:var(--acc); color:#000;">Flick 3</div>
+                </div>
+            </div>
+            <p style="margin-top:10px; opacity: 0.5;">* Utiliza el ratón para arrastrar y soltar horizontalmente.</p>
+        </div>
+    </section>
+
+    <!-- 2. QUICKTO -->
+    <section class="section grid-2">
+        <div class="panel demo">
+            <div class="mag-wrap">
+                <button class="mag-btn">Acércate</button>
+            </div>
+        </div>
+        <div class="panel code">
+            <h2>Trackers Ultrarrápidos <span class="highlight">(quickTo)</span></h2>
+            <p>En eventos masivos (`mousemove`), pre-compilar las tuberías del motor GSAP evita un Memory Leak atroz y clava el rendimiento.</p>
+            <pre><code><span class="com">// 1. Enganche de las tuberías directamente al motor (BYPASS de gsap.to)</span>
+const xTo = <span class="fn">gsap</span>.quickTo(btn, <span class="str">"x"</span>, {duration: 0.4, ease: <span class="str">"power3"</span>});
+const yTo = <span class="fn">gsap</span>.quickTo(btn, <span class="str">"y"</span>, {duration: 0.4, ease: <span class="str">"power3"</span>});
+
+<span class="com">// 2. En el evento del DOM que va a mil por hora...</span>
+wrap.addEventListener(<span class="str">"mousemove"</span>, (e) => {
+  <span class="com">// Solo alimentamos números puros a las tuberías con un amortiguador (* 0.4)</span>
+  xTo((e.clientX - centerX) * 0.4);
+  yTo((e.clientY - centerY) * 0.4);
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 3. MARQUEE INFINITO Y DIRECCIONAL -->
+    <section class="section">
+        <h2 style="text-align: center;">Marquesina Infinita Sensible</h2>
+        <p style="text-align: center; max-width: 600px; margin: 0 auto;">El efecto <i>Ticker</i>. Analiza la dirección de la rueda del ratón y enruta esa información hacia la línea de tiempo (timeline) de la marquesina invirtiendo la velocidad automáticamente.</p>
+        
+        <div class="marquee-wrapper">
+            <div class="marquee-inner">
+                <div class="marquee-txt">MÁS FLUIDO QUE EL AGUA - RENDIMIENTO CERO ESTRÉS - GSAP ELITE - </div>
+                <div class="marquee-txt">MÁS FLUIDO QUE EL AGUA - RENDIMIENTO CERO ESTRÉS - GSAP ELITE - </div>
+            </div>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto;">
+<pre><code><span class="com">// 1. El pase infinito. xPercent: -100 sobre un clon idéntico solapa el final con el inicio</span>
+const tl = <span class="fn">gsap</span>.to(".marquee-inner", {
+  xPercent: -50,  <span class="com">// Contiene dos hijos identicos, al 50% empieza de cero exacto.</span>
+  repeat: -1, duration: 10, ease: <span class="str">"none"</span>
+});
+
+<span class="com">// 2. Detector Maestro del Scroll (ScrollTrigger)</span>
+<span class="fn">ScrollTrigger</span>.create({
+  start: 0, end: <span class="str">"max"</span>,
+  onUpdate: (self) => {
+    <span class="com">// self.direction es 1 (Hacia abajo) o -1 (Hacia arriba)</span>
+    <span class="com">// Invierte la escala temporal de la animación con inercia</span>
+    <span class="fn">gsap</span>.to(tl, { timeScale: self.direction * 1.5, overwrite: true });
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+    <!-- Inertia Trial from GSAP -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/InertiaPlugin.min.js"></script>
+
+        <script src="../js/03_interaccion.js"></script>
+</body>
+</html>

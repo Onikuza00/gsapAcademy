@@ -1,0 +1,52 @@
+:root {
+            --bg: #070707; --acc: #8800ff; --acc-alt: #00ff88; --txt: #f0f0f0;
+            --glass: rgba(255,255,255,0.02); --border: rgba(136,0,255,0.2);
+            --space: clamp(2rem, 5vw, 4rem);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--txt); font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+
+        h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; margin-bottom: 1rem; line-height: 1.1; letter-spacing: -1px;}
+        .highlight { color: var(--acc); }
+        
+        .header { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items:center; position: fixed; width: 100%; z-index: 1000; background: rgba(7,7,7,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+        .header h3 { font-family: 'Space Grotesk', sans-serif;}
+        .nav-links { display: flex; gap: 10px; }
+        .header a { color: var(--acc); text-decoration: none; border: 1px solid var(--border); padding: 8px 16px; border-radius: 4px; font-weight: 600; font-family:'Space Grotesk'; font-size: 0.9rem;}
+        .header a.active { background: rgba(136,0,255,0.1); }
+        .header a:hover { background: var(--acc); color: var(--bg); }
+        
+        .section { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space); padding: calc(80px + var(--space)) var(--space) var(--space) var(--space); border-bottom: 1px dashed var(--border);}
+        @media (max-width: 900px) { .section { grid-template-columns: 1fr; } }
+        
+        .panel { background: var(--glass); border: 1px solid var(--border); border-radius: 12px; padding: var(--space); display: flex; flex-direction: column; justify-content: center; position: relative;}
+        .panel.code { background: #0a0a0a; border-color:#222;}
+        .panel.demo { align-items: center; text-align:center; overflow: hidden; background: radial-gradient(circle at center, rgba(136,0,255,0.05) 0%, transparent 70%); }
+        
+        .btn { position: absolute; bottom: 20px; right: 20px; background: transparent; border: 1px solid var(--acc); color: var(--acc); padding: 8px 16px; border-radius: 4px; cursor: pointer; font-family: 'Space Grotesk'; font-weight:700; z-index:10;}
+        .btn:hover { background: var(--acc); color: var(--bg); }
+        
+        pre { background: #000; padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; color: #a6accd; border: 1px solid #222; overflow-x: auto; margin-top: 1rem; font-family: monospace; line-height: 1.5;}
+        .com { color: #697098; font-style: italic; } .str { color: #c3e88d; } .fn { color: #82aaff; } .key { color: #c792ea; }
+
+        /* DEMOS CSS */
+        /* 6. FLIP */
+        .flip-group { position: relative; width: 100%; height: 300px; display:flex;}
+        .state-a { position: absolute; top:0; left:0; width: 150px; height: 150px; border-radius: 12px; border: 2px solid var(--acc); display:flex; align-items:center; justify-content:center; }
+        .state-b { position: absolute; bottom:0; left:50px; width: 80%; height: 280px; border-radius: 0; border: 10px solid var(--bg); display:flex; align-items:center; justify-content:center;}
+        .flip-box { width: 100%; height: 100%; background: #222; border-radius: inherit; display:flex; align-items:center; justify-content:center; font-family: 'Space Grotesk'; font-size: 2rem; }
+
+        /* 7. MorphSVG */
+        svg { display: block; overflow: visible; }
+        .s-path { fill: var(--acc-alt); }
+
+        /* 8. DrawSVG */
+        .draw-path { stroke: var(--acc); stroke-width: 4; fill: none; stroke-linecap: round;}
+
+        /* 9. Rotate Dial / Spinner */
+        .dial-wrap { width: 250px; height: 250px; border-radius: 50%; border: 4px dashed var(--border); display:flex; align-items:center; justify-content:center; position:relative;}
+        .dial-knob { width: 40px; height: 40px; background: var(--acc); border-radius: 50%; position: absolute; top: -20px;}
+
+        /* 10. Tooltip Tracker */
+        .track-zone { width: 100%; height: 100%; min-height: 300px; display:flex; align-items:center; justify-content:center; border: 1px dashed var(--border); border-radius:12px; position: relative;}
+        .tooltip { position: absolute; top: 0; left: 0; background: #fff; color: #000; padding: 10px 20px; border-radius: 50px; font-family: 'Space Grotesk'; font-weight: bold; pointer-events: none; opacity:0; transform: translate(15px, 15px);}

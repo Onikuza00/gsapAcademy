@@ -1,0 +1,41 @@
+/* BRUTALIST TOKENS */
+        :root {
+            --bg: #0a0a0a;  /* Starts dark */
+            --bg-morph: #e0dcd3; /* Bodak Sand/Clay */
+            --txt: #f0f0f0; --txt-morph: #0a0a0a;
+            --acc: #ff4400; /* Bodak-esque orange/red */
+            --space: clamp(2rem, 5vw, 4rem);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* BODY undergoes color morphing */
+        body { background: var(--bg); color: var(--txt); font-family: 'Outfit', sans-serif; overflow-x: hidden; transition: color 0.5s;}
+        
+        h1, h2, h3 { font-family: 'Syne', sans-serif; text-transform: uppercase; line-height: 1;}
+        .highlight { color: var(--acc); }
+        .header { padding: 2rem; display: flex; justify-content: space-between; position: fixed; width: 100%; z-index: 1000; border-bottom: 2px solid currentColor; mix-blend-mode: difference;}
+        .header h3, .header a { color: #fff;}
+        .header a { text-decoration: none; border: 2px solid #fff; padding: 8px 16px; border-radius: 4px; font-weight: 600;}
+        .header a:hover { background: #fff; color: #000; }
+        
+        .section { min-height: 100vh; padding: calc(80px + var(--space)) var(--space); border-bottom: 2px solid currentColor; display:flex; flex-direction:column; justify-content: center;}
+        
+        pre { background: #111; padding: 1.5rem; font-size: 0.9rem; color: #a6accd; border: 2px solid currentColor; font-family: monospace; overflow-x: auto; margin-top:2rem;}
+        .com { color: #697098; } .str { color: #c3e88d; } .fn { color: #82aaff; }
+
+        /* SPREAD CARDS */
+        .spread-wrap { position: relative; height: 150vh; display: flex; justify-content: center; }
+        .spread-center { position: sticky; top: 30vh; width: 300px; height: 400px; }
+        .s-card { position: absolute; width: 100%; height: 100%; background: #222; border: 2px solid currentColor; border-radius: 10px; display: flex; flex-direction: column; pading: 20px; align-items:center; justify-content:center;}
+        .s-card img { width: 100%; height: 70%; object-fit: cover; display:block;}
+        .s-card h3 { padding: 20px; font-size: 1.5rem; }
+
+        /* PROZESS PINNING */
+        .pin-sec { height: 300vh; position: relative;}
+        .pin-layout { position: sticky; top: 15vh; height: 70vh; display: grid; grid-template-columns: 1fr 1fr; border: 2px solid currentColor; border-radius: 10px; overflow: hidden; background: var(--bg-morph); color: var(--txt-morph);}
+        .pin-left { display: flex; flex-direction: column; justify-content: space-between; padding: 40px; border-right: 2px solid var(--txt-morph);}
+        .pin-right { position: relative; width: 100%; height: 100%; background: #ccc;}
+        .step { opacity: 0.2; font-size: 3rem; font-family: 'Syne'; transition: 0.3s; }
+        .step.active { opacity: 1; transform: translateX(20px); }
+        .pin-img { position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity: 0; }
+        .pin-img.active { opacity: 1; }
