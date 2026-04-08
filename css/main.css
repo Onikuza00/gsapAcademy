@@ -7,6 +7,7 @@
   --c-img: #00b3ff;
   --c-int: #bd00ff;
   --c-bdk: #ff4400;
+  --c-adv: #00a34c;
   --cursor-size: 20px;
 }
 
@@ -137,6 +138,10 @@ h1.title {
   --accent-color: var(--c-bdk);
   border-color: rgba(255, 68, 0, 0.3);
 }
+.card.adv {
+  --accent-color: var(--c-adv);
+  border-color: rgba(0, 163, 76, 0.3);
+}
 
 .card h2 {
   font-family: "Space Grotesk", sans-serif;
@@ -176,4 +181,52 @@ h1.title {
 .btn:hover {
   background: var(--accent-color);
   color: var(--bg-base);
+}
+
+/* FOOTER STYLES */
+.footer-academy {
+  width: 100%;
+  padding: 6rem 2rem 4rem;
+  border-top: 1px solid var(--glass-border);
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 800px;
+  text-align: center;
+}
+
+.footer-logo {
+  width: 35px; /* Reducido para una estética más refinada y minimalista */
+  height: auto;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.declaration {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  color: var(--c-adv);
+  text-transform: uppercase;
+}
+
+.copyright {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 300;
 }

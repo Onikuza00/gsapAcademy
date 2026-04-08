@@ -1,5 +1,5 @@
 :root {
-            --bg: #070707; --acc: #00ff88; --acc2: #8800ff;
+            --bg: #070707; --acc: #00ff88; --acc2: #00ff88;
             --txt: #f0f0f0; --glass: rgba(255,255,255,0.02); --border: rgba(255,255,255,0.06);
             --space: clamp(2rem, 5vw, 4rem);
         }

@@ -17,7 +17,7 @@ gsap.registerPlugin(SplitText, TextPlugin, ScrambleTextPlugin);
             if(s2) s2.revert();
             s2 = new SplitText(".txt-reveal", { type: "words" });
             tl2 = gsap.timeline();
-            tl2.from(s2.words, { yPercent: 120, stagger: 0.04, duration: 0.8, ease: "expo.out" });
+            tl2.from(s2.words, { yPercent: 120, stagger: 0.1, duration: 1.2, ease: "expo.out" });
         }
 
         // --- Demo 3: Typewriter ---
@@ -49,32 +49,7 @@ gsap.registerPlugin(SplitText, TextPlugin, ScrambleTextPlugin);
             tl5.from(s5.chars, { filter: "blur(20px)", opacity: 0, scale: 1.5, stagger: 0.05, duration: 1.2, ease: "power2.out" });
         }
 
-        // --- LÓGICA DE INTERACCIÓN PREMIUM (CHAMPIONS STYLE) ---
-        const cursor = document.querySelector('.custom-cursor');
-        const xTo = gsap.quickTo(cursor, "x", {duration: 0.6, ease: "power3"});
-        const yTo = gsap.quickTo(cursor, "y", {duration: 0.6, ease: "power3"});
-
-        window.addEventListener("mousemove", e => {
-            xTo(e.clientX - 10);
-            yTo(e.clientY - 10);
-        });
-
-        // Efectos magnéticos para elementos interactivos
-        document.querySelectorAll('.mag-element, .btn').forEach(el => {
-            el.addEventListener('mousemove', (e) => {
-                const { left, top, width, height } = el.getBoundingClientRect();
-                const x = e.clientX - (left + width / 2);
-                const y = e.clientY - (top + height / 2);
-                gsap.to(el, { x: x * 0.3, y: y * 0.3, duration: 0.3 });
-                gsap.to(cursor, { scale: 3, duration: 0.3 });
-            });
-            el.addEventListener('mouseleave', () => {
-                gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
-                gsap.to(cursor, { scale: 1, duration: 0.3 });
-            });
-        });
-
-        // Init All
+        // --- Init All ---
         window.addEventListener('load', () => {
             playS1(); playS2(); playS4(); playS5();
         });

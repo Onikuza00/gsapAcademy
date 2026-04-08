@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
-    // --- EFECTO 18: X-VALUE DEPTH ---
+    // --- EFECTO 18: X-VALUE DEPTH (Play with Scroll) ---
     let s18, tl18;
     function playS18() {
         if(s18) s18.revert();
@@ -59,7 +59,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- EFECTO 19: 3D CHARACTER SPIN PRO ---
+    // Activación automática al hacer scroll para el efecto 18
+    const s18_init = new SplitText(".scrub-line-demo.mega", { type: "chars" });
+    gsap.from(s18_init.chars, {
+        x: 100, z: -150, rotateX: -90, opacity: 0,
+        stagger: 0.03, duration: 1.2, ease: "power2.out",
+        scrollTrigger: {
+            trigger: ".scrub-line-demo.mega",
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+        }
+    });
+
+    // --- EFECTO 19: 3D CHARACTER SPIN PRO (Play with Scroll) ---
     let s19, tl19;
     function playS19() {
         if(s19) s19.revert();
@@ -76,6 +88,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Activación por scroll para el efecto 19
+    const s19_init = new SplitText(".spin-line-demo.mega", { type: "chars" });
+    gsap.from(s19_init.chars, {
+        rotateX: -360, opacity: 0,
+        stagger: 0.05, duration: 1.8, ease: "expo.out",
+        scrollTrigger: {
+            trigger: ".spin-line-demo.mega",
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+        }
+    });
+
     // --- EFECTO 20: MANIFESTO V2 ---
     let s20, tl20;
     function playS20() {
@@ -89,32 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
             y: 50,
             stagger: 0.04,
             ease: "power4.out"
-        });
-    }
-
-    // --- LÓGICA DE CURSOR Y MAGNÉTICOS ---
-    const cursor = document.querySelector('.custom-cursor');
-    if(cursor) {
-        const xTo = gsap.quickTo(cursor, "x", {duration: 0.15, ease: "power3"});
-        const yTo = gsap.quickTo(cursor, "y", {duration: 0.15, ease: "power3"});
-
-        window.addEventListener("mousemove", e => {
-            xTo(e.clientX - 10);
-            yTo(e.clientY - 10);
-        });
-
-        document.querySelectorAll('.btn, .nav-links a, .mag-element').forEach(el => {
-            el.addEventListener('mousemove', (e) => {
-                const { left, top, width, height } = el.getBoundingClientRect();
-                const x = e.clientX - (left + width / 2);
-                const y = e.clientY - (top + height / 2);
-                gsap.to(el, { x: x * 0.3, y: y * 0.3, duration: 0.3 });
-                gsap.to(cursor, { scale: 3, duration: 0.3 });
-            });
-            el.addEventListener('mouseleave', () => {
-                gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
-                gsap.to(cursor, { scale: 1, duration: 0.3 });
-            });
         });
     }
 

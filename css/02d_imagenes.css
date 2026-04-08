@@ -1,6 +1,6 @@
 :root {
-            --bg: #070707; --acc: #ffaa00; --acc-rgb: 255, 170, 0; --txt: #f0f0f0;
-            --glass: rgba(255,255,255,0.02); --border: rgba(255,170,0,0.2);
+            --bg: #070707; --acc: #00b3ff; --acc-rgb: 0, 179, 255; --txt: #f0f0f0;
+            --glass: rgba(255,255,255,0.02); --border: rgba(0, 179, 255, 0.2);
             --space: clamp(2rem, 5vw, 4rem);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -69,3 +69,50 @@
         .layer-box.bg { z-index: 1; }
         .layer-box.fg { z-index: 2; transform: scale(3); }
         .fg-card { width: 80%; height: 80%; background: var(--acc); border-radius: 40px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk'; color: #000; font-size: 3rem; font-weight: 800;}
+/* FOOTER STYLES */
+.footer-academy {
+  width: 100%;
+  padding: 6rem 2rem 4rem;
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 800px;
+  text-align: center;
+}
+
+.footer-logo {
+  width: 35px; /* Reducido para una estética más refinada y minimalista */
+  height: auto;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.declaration {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  color: var(--acc);
+  text-transform: uppercase;
+}
+
+.copyright {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 300;
+}

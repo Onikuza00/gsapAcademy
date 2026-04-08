@@ -1,6 +1,6 @@
 :root {
-            --bg: #050505; --acc: #ff00ff; --txt: #f0f0f0;
-            --glass: rgba(255,255,255,0.02); --border: rgba(255,255,255,0.08);
+            --bg: #050505; --acc: #00ff88; --txt: #f0f0f0;
+            --glass: rgba(255,255,255,0.02); --border: rgba(0,255,136,0.2);
             --space: clamp(2rem, 5vw, 6rem);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -13,7 +13,7 @@
         .header h3 { font-family: 'Space Grotesk'; font-weight: 800; font-size: 1.1rem; letter-spacing: 2px;}
         .nav-links { display: flex; gap: 10px; }
         .header a { color: var(--txt); text-decoration: none; border: 1px solid var(--border); padding: 10px 20px; border-radius: 100px; font-weight: 700; font-family:'Space Grotesk'; font-size: 0.8rem; transition: 0.4s;}
-        .header a.active { background: #fff; color: #000; border-color: #fff; }
+        .header a.active { background: var(--acc); color: #000; border-color: var(--acc); }
         .header a:hover:not(.active) { background: rgba(255,255,255,0.1); }
         
         .section { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space); padding: calc(120px + var(--space)) var(--space) var(--space) var(--space); border-bottom: 1px solid var(--border);}
@@ -22,10 +22,10 @@
         .panel { background: var(--glass); border: 1px solid var(--border); border-radius: 24px; padding: var(--space); display: flex; flex-direction: column; justify-content: center; position: relative; transition: 0.5s; overflow: hidden; }
         .panel:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); }
         .panel.code { background: #000; border-color: #111;}
-        .panel.demo { align-items: center; text-align:center; background: radial-gradient(circle at center, rgba(255, 0, 255, 0.03) 0%, transparent 80%); }
+        .panel.demo { align-items: center; text-align:center; background: radial-gradient(circle at center, rgba(0, 255, 136, 0.03) 0%, transparent 80%); }
         
         pre { background: #080808; padding: 2rem; border-radius: 16px; font-size: 0.8rem; color: #888; border: 1px solid #111; overflow-x: auto; margin-top: 1.5rem; font-family: 'Fira Code', monospace; line-height: 1.6; }
-        .com { color: #444; } .str { color: #ff00ff; } .fn { color: #fff; } .key { color: #666; }
+        .com { color: #444; } .str { color: #00ff88; } .fn { color: #fff; } .key { color: #666; }
 
         /* VIP DEMOS CSS 2.0 */
         /* 11. Cinematic Video Mask Reveal */
@@ -47,8 +47,8 @@
         /* 13. Collision Fly-In Stash */
         .coll-txt { font-family: 'Space Grotesk'; font-size: 5rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 2rem;}
         .c-char { display: inline-block; position: relative; }
-        .btn-collide { background: transparent; border: 1px solid var(--acc); color: var(--acc); padding: 12px 30px; border-radius: 4px; cursor: pointer; font-family: 'Space Grotesk'; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; background: rgba(255, 0, 255, 0.05); }
-        .btn-collide:hover { background: var(--acc); color: #000; box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); }
+        .btn-collide { background: transparent; border: 1px solid var(--acc); color: var(--acc); padding: 12px 30px; border-radius: 4px; cursor: pointer; font-family: 'Space Grotesk'; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; background: rgba(0, 255, 136, 0.05); }
+        .btn-collide:hover { background: var(--acc); color: #000; box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
 
         /* 14. 3D Perspective Card Flipping (Grid) */
         .tile-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; width: 450px; }
@@ -62,3 +62,50 @@
         /* 15. Rainbow Spiral Path Flow */
         .p-svg { width: 100%; height: 400px; overflow: visible; }
         .p-txt { font-family: 'Space Grotesk'; font-size: 1.8rem; font-weight: 900; fill: #fff; text-transform: uppercase; letter-spacing: 5px; }
+/* FOOTER STYLES */
+.footer-academy {
+  width: 100%;
+  padding: 6rem 2rem 4rem;
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 800px;
+  text-align: center;
+}
+
+.footer-logo {
+  width: 35px; /* Reducido para una estética más refinada y minimalista */
+  height: auto;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.declaration {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  color: var(--acc);
+  text-transform: uppercase;
+}
+
+.copyright {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 300;
+}

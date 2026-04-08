@@ -25,13 +25,30 @@ body {
     background: var(--bg);
     color: var(--txt);
     font-family: 'Outfit', sans-serif;
+    overflow-y: auto; /* Aseguramos que el scroll vertical esté siempre habilitado */
     overflow-x: hidden;
     transition: background-color 0.8s ease, color 0.5s ease;
-    cursor: none; /* Oculta cursor real en el fondo */
+    cursor: auto !important; /* Restauramos el cursor normal del sistema */
 }
 
 a, button, .btn, .nav-links a, .mag-element {
-    cursor: none !important; /* Oculta cursor real en elementos clicables y magnéticos */
+    cursor: pointer !important; /* Cursor de mano para elementos interactivos */
+}
+
+/* Estilización de la barra de desplazamiento para que sea visible y acorde al diseño dark */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 10px;
+    transition: 0.3s;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--acc);
 }
 
 /* Header */
@@ -140,6 +157,13 @@ p {
     margin-bottom: 2.5rem;
 }
 
+.footer-logo {
+  width: 35px; /* Reducido para una estética más refinada y minimalista */
+  height: auto;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
 /* Code Block */
 pre {
     background: #000;
@@ -190,6 +214,14 @@ code { color: #888; }
     line-height: 1.2 !important;
     font-weight: 700;
     text-transform: uppercase;
+}
+
+/* Utilitario para el tamaño del texto en demos 18 y 19 - Ajustado para mejor legibilidad */
+.text-small {
+    font-size: clamp(1rem, 1.8vw, 1.5rem) !important; /* Aumentado ligeramente a petición del usuario para mejor apreciación visual */
+    max-width: 90% !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
 }
 
 /* 1. VORA INTRO */
@@ -270,4 +302,52 @@ code { color: #888; }
     .section { flex-direction: column; }
     .panel { padding: 3rem 2rem; }
     .header { padding: 1.5rem 2rem; }
+}
+
+/* FOOTER STYLES */
+.footer-academy {
+  width: 100%;
+  padding: 6rem 2rem 4rem;
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 800px;
+  text-align: center;
+}
+
+.footer-logo {
+  width: 35px; /* Reducido para una estética más refinada y minimalista */
+  height: auto;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.declaration {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  color: var(--acc);
+  text-transform: uppercase;
+}
+
+.copyright {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 300;
 }

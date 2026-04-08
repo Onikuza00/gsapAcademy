@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01c. Tipografía Master (VIP) - GSAP Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&family=Space+Grotesk:wght@600;700;800&family=Syne:wght@800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../../../css/01c_texto.css">
+</head>
+<body>
+    <!-- Estándar de navegación para la Parte 3 -->
+    <header class="header">
+        <h3>GSAP <span class="highlight">Tipografía (3/5)</span></h3>
+        <div class="nav-links">
+            <a href="../../../index.html">Hub</a>
+            <a href="01a_texto.html">1</a>
+            <a href="01b_texto.html">2</a>
+            <a href="01c_texto.html" class="active">3</a>
+            <a href="01d_texto.html">4</a>
+            <a href="01e_json_animations.html">5</a>
+        </div>
+    </header>
+
+    <!-- Sección 11: Máscara tipográfica cinemática -->
+    <section class="section" style="padding-top:15vh;">
+        <div class="panel code">
+            <h2>11. Máscara <span class="highlight">Cinemática</span></h2>
+            <p>Efecto de impacto visual extremo. El texto actúa como una máscara dinámica sobre una imagen de alta resolución, escalando y ajustando su tamaño mediante <code>ScrollTrigger</code> para revelar texturas subyacentes.</p>
+            <pre><code><span class="fn">gsap</span>.to(".mask-txt", {
+  scale: 1, opacity: 1, 
+  backgroundSize: <span class="str">"100%"</span>,
+  scrollTrigger: { trigger: ".mask-wrap", scrub: 1 }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="mask-wrap">
+                <div class="mask-txt">VOID</div>
+            </div>
+            <button class="btn" onclick="playS11()">Reiniciar</button>
+        </div>
+    </section>
+
+    <!-- Sección 12: Arquitectura Stairway -->
+    <section class="section">
+        <div class="panel code">
+            <h2>12. Escalera <span class="highlight">3D</span></h2>
+            <p>Construcción arquitectónica tridimensional de texto. Los caracteres emergen desde la profundidad del eje Z y rotan de manera secuencial hasta formar una estructura perfectamente alineada.</p>
+            <pre><code><span class="fn">gsap</span>.to(".s-char", {
+  y: 0, z: 0, rotateX: 0, opacity: 1,
+  stagger: 0.1, 
+  scrollTrigger: { trigger: ".stairway-txt", scrub: 1 }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="stairway-wrap">
+                <div class="stairway-txt" style="font-size: clamp(1rem, 3vw, 2.2rem); max-width: 800px; text-align: center; line-height: 1.1; margin: 0 auto;">
+                    PASO A PASO HACIA LA SIGUIENTE DIMENSIÓN DE ARQUITECTURAS TEXTUALES.
+                </div>
+            </div>
+            <button class="btn" onclick="playS12()">Reiniciar</button>
+        </div>
+    </section>
+
+    <!-- Sección 13: Colisiones -->
+    <section class="section">
+        <div class="panel code">
+            <h2>13. Colisión <span class="highlight">Elástica</span></h2>
+            <p>Simulación de impacto físico. Los caracteres convergen desde posiciones aleatorias masivas y colisionan en el centro, utilizando rebotes controlados para dar una sensación de peso y materialidad.</p>
+            <pre><code><span class="com">// Convergencia desde posiciones aleatorias</span>
+<span class="fn">gsap</span>.from(".c-char", {
+  x: () => Math.random() * 2000 - 1000,
+  y: () => Math.random() * 1000, 
+  rotate: 360
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="coll-txt">COLISIÓN</div>
+            <button class="btn" onclick="playS13()">Reiniciar</button>
+        </div>
+    </section>
+
+    <!-- Sección 14: Tejas 3D -->
+    <section class="section">
+        <div class="panel code">
+            <h2>14. Retícula <span class="highlight">3D</span></h2>
+            <p>Descomposición tipográfica en una cuadrícula de tejas independientes. Cada elemento rota de forma sincronizada en 3D, creando un efecto de panel informativo dinámico y sofisticado.</p>
+            <pre><code><span class="fn">gsap</span>.to(".tile", {
+  rotateY: 0, opacity: 1, 
+  stagger: { amount: 1.5, grid: [2, 7] },
+  scrollTrigger: { trigger: ".tile-grid" }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="tile-grid">
+                <div class="tile">G</div><div class="tile">S</div><div class="tile">A</div><div class="tile">P</div><div class="tile">A</div><div class="tile">C</div><div class="tile">A</div>
+                <div class="tile">D</div><div class="tile">E</div><div class="tile">M</div><div class="tile">Y</div><div class="tile">V</div><div class="tile">I</div><div class="tile">P</div>
+            </div>
+            <button class="btn" onclick="playS14()">Reiniciar</button>
+        </div>
+    </section>
+
+    <!-- Sección 15: Espiral Arcoíris -->
+    <section class="section" style="border-bottom:none;">
+        <div class="panel code">
+            <h2>15. Espiral <span class="highlight">Cromática</span></h2>
+            <p>Recorrido fluido sobre un trazado complejo en espiral. El texto fluye a través de una ruta SVG mientras experimenta una transición cromática infinita basada en el ciclo HSL.</p>
+            <pre><code><span class="com">// Movimiento sobre trazado SVG</span>
+<span class="fn">gsap</span>.to("#m-path", {
+  attr: { startOffset: "100%" },
+  scrollTrigger: { trigger: ".p-svg", scrub: 1 }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <svg class="p-svg" viewBox="0 0 1000 400">
+                <path id="curve-spiral" d="M0,200 C100,0 300,400 500,200 C700,0 900,400 1000,200" fill="none" />
+                <text class="p-txt">
+                    <textPath id="m-path" href="#curve-spiral" startOffset="-10%">
+                        GSAP ACADEMY • EXPERIENCIA TIPOGRÁFICA MAESTRA • 
+                    </textPath>
+                </text>
+            </svg>
+            <button class="btn" onclick="playS15()">Reiniciar</button>
+        </div>
+    </section>
+
+    <!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+
+        <script src="../../../js/01c_texto.js"></script>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="footer-academy">
+      <div class="footer-content">
+        <img src="../../../img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
+        <div class="footer-info">
+          <p class="declaration">UNA DECLARACIÓN DE INTENCIONES SOBRE LA EXCELENCIA EN ANIMACIÓN WEB</p>
+          <p class="copyright">© 2026 PAU CROSAS BATISTA — GSAP MASTER ACADEMY</p>
+        </div>
+      </div>
+    </footer>
+</body>
+</html>
