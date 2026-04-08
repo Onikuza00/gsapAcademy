@@ -70,3 +70,51 @@
         .reveal-img { width: 200%; height: 100%; object-fit: cover; position: absolute; top: 0; }
         .reveal-side.left .reveal-img { left: 0; }
         .reveal-side.right .reveal-img { right: 0; }
+
+        /* FOOTER STYLES */
+        .footer-academy {
+          width: 100%;
+          padding: 6rem 2rem 4rem;
+          border-top: 1px solid var(--border);
+          margin-top: 4rem;
+          display: flex;
+          justify-content: center;
+        }
+
+        .footer-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1.5rem;
+          max-width: 800px;
+          text-align: center;
+        }
+
+        .footer-logo {
+          width: 35px; /* Reducido para una estética más refinada y minimalista */
+          height: auto;
+          opacity: 0.8;
+          margin-bottom: 0.5rem;
+        }
+
+        .footer-info {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .declaration {
+          font-family: "Space Grotesk", sans-serif;
+          font-weight: 700;
+          font-size: 0.8rem;
+          letter-spacing: 3px;
+          color: var(--acc);
+          text-transform: uppercase;
+        }
+
+        .copyright {
+          font-family: "Outfit", sans-serif;
+          font-size: 0.9rem;
+          color: rgba(255, 255, 255, 0.3);
+          font-weight: 300;
+        }

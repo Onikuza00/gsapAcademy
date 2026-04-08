@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01a. Tipografía - GSAP Academy</title>
+    <!-- Importación de fuentes premium para un look profesional y moderno -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../../../css/01a_texto.css">
+</head>
+<body>
+    <!-- Encabezado de Navegación: Mantiene la consistencia en todas las secciones de la academia -->
+    <header class="header">
+        <h3>GSAP <span class="highlight">Tipografía (1/5)</span></h3>
+        <div class="nav-links">
+            <a href="../../../index.html">Hub</a>
+            <a href="01a_texto.html" class="active">1</a>
+            <a href="01b_texto.html">2</a>
+            <a href="01c_texto.html">3</a>
+            <a href="01d_texto.html">4</a>
+            <a href="01e_json_animations.html">5</a>
+        </div>
+    </header>
+
+    <!-- 1. CASCADA 3D -->
+    <section class="section" id="sec-1">
+        <div class="panel code">
+            <h2>01. Cascada 3D <span class="highlight">Reactiva</span></h2>
+            <p>Efecto de cascada tridimensional donde los caracteres rotan sobre un eje profundo. Se utiliza <code>transformOrigin</code> con valores negativos en el eje Z para crear un arco de rotación más amplio y dinámico.</p>
+            <pre><code><span class="com">// fragmentación por caracteres</span>
+<span class="key">const</span> split = <span class="key">new</span> <span class="fn">SplitText</span>(".txt-cascade", { type: <span class="str">"chars"</span> });
+
+<span class="com">// Animación con rotación en X y origen desplazado</span>
+<span class="fn">gsap</span>.from(split.chars, {
+  y: 80,              
+  rotationX: -90,     
+  transformOrigin: <span class="str">"0% 50% -50"</span>, <span class="com">// Definimos un punto de giro lejano para el efecto péndulo</span>
+  opacity: 0,
+  stagger: 0.05,      
+  duration: 1,
+  ease: <span class="str">"back.out(2)"</span> 
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="txt-cascade">IMPACTO<br>TEXTUAL</div>
+            <button class="btn" onclick="playS1()">Reiniciar</button>
+        </div>
+    </section>
+
+    <!-- 2. REVELACIÓN CON MÁSCARA -->
+    <section class="section">
+        <div class="panel code">
+            <h2>02. Revelado por <span class="highlight">Máscara</span></h2>
+            <p>Se utiliza el desbordamiento oculto (<code>overflow: hidden</code>) en contenedores de línea para que las palabras aparezcan desde un área invisible. Esto crea un efecto limpio y sofisticado típico de interfaces premium.</p>
+            <pre><code><span class="com">// División por palabras para control grupal</span>
+<span class="key">const</span> split = <span class="key">new</span> <span class="fn">SplitText</span>(".txt-reveal", { type: <span class="str">"words"</span> });
+
+<span class="com">// Desplazamiento vertical desde fuera de la máscara</span>
+<span class="fn">gsap</span>.from(words, {
+  yPercent: 120,      
+  stagger: 0.1,       
+  duration: 1.2,
+  ease: <span class="str">"expo.out"</span>    
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="reveal-wrap" style="max-width: 900px; margin: 0 auto; text-align: center;">
+                <div class="reveal-line"><p class="txt-reveal" style="font-size: clamp(0.9rem, 2.2vw, 1.8rem); line-height: 1.2;">TRANSFORMANDO DESAFÍOS DIGITALES COMPLEJOS</p></div>
+                <div class="reveal-line"><p class="txt-reveal highlight" style="color:var(--acc); font-size: clamp(0.9rem, 2.2vw, 1.8rem); line-height: 1.2;">EN EXPERIENCIAS FLUIDAS NARRATIVAS</p></div>
+                <div class="reveal-line"><p class="txt-reveal" style="font-size: clamp(0.9rem, 2.2vw, 1.8rem); line-height: 1.2;">QUE CAUTIVAN E INSPIRAN A LOS USUARIOS.</p></div>
+            </div>
+            <button class="btn" onclick="playS2()">Reiniciar</button>
+        </div>
+    </section>
+
+    <!-- 3. EFECTO TERMINAL -->
+    <section class="section">
+        <div class="panel code">
+            <h2>03. Efecto <span class="highlight">Escritura</span></h2>
+            <p>Simulación de escritura en terminal mediante <code>TextPlugin</code>. Útil para elementos dinámicos como roles o estados en portfolios, permitiendo borrar y reescribir contenido de forma fluida.</p>
+            <pre><code><span class="com">// Secuencia de mensajes con borrado automático</span>
+<span class="key">const</span> tl = <span class="fn">gsap</span>.timeline({ repeat: -1 });
+tl.to(".term-target", {
+  text: <span class="str">"Frontend Developer"</span>,
+  duration: 1.5, ease: <span class="str">"none"</span>
+})
+.to(".term-target", {
+  text: <span class="str">""</span>, 
+  duration: 0.5, delay: 2
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="term">
+                <span style="opacity:0.5;">> usuario@gsap:~$ </span><br>
+                > Soy <span class="term-target highlight"></span><span class="cursor"></span>
+            </div>
+            <button class="btn" onclick="playS3()">Reiniciar</button>
+        </div>
+    </section>
+
+    <!-- 4. DECODIFICACIÓN TEXTUAL -->
+    <section class="section">
+        <div class="panel code">
+            <h2>04. Decodificación <span class="highlight">Scramble</span></h2>
+            <p>Efecto de descifrado que utiliza caracteres aleatorios antes de revelar el texto final. Se basa en <code>ScrambleTextPlugin</code> para generar una estética tipo hacker o de sistema de seguridad.</p>
+            <pre><code><span class="com">// Transformación de glyphs aleatorios a texto real</span>
+<span class="fn">gsap</span>.to(".scramble-txt", {
+  scrambleText: {
+    text: <span class="str">"ACCESO CONCEDIDO"</span>,
+    chars: <span class="str">"01x/{}[]!@#"</span>,
+    revealDelay: 0.3
+  }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="scramble-txt">ENCRIPTADO</div>
+            <button class="btn" onclick="playS4()">Reiniciar</button>
+        </div>
+    </section>
+
+    <!-- 5. DESENFOQUE CINEMÁTICO -->
+    <section class="section" style="border-bottom:none;">
+        <div class="panel code">
+            <h2>05. Apertura <span class="highlight">Blur Focus</span></h2>
+            <p>Entrada visual que combina escala y desenfoque (<code>filter: blur</code>). La animación suaviza la nitidez de los caracteres mientras convergen a su tamaño original, emulando el enfoque de una lente de cámara.</p>
+            <pre><code><span class="com">// Animación de filtro CSS y escala</span>
+<span class="fn">gsap</span>.from(split.chars, {
+  filter: <span class="str">"blur(20px)"</span>, 
+  opacity: 0,
+  scale: 1.5,           
+  stagger: 0.05,
+  ease: <span class="str">"power2.out"</span>
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="blur-txt">ENFOQUE PERFECTO</div>
+            <button class="btn" onclick="playS5()">Reiniciar</button>
+        </div>
+    </section>
+
+    <!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrambleTextPlugin.min.js"></script>
+
+        <script src="../../../js/01a_texto.js"></script>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="footer-academy">
+      <div class="footer-content">
+        <img src="../../../img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
+        <div class="footer-info">
+          <p class="declaration">UNA DECLARACIÓN DE INTENCIONES SOBRE LA EXCELENCIA EN ANIMACIÓN WEB</p>
+          <p class="copyright">© 2026 PAU CROSAS BATISTA — GSAP MASTER ACADEMY</p>
+        </div>
+      </div>
+    </footer>
+</body>
+</html>

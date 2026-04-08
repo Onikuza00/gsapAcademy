@@ -58,29 +58,50 @@ gsap.registerPlugin(ScrollTrigger);
             }
         });
 
-        // --- 14. MAGNI-LENS ---
+        // --- 14. MAGNI-LENS REFACTORED ---
         const lZone = document.getElementById('lens-zone');
-        const visor = document.querySelector('.lens-visor');
-        const lContent = document.getElementById('lens-c');
+        const glass = document.getElementById('lens-glass');
         
-        const vX = gsap.quickTo(visor, "x", {duration: 0.3, ease: "power3"});
-        const vY = gsap.quickTo(visor, "y", {duration: 0.3, ease: "power3"});
-        const cX = gsap.quickTo(lContent, "x", {duration: 0.3, ease: "power3"});
-        const cY = gsap.quickTo(lContent, "y", {duration: 0.3, ease: "power3"});
+        // Sincronización de QuickTo para inercia premium
+        const gX = gsap.quickTo(glass, "left", {duration: 0.2, ease: "power3"});
+        const gY = gsap.quickTo(glass, "top", {duration: 0.2, ease: "power3"});
+        const bPX = gsap.quickTo(glass, "backgroundPositionX", {duration: 0.2, ease: "power3"});
+        const bPY = gsap.quickTo(glass, "backgroundPositionY", {duration: 0.2, ease: "power3"});
+
+        lZone.addEventListener("mouseenter", () => {
+            gsap.set(glass, { display: 'block', scale: 0.5, opacity: 0 });
+            gsap.to(glass, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.7)" });
+        });
 
         lZone.addEventListener("mousemove", (e) => {
             const rect = lZone.getBoundingClientRect();
-            const relX = e.clientX - rect.left;
-            const relY = e.clientY - rect.top;
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
             
-            vX(relX - 90); vY(relY - 90);
-            cX(-relX * 1.5 + 300); cY(-relY * 1.5 + 300);
+            // Posicionamos el cristal (centrado)
+            gX(x - 110); 
+            gY(y - 110);
+
+            // Cálculo del background-position para el efecto lupa
+            const pX = (x / rect.width) * 100;
+            const pY = (y / rect.height) * 100;
+
+            bPX(`${pX}%`);
+            bPY(`${pY}%`);
+        });
+
+        lZone.addEventListener("mouseleave", () => {
+            gsap.to(glass, { scale: 0, opacity: 0, duration: 0.3, onComplete: () => {
+                glass.style.display = 'none';
+            }});
         });
 
         // --- 15. PARTICLE SWARM ---
         const sZone = document.getElementById('swarm-zone');
         const dots = document.querySelectorAll('.dot');
         const sImg = document.getElementById('s-img');
+
+        gsap.set(dots, { opacity: 0, scale: 0 });
 
         sZone.addEventListener("mousemove", (e) => {
             const rect = sZone.getBoundingClientRect();
@@ -93,12 +114,13 @@ gsap.registerPlugin(ScrollTrigger);
                 stagger: { each: 0.02, from: "center" },
                 duration: 0.6,
                 ease: "power2.out",
-                opacity: 1
+                opacity: 1,
+                scale: 1
             });
             gsap.to(sImg, { opacity: 0.8, scale: 1, filter: "grayscale(0)", duration: 0.8 });
         });
 
         sZone.addEventListener("mouseleave", () => {
-            gsap.to(dots, { x: 0, y: 0, duration: 2, ease: "elastic.out(1, 0.3)", opacity: 0.3 });
+            gsap.to(dots, { x: 0, y: 0, scale: 0, duration: 1.5, ease: "power2.in", opacity: 0 });
             gsap.to(sImg, { opacity: 0, scale: 0.8, filter: "grayscale(1)", duration: 0.5 });
         });

@@ -78,13 +78,14 @@ gsap.registerPlugin(ScrollTrigger);
         bubbles.forEach(b => {
             const speed = parseFloat(b.dataset.speed);
             gsap.to(b, {
-                y: -200 * speed,
+                y: -1000 * speed,
+                scale: 1.3,
                 ease: "none",
                 scrollTrigger: {
                     trigger: ".bubble-area",
                     start: "top bottom",
                     end: "bottom top",
-                    scrub: true
+                    scrub: 1
                 }
             });
         });

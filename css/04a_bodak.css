@@ -43,6 +43,8 @@
         justify-content: space-between;
         align-items: center;
         position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
         z-index: 1000;
         background: rgba(7, 7, 7, 0.8);
@@ -302,3 +304,51 @@
         font-size: 2rem;
         color: #fff;
       }
+
+/* FOOTER STYLES */
+.footer-academy {
+  width: 100%;
+  padding: 6rem 2rem 4rem;
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 800px;
+  text-align: center;
+}
+
+.footer-logo {
+  width: 35px; /* Reducido para una estética más refinada y minimalista */
+  height: auto;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.declaration {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  color: var(--acc);
+  text-transform: uppercase;
+}
+
+.copyright {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.9rem;
+  color: #000;
+  font-weight: 300;
+}
