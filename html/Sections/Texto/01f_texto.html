@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01f. Tipografía Scale - GSAP Academy</title>
+    <!-- Fuentes premium -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&family=Outfit:wght@300;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <!-- El CSS base que define el layout de dos paneles y los estilos de fuente -->
+    <link rel="stylesheet" href="../../../css/01a_texto.css">
+    <style>
+        :root {
+            --accent: #F6502C; /* Color extraído del botón del JSON */
+            --bg: #070707; 
+            --text-main: #FFFFFF;
+        }
+
+        /* Estilos específicos para replicar la estética del JSON */
+        .title-scale-chars {
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 800;
+            line-height: 1.2;
+            text-align: left;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .title-scale-words {
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            font-weight: 500;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: left;
+            max-width: 600px;
+        }
+
+        .demo-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .btn-play {
+            padding: 15px 40px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .btn-play:hover {
+            background: #d44424;
+            transform: translateY(-2px);
+        }
+
+        /* Aseguramos que el panel demo tenga perspectiva para el transformOrigin Z */
+        .panel.demo {
+            justify-content: center;
+            padding: 50px;
+            perspective: 1000px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado estándar de la Academia -->
+    <header class="header">
+        <h3>GSAP <span class="highlight">Efectos JSON (6/6)</span></h3>
+        <div class="nav-links">
+            <a href="../../../index.html">Hub</a>
+            <a href="01a_texto.html">1</a>
+            <a href="01b_texto.html">2</a>
+            <a href="01c_texto.html">3</a>
+            <a href="01d_texto.html">4</a>
+            <a href="01e_json_animations.html">5</a>
+            <a href="01f_texto.html" class="active">6</a>
+        </div>
+    </header>
+
+    <div class="showcase">
+        
+        <!-- SECCIÓN 25: Scale Down (Chars) - Replicado de JSON 1 -->
+        <section class="section">
+            <div class="panel code">
+                <h2>25. Scale Down <span class="highlight">(Characters)</span></h2>
+                <p>Efecto de revelado cinemático donde cada carácter escala desde 1.5x a su tamaño original mientras se desplaza verticalmente. El uso de <code>stagger</code> crea una onda de entrada orgánica.</p>
+                <pre><code><span class="com">// Fragmentación por caracteres</span>
+<span class="key">const</span> split = <span class="key">new</span> <span class="fn">SplitType</span>(<span class="str">'.txt-chars'</span>, { types: <span class="str">'chars'</span> });
+
+<span class="com">// Animación Scale Down (de grande a pequeño)</span>
+<span class="fn">gsap</span>.from(split.chars, {
+  scale: 1.5,
+  y: 50,
+  opacity: 0,
+  duration: 1.2,
+  stagger: 0.05,
+  ease: <span class="str">"power3.out"</span>,
+  transformOrigin: <span class="str">"top center -50"</span>
+});</code></pre>
+            </div>
+            <div class="panel demo">
+                <div class="demo-container">
+                    <h1 class="title-scale-chars txt-chars">
+                        HERE ARE 15 SEO SEARCH TAGS WHICH ARE COMMONLY USED FOR A VENTILATION SERVICE SITE.
+                    </h1>
+                    <button class="btn-play" onclick="playS25()">Play Animation</button>
+                    <!-- Botón de reinicio estándar estilo academia -->
+                    <button class="btn" style="position:static; margin-top:20px;" onclick="playS25()">Reiniciar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 26: Scale Down (Words) - Replicado de JSON 2 -->
+        <section class="section">
+            <div class="panel code">
+                <h2>26. Scale Down <span class="highlight">(Words)</span></h2>
+                <p>Variante del efecto Scale aplicada a palabras completas. Este enfoque mejora la legibilidad en bloques de texto largos y mantiene una estética de diseño editorial premium y fluida.</p>
+                <pre><code><span class="com">// Fragmentación por palabras</span>
+<span class="key">const</span> split = <span class="key">new</span> <span class="fn">SplitType</span>(<span class="str">'.txt-words'</span>, { types: <span class="str">'words'</span> });
+
+<span class="com">// Animación en bloque de palabras</span>
+<span class="fn">gsap</span>.from(split.words, {
+  scale: 1.2,
+  y: 20,
+  opacity: 0,
+  duration: 1.2,
+  stagger: 0.04,
+  ease: <span class="str">"power3.out"</span>
+});</code></pre>
+            </div>
+            <div class="panel demo">
+                <div class="demo-container">
+                    <h2 class="title-scale-words txt-words">
+                        Scale Down Text scale Animation Text Break By Word - Experiment with different values to find the perfect cinematic feel for your interface.
+                    </h2>
+                    <button class="btn-play" onclick="playS26()">Play Animation</button>
+                    <button class="btn" style="position:static; margin-top:20px;" onclick="playS26()">Reiniciar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 27: 3D Stagger Spin - Replicado de JSON 3dspib e Imagen -->
+        <section class="section" style="border-bottom:none;">
+            <div class="panel code">
+                <h2>27. 3D <span class="highlight">Stagger Spin</span></h2>
+                <p>Efecto de rastro cinemático con profundidad Z y letter-spacing negativo (-0.12em). Utiliza múltiples capas para crear un efecto de "enfoque" o rastro visual mientras los caracteres giran hacia su posición.</p>
+                <pre><code><span class="com">// Triple capa para efecto de rastro</span>
+<span class="fn">gsap</span>.from(".txt-spin", {
+  rotateX: -110,
+  z: -100,
+  opacity: 0,
+  stagger: 0.03,
+  duration: 1.5,
+  ease: <span class="str">"power3.out"</span>,
+  transformOrigin: <span class="str">"top center -50"</span>
+});</code></pre>
+            </div>
+            <div class="panel demo">
+                <div class="demo-container" style="align-items: center; position: relative; height: 300px;">
+                    <style>
+                        .stack-wrap {
+                            position: relative;
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            perspective: 2000px;
+                            transform-style: preserve-3d;
+                        }
+                        .txt-spin {
+                            position: absolute;
+                            font-family: 'Manrope', sans-serif;
+                            font-size: clamp(3rem, 14vw, 12rem);
+                            font-weight: 800;
+                            text-transform: uppercase;
+                            letter-spacing: -0.18em; /* Más agresivo para el solapamiento de la foto */
+                            margin: 0;
+                            line-height: 0.7;
+                            white-space: nowrap;
+                            will-change: transform, opacity;
+                        }
+                        .txt-spin.back-2 { color: rgba(255,255,255,0.05); }
+                        .txt-spin.back-1 { color: rgba(255,255,255,0.15); }
+                        .txt-spin.front { color: #FFFFFF; position: relative; }
+                    </style>
+                    <div class="stack-wrap">
+                        <div class="txt-spin back-2">ANIMATION</div>
+                        <div class="txt-spin back-1">ANIMATION</div>
+                        <div class="txt-spin front">ANIMATION</div>
+                    </div>
+                    <button class="btn-play" style="margin-top: 40px; z-index: 10;" onclick="playS27()">Play Animation</button>
+                    <button class="btn" style="position:absolute; bottom: 0; right: 0;" onclick="playS27()">Reiniciar</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+
+    <!-- CARGA DE GSAP Y SPLIT-TYPE -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script src="../../../js/01f_texto.js"></script>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="footer-academy">
+      <div class="footer-content">
+        <div class="footer-info">
+          <p class="declaration">REPLICACIÓN DE EFECTOS PREMIUM DESDE CONFIGURACIONES JSON</p>
+          <p class="copyright">© 2026 GSAP MASTER ACADEMY — EXPERT MOTION DESIGN</p>
+        </div>
+      </div>
+    </footer>
+</body>
+</html>

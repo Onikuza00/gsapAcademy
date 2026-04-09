@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GSAP Master - Stacked Cards</title>
+    <!-- Importación de fuentes premium para un look profesional -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700&family=Outfit:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Estilos base de la academia para mantener la coherencia visual -->
+    <link rel="stylesheet" href="../../../css/main.css" />
+
+    <style>
+      :root {
+        /* Paleta de colores para las tarjetas */
+        --base-1: #3d2fa9;
+        --base-2: #ff7722;
+        --base-3: #ff3d33;
+        --base-4: #785f47;
+        --base-5: #dfa60b;
+        --accent-color: #00f2ff; /* Color de acento cian característico de ScrollTrigger */
+      }
+
+      /* Estilos específicos para la cabecera (Header) con efecto cristal (Glassmorphism) */
+      .header {
+        padding: 1.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background: rgba(7, 7, 7, 0.8);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+      .header h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 15px;
+      }
+      .header a {
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 20px;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        transition: 0.3s;
+      }
+      .header a:hover {
+        background: #fff;
+        color: #000;
+      }
+      .highlight {
+        color: var(--accent-color);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #0a0a0a; /* Fondo ultra oscuro */
+        color: #fff;
+        font-family: "Outfit", sans-serif;
+        overflow-x: hidden;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      h1 {
+        text-transform: uppercase;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(2rem, 8vw, 6rem);
+        font-weight: 800;
+        line-height: 1;
+        margin: 0;
+      }
+
+      p {
+        text-transform: uppercase;
+        font-family: "Outfit", sans-serif;
+        font-size: clamp(1rem, 2vw, 1.3rem);
+        opacity: 0.7;
+        letter-spacing: 4px;
+      }
+
+      section {
+        position: relative;
+        width: 100%;
+        height: 100svh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Fondos decorativos con gradientes radiales suaves */
+      .intro,
+      .outro {
+        background: radial-gradient(circle at center, rgba(0, 242, 255, 0.03) 0%, transparent 70%);
+      }
+
+      .sticky-cards {
+        background-color: #0d0d0d;
+        perspective: 1000px; /* Profundidad para rotaciones 3D */
+      }
+
+      .sticky-cards .card {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 55%; /* Aumentamos el ancho total de la tarjeta */
+        height: 65%; /* Aumentamos la altura total de la tarjeta */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row-reverse; /* Invertimos el orden: Imagen a la izquierda, Texto a la derecha */
+        gap: 2rem;
+        padding: 2rem; /* Reducimos padding para ganar espacio */
+        border-radius: 2rem;
+        color: #fff;
+        transform-origin: center bottom;
+        will-change: transform;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
+      }
+
+      .card .col {
+        flex: 1;
+        height: 100%;
+      }
+
+      .card .col:nth-child(1) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 1rem;
+        gap: 1.5rem;
+      }
+
+      .card .col:nth-child(2) {
+        flex: 4; /* Maximizamos la imagen para que ocupe la mayor parte de la tarjeta */
+        border-radius: 1.5rem;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .card .col:nth-child(2)::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+      }
+
+      /* Definición de colores y capas para cada tarjeta */
+      .card#card-1 {
+        background: linear-gradient(135deg, #3d2fa9, #1e1463);
+        z-index: 5;
+      }
+      .card#card-2 {
+        background: linear-gradient(135deg, #ff7722, #b34d00);
+        z-index: 4;
+      }
+      .card#card-3 {
+        background: linear-gradient(135deg, #ff3d33, #991a14);
+        z-index: 3;
+      }
+      .card#card-4 {
+        background: linear-gradient(135deg, #785f47, #3d2f23);
+        z-index: 2;
+      }
+      .card#card-5 {
+        background: linear-gradient(135deg, #dfa60b, #8a6707);
+        z-index: 1;
+      }
+
+      /* Responsive: Adaptación para dispositivos móviles */
+      @media (max-width: 1000px) {
+        .sticky-cards .card {
+          width: 90%;
+          height: 80%;
+          flex-direction: column;
+          padding: 2rem;
+          gap: 1.5rem;
+        }
+
+        .card .col {
+          width: 100%;
+        }
+
+        .card .col:nth-child(1) {
+          order: 2;
+          height: auto;
+          text-align: center;
+        }
+
+        .card .col:nth-child(2) {
+          order: 1;
+          height: 50%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navegación Superior -->
+    <header class="header">
+      <h3>GSAP <span class="highlight">CodeGrid Mastery</span></h3>
+      <div class="nav-links">
+        <a href="../advanced_index.html">Advanced Hub</a>
+      </div>
+    </header>
+
+    <!-- Sección de Introducción -->
+    <section class="intro">
+      <h1 class="mag-element">Card Stacking <br /><span style="opacity: 0.3; font-weight: 300">Exploration</span></h1>
+    </section>
+
+    <!-- Contenedor Principal de Tarjetas Apiladas -->
+    <section class="sticky-cards">
+      <div class="card" id="card-1">
+        <div class="col">
+          <p>Experiencia 01</p>
+          <h1>Capa Superior</h1>
+        </div>
+        <div class="col">
+          <img src="../../../img/01.webp" alt="Visual 01" />
+        </div>
+      </div>
+      <div class="card" id="card-2">
+        <div class="col">
+          <p>Experiencia 02</p>
+          <h1>Inmersión Total</h1>
+        </div>
+        <div class="col">
+          <img src="../../../img/02.webp" alt="Visual 02" />
+        </div>
+      </div>
+      <div class="card" id="card-3">
+        <div class="col">
+          <p>Experiencia 03</p>
+          <h1>Mastery Flow</h1>
+        </div>
+        <div class="col">
+          <img src="../../../img/03.webp" alt="Visual 03" />
+        </div>
+      </div>
+      <div class="card" id="card-4">
+        <div class="col">
+          <p>Experiencia 04</p>
+          <h1>Premium UI</h1>
+        </div>
+        <div class="col">
+          <img src="../../../img/04.webp" alt="Visual 04" />
+        </div>
+      </div>
+      <div class="card" id="card-5">
+        <div class="col">
+          <p>Experiencia 05</p>
+          <h1>Final Stack</h1>
+        </div>
+        <div class="col">
+          <img src="../../../img/05.webp" alt="Visual 05" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Salida -->
+    <section class="outro">
+      <h1 class="mag-element">Stack Completed</h1>
+    </section>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="footer-academy">
+      <div class="footer-content">
+        <img src="../../../img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
+        <div class="footer-info">
+          <p class="declaration">UNA DECLARACIÓN DE INTENCIONES SOBRE LA EXCELENCIA EN ANIMACIÓN WEB</p>
+          <p class="copyright">© 2026 PAU CROSAS BATISTA — GSAP MASTER ACADEMY</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- LIBRERÍAS EXTERNAS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+
+    <!-- Script global de la academia para interacciones comunes (cursor, magnetismo) -->
+    <script src="../../../js/main.js"></script>
+
+    <script>
+      // Registro del plugin ScrollTrigger en GSAP
+      gsap.registerPlugin(ScrollTrigger);
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Inicialización de Lenis para un desplazamiento suave (Smooth Scroll)
+        const lenis = new Lenis();
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+          lenis.raf(time * 1000); // Sincroniza el ticker de GSAP con Lenis
+        });
+        gsap.ticker.lagSmoothing(0); // Desactivamos el suavizado de lag para evitar saltos
+
+        // Configuración de variables para el efecto de apilamiento
+        const cards = document.querySelectorAll(".sticky-cards .card");
+        const totalCards = cards.length;
+        const segmentSize = 1 / totalCards; // Calcula cuánto scroll corresponde a cada tarjeta
+        const cardYoffSet = 5; // Desplazamiento vertical (en %) entre tarjetas apiladas
+        const CardScaleStep = 0.05; // Cuánto se reduce el tamaño para dar sensación de profundidad
+
+        // Configuración posicional inicial del stack
+        cards.forEach((card, i) => {
+          gsap.set(card, {
+            xPercent: -50, // Centrado horizontal
+            yPercent: -50 + i * cardYoffSet, // Offset vertical graduado
+            scale: 1 - i * CardScaleStep, // Escala graduada (efecto profundidad)
+          });
+        });
+
+        // Creación del ScrollTrigger que controla toda la secuencia de apilamiento
+        ScrollTrigger.create({
+          trigger: ".sticky-cards",
+          start: "top top", // Empieza cuando el contenedor llega al tope de pantalla
+          end: `+=${window.innerHeight * 8}px`, // Alargamos el scroll para transiciones cinemáticas
+          pin: true, // Mantiene la sección bloqueada mientras ocurre la animación
+          pinSpacing: true,
+          scrub: 1.5, // Sincronización muy suave (scrub) con el movimiento del scroll
+          onUpdate: (self) => {
+            const progress = self.progress; // Valor de 0 a 1 del progreso total del scroll
+
+            // Calculamos qué tarjeta es la "activa" en este momento del scroll
+            const activeIndex = Math.min(Math.floor(progress / segmentSize), totalCards - 1);
+
+            // Calculamos cuánto ha progresado el scroll dentro de la tarjeta activa actual
+            const segProgress = (progress - activeIndex * segmentSize) / segmentSize;
+
+            cards.forEach((card, i) => {
+              if (i < activeIndex) {
+                // TARJETAS PASADAS: Se desplazan totalmente hacia arriba con rotación 3D
+                gsap.set(card, {
+                  yPercent: -250,
+                  rotationX: 35,
+                });
+              } else if (i === activeIndex) {
+                // TARJETA ACTIVA: Se desplaza suavemente hacia arriba (centro -> fuera)
+                gsap.set(card, {
+                  // Interpolación: de -50% (posición normal) a -200% (arriba fuera)
+                  yPercent: gsap.utils.interpolate(-50, -200, segProgress),
+                  // Interpolación de rotación: de 0 a 35 grados
+                  rotationX: gsap.utils.interpolate(0, 35, segProgress),
+                  scale: 1, // La activa siempre recupera su tamaño real antes de salir
+                });
+              } else {
+                // TARJETAS FUTURAS: Ganan posición y tamaño a medida que la anterior sale
+                const behindIndex = i - activeIndex;
+                // Cálculo dinámico para evitar saltos bruscos entre estados
+                const currentYOffset = (behindIndex - segProgress) * cardYoffSet;
+                const currentScale = 1 - (behindIndex - segProgress) * CardScaleStep;
+
+                gsap.set(card, {
+                  yPercent: -50 + currentYOffset,
+                  rotationX: 0,
+                  scale: currentScale,
+                });
+              }
+            });
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

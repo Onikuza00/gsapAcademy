@@ -41,6 +41,7 @@
       .header a { color: #fff; text-decoration: none; border: 1px solid rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 100px; font-weight: 700; font-size: 0.8rem; transition: 0.3s;}
       .header a:hover { background: #fff; color: #000; }
       .highlight { color: #00f2ff; }
+      .card { min-height: 480px; } /* Aseguramos que todas las cards tengan la misma altura */
     </style>
   </head>
   <body>
@@ -50,9 +51,6 @@
             <a href="../../index.html">Hub</a>
         </div>
     </header>
-
-    <!-- Cursor Personalizado -->
-    <div class="custom-cursor"></div>
 
     <!-- Fondo Interactivo -->
     <div class="hero-interaction">
@@ -64,12 +62,13 @@
       <h1 class="title mag-element">Advanced <br /><span style="font-weight: 300; opacity: 0.2">Mastery</span></h1>
 
       <div class="grid">
-        <!-- 01. SCROLLTRIGGER -->
+        <!-- 01. CASCADA 3D REACTIVA -->
         <div class="card s-scroll">
-          <h2>01. ScrollTrigger</h2>
+          <h2>01. Cascada 3D Reactiva</h2>
           <p>Control total sobre el tiempo y el espacio. Implementa disparadores complejos y secuencias ligadas al desplazamiento.</p>
-          <div class="btn-group">
-            <a href="masterGsap.html" class="btn mag-element">1.- Scroll & Parallax</a>
+          <div class="btn-group" style="flex-direction: column; width: 100%;">
+            <a href="masterGsap.html" class="btn mag-element" style="width: 100%;">1.- Scroll & Parallax</a>
+            <a href="stacking/stack_superio.html" class="btn mag-element" style="width: 100%;">2.- Cascada 3D Reactiva</a>
           </div>
         </div>
 

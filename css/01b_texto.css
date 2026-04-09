@@ -1,60 +1,223 @@
 :root {
-            --bg: #070707; --acc: #00ff88; --txt: #f0f0f0;
-            --glass: rgba(255,255,255,0.02); --border: rgba(0,255,136,0.2);
-            --space: clamp(2rem, 5vw, 4rem);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--txt); font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+  --bg: #070707;
+  --acc: #00ff88;
+  --txt: #f0f0f0;
+  --glass: rgba(255, 255, 255, 0.02);
+  --border: rgba(0, 255, 136, 0.2);
+  --space: clamp(2rem, 5vw, 4rem);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: "Outfit", sans-serif;
+  overflow-x: hidden;
+}
 
-        h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; margin-bottom: 1rem; line-height: 1.1; letter-spacing: -1px;}
-        .highlight { color: var(--acc); }
-        
-        .header { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items:center; position: fixed; width: 100%; z-index: 1000; background: rgba(7,7,7,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
-        .header h3 { font-family: 'Space Grotesk', sans-serif;}
-        .nav-links { display: flex; gap: 10px; }
-        .header a { color: var(--acc); text-decoration: none; border: 1px solid var(--border); padding: 8px 16px; border-radius: 4px; font-weight: 600; font-family:'Space Grotesk'; font-size: 0.9rem;}
-        .header a.active { background: rgba(0,255,136,0.1); }
-        .header a:hover { background: var(--acc); color: var(--bg); }
-        
-        .section { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space); padding: calc(80px + var(--space)) var(--space) var(--space) var(--space); border-bottom: 1px dashed var(--border);}
-        @media (max-width: 900px) { .section { grid-template-columns: 1fr; } }
-        
-        .panel { background: var(--glass); border: 1px solid var(--border); border-radius: 12px; padding: var(--space); display: flex; flex-direction: column; justify-content: center; position: relative;}
-        .panel.code { background: #0a0a0a; border-color:#222;}
-        .panel.demo { align-items: center; text-align:center; overflow: hidden; background: radial-gradient(circle at center, rgba(0,255,136,0.05) 0%, transparent 70%); }
-        
-        .btn { position: absolute; bottom: 20px; right: 20px; background: transparent; border: 1px solid var(--acc); color: var(--acc); padding: 8px 16px; border-radius: 4px; cursor: pointer; font-family: 'Space Grotesk'; font-weight:700;}
-        .btn:hover { background: var(--acc); color: var(--bg); }
-        
-        pre { background: #000; padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; color: #a6accd; border: 1px solid #222; overflow-x: auto; margin-top: 1rem; font-family: monospace; line-height: 1.5;}
-        .com { color: #697098; font-style: italic; } .str { color: #c3e88d; } .fn { color: #82aaff; } .key { color: #c792ea; }
+h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+.highlight {
+  color: var(--acc);
+}
 
-        /* DEMOS CSS */
-        /* 6. Subrayado */
-        .mark-txt { font-size: 4rem; font-family: 'Space Grotesk'; color: #fff; position: relative; display: inline-block; z-index: 1;}
-        .marker { position: absolute; bottom: 10px; left: -5%; width: 0%; height: 30%; background: var(--acc); z-index: -1;}
+.header {
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(7, 7, 7, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.header h3 {
+  font-family: "Space Grotesk", sans-serif;
+}
+.nav-links {
+  display: flex;
+  gap: 10px;
+}
+.header a {
+  color: var(--acc);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-family: "Space Grotesk";
+  font-size: 0.9rem;
+}
+.header a.active {
+  background: rgba(0, 255, 136, 0.1);
+}
+.header a:hover {
+  background: var(--acc);
+  color: var(--bg);
+}
 
-        /* 7. Hover Wiggle */
-        .wiggle-txt { font-size: 5rem; font-family: 'Space Grotesk'; font-weight:700; cursor: default;}
-        .char { display: inline-block; transition: color 0.3s; }
-        .char:hover { color: var(--acc); }
+.section {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space);
+  padding: calc(80px + var(--space)) var(--space) var(--space) var(--space);
+  border-bottom: 1px dashed var(--border);
+}
+@media (max-width: 900px) {
+  .section {
+    grid-template-columns: 1fr;
+  }
+}
 
-        /* 8. Clip Path Text */
-        .clip-txt { 
-            font-size: 6rem; font-family: 'Space Grotesk'; font-weight: 800; 
-            background: url('https://images.unsplash.com/photo-1550684376-efcbd6e3f031?q=80&w=800&auto=format&fit=crop') repeat;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200%;
-        }
+.panel {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: var(--space);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+.panel.code {
+  background: #0a0a0a;
+  border-color: #222;
+}
+.panel.demo {
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  background: radial-gradient(circle at center, rgba(0, 255, 136, 0.05) 0%, transparent 70%);
+}
 
-        /* 9. Glitch Analógico */
-        .glitch-txt { font-size: 4rem; font-family: 'Space Grotesk'; font-weight: 700; position: relative; }
-        
-        /* 10. Circular Text */
-        .circ-wrap { position: relative; width: 300px; height: 300px; border-radius: 50%; display: flex; align-items:center; justify-content:center;}
-        .circ-txt { font-family: monospace; font-size: 1.2rem; position: absolute; letter-spacing: 5px; color: var(--acc); font-weight: bold;}
+.btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: transparent;
+  border: 1px solid var(--acc);
+  color: var(--acc);
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Space Grotesk";
+  font-weight: 700;
+}
+.btn:hover {
+  background: var(--acc);
+  color: var(--bg);
+}
+
+pre {
+  background: #000;
+  padding: 1.5rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #a6accd;
+  border: 1px solid #222;
+  overflow-x: auto;
+  margin-top: 1rem;
+  font-family: monospace;
+  line-height: 1.5;
+}
+.com {
+  color: #697098;
+  font-style: italic;
+}
+.str {
+  color: #c3e88d;
+}
+.fn {
+  color: #82aaff;
+}
+.key {
+  color: #c792ea;
+}
+
+/* DEMOS CSS */
+/* 6. Subrayado */
+.mark-txt {
+  font-size: 4rem;
+  font-family: "Space Grotesk";
+  color: #fff;
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+}
+.marker {
+  position: absolute;
+  bottom: 10px;
+  left: -5%;
+  width: 0%;
+  height: 30%;
+  background: var(--acc);
+  z-index: -1;
+}
+
+/* 7. Hover Wiggle */
+.wiggle-txt {
+  font-size: 5rem;
+  font-family: "Space Grotesk";
+  font-weight: 700;
+  cursor: default;
+}
+.char {
+  display: inline-block;
+  transition: color 0.3s;
+}
+.char:hover {
+  color: var(--acc);
+}
+
+/* 8. Clip Path Text */
+.clip-txt {
+  font-size: 6rem;
+  font-family: "Space Grotesk";
+  font-weight: 800;
+  background: url("https://images.unsplash.com/photo-1550684376-efcbd6e3f031?q=80&w=800&auto=format&fit=crop") repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200%;
+}
+
+/* 9. Glitch Analógico */
+.glitch-txt {
+  font-size: 4rem;
+  font-family: "Space Grotesk";
+  font-weight: 700;
+  position: relative;
+}
+
+/* 10. Circular Text */
+.circ-wrap {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.circ-txt {
+  font-family: monospace;
+  font-size: 1.2rem;
+  position: absolute;
+  letter-spacing: 5px;
+  color: var(--acc);
+  font-weight: bold;
+}
 /* FOOTER STYLES */
 .footer-academy {
   width: 100%;
