@@ -1,50 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>01b. Tipografía Avanzada - GSAP Academy</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="../../../css/01b_texto.css">
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../css/01b_texto.css" />
+  </head>
+  <body>
     <!-- Navegación unificada para toda la sección de texto -->
     <header class="header">
-        <h3>GSAP <span class="highlight">Tipografía (2/5)</span></h3>
-        <div class="nav-links">
-            <a href="../../../index.html">Hub</a>
-            <a href="01a_texto.html">1</a>
-            <a href="01b_texto.html" class="active">2</a>
-            <a href="01c_texto.html">3</a>
-            <a href="01d_texto.html">4</a>
-            <a href="01e_json_animations.html">5</a>
-        </div>
+      <h3>GSAP <span class="highlight">Tipografía (2/5)</span></h3>
+      <div class="nav-links">
+        <a href="../../../index.html">Hub</a>
+        <a href="01a_texto.html">1</a>
+        <a href="01b_texto.html" class="active">2</a>
+        <a href="01c_texto.html">3</a>
+        <a href="01d_texto.html">4</a>
+        <a href="01e_json_animations.html">5</a>
+      </div>
     </header>
 
     <!-- 6. SUBRAYADO (HIGHLIGHT MARKER) -->
     <section class="section">
-        <div class="panel code">
-            <h2>06. Subrayado <span class="highlight">Animado</span></h2>
-            <p>Efecto de énfasis mediante un marcador que se dibuja dinámicamente detrás del texto. Utilizamos una capa absoluta con <code>z-index: -1</code> cuya anchura se expande para simular el trazo de un rotulador.</p>
-            <pre><code><span class="com">// Expansión del marcador de 0 a 110%</span>
+      <div class="panel code">
+        <h2>06. Subrayado <span class="highlight">Animado</span></h2>
+        <p>
+          Efecto de énfasis mediante un marcador que se dibuja dinámicamente detrás del texto. Utilizamos una capa absoluta con
+          <code>z-index: -1</code> cuya anchura se expande para simular el trazo de un rotulador.
+        </p>
+        <pre><code><span class="com">// Expansión del marcador de 0 a 110%</span>
 <span class="fn">gsap</span>.to(".marker", {
   width: <span class="str">"110%"</span>,      
   ease: <span class="str">"power3.inOut"</span>,
   duration: 1
 });</code></pre>
-        </div>
-        <div class="panel demo">
-            <h1 class="mark-txt">GSAP PREMIUM<div class="marker"></div></h1>
-            <button class="btn" onclick="playS6()">Reiniciar</button>
-        </div>
+      </div>
+      <div class="panel demo">
+        <h1 class="mark-txt">
+          GSAP PREMIUM
+          <div class="marker"></div>
+        </h1>
+        <button class="btn" onclick="playS6()">Reiniciar</button>
+      </div>
     </section>
 
     <!-- 7. WIGGLE HOVER -->
     <section class="section">
-        <div class="panel code">
-            <h2>07. Interacción <span class="highlight">Elástica</span></h2>
-            <p>Micro-interacción aplicada a caracteres individuales. Al pasar el cursor, cada letra reacciona con un salto y una escala elástica, utilizando el suavizado <code>elastic.out</code> para un retorno orgánico y juguetón.</p>
-            <pre><code><span class="com">// Reacción individual por carácter al hover</span>
+      <div class="panel code">
+        <h2>07. Interacción <span class="highlight">Elástica</span></h2>
+        <p>
+          Micro-interacción aplicada a caracteres individuales. Al pasar el cursor, cada letra reacciona con un salto y una escala
+          elástica, utilizando el suavizado <code>elastic.out</code> para un retorno orgánico y juguetón.
+        </p>
+        <pre><code><span class="com">// Reacción individual por carácter al hover</span>
 split.chars.forEach(char => {
   char.addEventListener(<span class="str">"mouseenter"</span>, () => {
     <span class="fn">gsap</span>.fromTo(char, 
@@ -53,19 +65,22 @@ split.chars.forEach(char => {
     );
   });
 });</code></pre>
-        </div>
-        <div class="panel demo">
-            <div class="wiggle-txt">INTERACTÚA</div>
-            <button class="btn" onclick="playS7()">Reiniciar</button>
-        </div>
+      </div>
+      <div class="panel demo">
+        <div class="wiggle-txt">INTERACTÚA</div>
+        <button class="btn" onclick="playS7()">Reiniciar</button>
+      </div>
     </section>
 
     <!-- 8. CLIP-PATH REACTIVO -->
     <section class="section">
-        <div class="panel code">
-            <h2>08. Texto con <span class="highlight">Textura</span></h2>
-            <p>Uso de <code>background-clip: text</code> para proyectar imágenes o gradientes dentro de la tipografía. GSAP anima la posición del fondo de manera infinita para crear un efecto de flujo constante.</p>
-            <pre><code><span class="com">// Animación perpetua del fondo de textura</span>
+      <div class="panel code">
+        <h2>08. Texto con <span class="highlight">Textura</span></h2>
+        <p>
+          Uso de <code>background-clip: text</code> para proyectar imágenes o gradientes dentro de la tipografía. GSAP anima la
+          posición del fondo de manera infinita para crear un efecto de flujo constante.
+        </p>
+        <pre><code><span class="com">// Animación perpetua del fondo de textura</span>
 <span class="fn">gsap</span>.to(".clip-txt", {
   backgroundPosition: <span class="str">"100% 50%"</span>, 
   ease: <span class="str">"none"</span>,
@@ -73,49 +88,55 @@ split.chars.forEach(char => {
   repeat: -1,         
   yoyo: <span class="key">true</span>
 });</code></pre>
-        </div>
-        <div class="panel demo">
-            <div class="clip-txt">HACKER<br>STATE</div>
-            <button class="btn" onclick="playS8()">Reiniciar</button>
-        </div>
+      </div>
+      <div class="panel demo">
+        <div class="clip-txt">HACKER<br />STATE</div>
+        <button class="btn" onclick="playS8()">Reiniciar</button>
+      </div>
     </section>
 
     <!-- 9. GLITCH CIBERNÉTICO -->
     <section class="section">
-        <div class="panel code">
-            <h2>09. Glitch <span class="highlight">Analógico</span></h2>
-            <p>Simulación de error digital mediante saltos erráticos de posición, inclinación y opacidad. Se utiliza una función que genera valores aleatorios en cada iteración para un look impredecible.</p>
-            <pre><code><span class="com">// Generación de valores aleatorios para el glitch</span>
+      <div class="panel code">
+        <h2>09. Glitch <span class="highlight">Analógico</span></h2>
+        <p>
+          Simulación de error digital mediante saltos erráticos de posición, inclinación y opacidad. Se utiliza una función que
+          genera valores aleatorios en cada iteración para un look impredecible.
+        </p>
+        <pre><code><span class="com">// Generación de valores aleatorios para el glitch</span>
 <span class="fn">gsap</span>.to(".glitch-txt", {
   x: () => Math.random() * 20 - 10, 
   skewX: () => Math.random() * 20 - 10,
   opacity: () => Math.random(),
   repeat: 10
 });</code></pre>
-        </div>
-        <div class="panel demo">
-            <div class="glitch-txt">ERROR 500</div>
-            <button class="btn" onclick="playS9()">Reiniciar</button>
-        </div>
+      </div>
+      <div class="panel demo">
+        <div class="glitch-txt">ERROR 500</div>
+        <button class="btn" onclick="playS9()">Reiniciar</button>
+      </div>
     </section>
 
     <!-- 10. TEXTO CIRCULAR GIRO -->
-    <section class="section" style="border-bottom:none;">
-        <div class="panel code">
-            <h2>10. Rotación <span class="highlight">Circular</span></h2>
-            <p>Distribución de caracteres en una trayectoria circular perfecta. GSAP gestiona la rotación continua del contenedor, permitiendo leer el texto mientras orbita sobre su propio centro.</p>
-            <pre><code><span class="com">// Rotación infinita del eje central</span>
+    <section class="section" style="border-bottom: none">
+      <div class="panel code">
+        <h2>10. Rotación <span class="highlight">Circular</span></h2>
+        <p>
+          Distribución de caracteres en una trayectoria circular perfecta. GSAP gestiona la rotación continua del contenedor,
+          permitiendo leer el texto mientras orbita sobre su propio centro.
+        </p>
+        <pre><code><span class="com">// Rotación infinita del eje central</span>
 <span class="fn">gsap</span>.to(".circ-wrap", {
   rotation: 360,
   duration: 10,
   ease: <span class="str">"none"</span>,
   repeat: -1
 });</code></pre>
-        </div>
-        <div class="panel demo">
-            <div class="circ-wrap" id="circle-text"></div>
-            <button class="btn" onclick="playS10()">Reiniciar</button>
-        </div>
+      </div>
+      <div class="panel demo">
+        <div class="circ-wrap" id="circle-text"></div>
+        <button class="btn" onclick="playS10()">Reiniciar</button>
+      </div>
     </section>
 
     <!-- CDNS -->
@@ -134,5 +155,5 @@ split.chars.forEach(char => {
         </div>
       </div>
     </footer>
-</body>
+  </body>
 </html>

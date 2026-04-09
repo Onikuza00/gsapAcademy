@@ -1,73 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>01d. Tipografía (4/4) - GSAP Academy</title>
-    <link rel="stylesheet" href="../../../css/01d_texto.css">
-</head>
-<body>
-
+    <link rel="stylesheet" href="../../../css/01d_texto.css" />
+  </head>
+  <body>
     <!-- Menú de paginación estandarizado -->
     <header class="header">
-        <h3>GSAP <span class="highlight">Tipografía (4/5)</span></h3>
-        <div class="nav-links">
-            <a href="../../../index.html">Hub</a>
-            <a href="01a_texto.html">1</a>
-            <a href="01b_texto.html">2</a>
-            <a href="01c_texto.html">3</a>
-            <a href="01d_texto.html" class="active">4</a>
-            <a href="01e_json_animations.html">5</a>
-        </div>
+      <h3>GSAP <span class="highlight">Tipografía (4/5)</span></h3>
+      <div class="nav-links">
+        <a href="../../../index.html">Hub</a>
+        <a href="01a_texto.html">1</a>
+        <a href="01b_texto.html">2</a>
+        <a href="01c_texto.html">3</a>
+        <a href="01d_texto.html" class="active">4</a>
+        <a href="01e_json_animations.html">5</a>
+      </div>
     </header>
 
     <main>
-        <!-- 16. INTRO VORA -->
-        <section class="section">
-            <div class="panel code">
-                <h2>16. Entrada <span class="highlight">Cinemática</span></h2>
-                <p>Efecto de marca de alto impacto. Combina un espaciado entre letras (<code>letterSpacing</code>) masivamente negativo que se expande, junto con una transición de escala y opacidad con suavizado exponencial.</p>
-                <pre><code><span class="com">// Expansión de caracteres comprimidos</span>
+      <!-- 16. INTRO VORA -->
+      <section class="section">
+        <div class="panel code">
+          <h2>16. Entrada <span class="highlight">Cinemática</span></h2>
+          <p>
+            Efecto de marca de alto impacto. Combina un espaciado entre letras (<code>letterSpacing</code>) masivamente negativo
+            que se expande, junto con una transición de escala y opacidad con suavizado exponencial.
+          </p>
+          <pre><code><span class="com">// Expansión de caracteres comprimidos</span>
 <span class="fn">gsap</span>.from(".vora", { 
   duration: 1.8, 
   letterSpacing: <span class="str">"-40px"</span>, 
   opacity: 0, scale: 0.8, 
   ease: <span class="str">"expo.out"</span> 
 });</code></pre>
-            </div>
-            <div class="panel demo">
-                <div class="vora-demo">
-                    <span class="vora-fixed">VORA</span><span class="type-target-demo"></span>
-                </div>
-                <button class="btn" onclick="playS16()">Reiniciar</button>
-            </div>
-        </section>
+        </div>
+        <div class="panel demo">
+          <div class="vora-demo"><span class="vora-fixed">VORA</span><span class="type-target-demo"></span></div>
+          <button class="btn" onclick="playS16()">Reiniciar</button>
+        </div>
+      </section>
 
-        <!-- 17. REVELADO ESCALADO -->
-        <section class="section">
-            <div class="panel code">
-                <h2>17. Dúo <span class="highlight">Editorial</span></h2>
-                <p>Revelación masiva estilo editorial. Se utiliza un factor de escala de 1.5x que converge hacia su tamaño natural, creando una sensación de profundidad y foco inmediato.</p>
-                <pre><code><span class="com">// Transición de escala y opacidad</span>
+      <!-- 17. REVELADO ESCALADO -->
+      <section class="section">
+        <div class="panel code">
+          <h2>17. Dúo <span class="highlight">Editorial</span></h2>
+          <p>
+            Revelación masiva estilo editorial. Se utiliza un factor de escala de 1.5x que converge hacia su tamaño natural,
+            creando una sensación de profundidad y foco inmediato.
+          </p>
+          <pre><code><span class="com">// Transición de escala y opacidad</span>
 <span class="fn">gsap</span>.fromTo(".reveal-line", 
   { opacity: 0, scale: 1.5 }, 
   { duration: 1.2, scale: 1, opacity: 1, ease: <span class="str">"expo.out"</span> }
 );</code></pre>
-            </div>
-            <div class="panel demo">
-                <div class="reveal-line-wrap">
-                    <h2 class="reveal-line-demo mega">SOUL MATERIAL</h2>
-                </div>
-                <button class="btn" onclick="playS17()">Reiniciar</button>
-            </div>
-        </section>
+        </div>
+        <div class="panel demo">
+          <div class="reveal-line-wrap">
+            <h2 class="reveal-line-demo mega">SOUL MATERIAL</h2>
+          </div>
+          <button class="btn" onclick="playS17()">Reiniciar</button>
+        </div>
+      </section>
 
-        <!-- 18. TRANSFORMACIÓN EJE X -->
-        <section class="section">
-            <div class="panel code">
-                <h2>18. Profundidad <span class="highlight">Eje X</span></h2>
-                <p>Los caracteres rotan tridimensionalmente sobre el eje X mientras se desplazan lateralmente. Esta combinación de traslación en Z y rotación crea un efecto de "vuelo" técnico y preciso.</p>
-                <pre><code><span class="com">// Rotación y desplazamiento en 3D</span>
+      <!-- 18. TRANSFORMACIÓN EJE X -->
+      <section class="section">
+        <div class="panel code">
+          <h2>18. Profundidad <span class="highlight">Eje X</span></h2>
+          <p>
+            Los caracteres rotan tridimensionalmente sobre el eje X mientras se desplazan lateralmente. Esta combinación de
+            traslación en Z y rotación crea un efecto de "vuelo" técnico y preciso.
+          </p>
+          <pre><code><span class="com">// Rotación y desplazamiento en 3D</span>
 <span class="fn">gsap</span>.from(chars, {
   x: 80, z: -100,
   rotateX: -90,
@@ -75,21 +81,25 @@
   stagger: 0.04,
   ease: <span class="str">"power4.out"</span>
 });</code></pre>
-            </div>
-            <div class="panel demo">
-                <div class="scrub-line-demo mega text-small" style="text-align: center; margin: 0 auto;">
-                    LOS SISTEMAS DE MOVIMIENTO KINÉTICO IMPULSAN EL FUTURO DE LAS EXPERIENCIAS INTERACTIVAS MEDIANTE LA PRECISIÓN Y FLUIDEZ.
-                </div>
-                <button class="btn" onclick="playS18()">Reiniciar</button>
-            </div>
-        </section>
+        </div>
+        <div class="panel demo">
+          <div class="scrub-line-demo mega text-small" style="text-align: center; margin: 0 auto">
+            LOS SISTEMAS DE MOVIMIENTO KINÉTICO IMPULSAN EL FUTURO DE LAS EXPERIENCIAS INTERACTIVAS MEDIANTE LA PRECISIÓN Y
+            FLUIDEZ.
+          </div>
+          <button class="btn" onclick="playS18()">Reiniciar</button>
+        </div>
+      </section>
 
-        <!-- 19. GIRO 3D PRO -->
-        <section class="section">
-            <div class="panel code">
-                <h2>19. Giro <span class="highlight">3D Pro</span></h2>
-                <p>Rotación circular completa de 360 grados sobre el eje X. Al desplazar el origen de transformación (<code>transformOrigin</code>) hacia el fondo en Z, el giro se percibe como una revolución orbital.</p>
-                <pre><code><span class="com">// Revolución orbital de caracteres</span>
+      <!-- 19. GIRO 3D PRO -->
+      <section class="section">
+        <div class="panel code">
+          <h2>19. Giro <span class="highlight">3D Pro</span></h2>
+          <p>
+            Rotación circular completa de 360 grados sobre el eje X. Al desplazar el origen de transformación
+            (<code>transformOrigin</code>) hacia el fondo en Z, el giro se percibe como una revolución orbital.
+          </p>
+          <pre><code><span class="com">// Revolución orbital de caracteres</span>
 <span class="fn">gsap</span>.from(chars, {
   rotateX: -360,
   opacity: 0,
@@ -97,21 +107,25 @@
   stagger: 0.1,
   transformOrigin: <span class="str">"50% 0% -50px"</span>
 });</code></pre>
-            </div>
-            <div class="panel demo">
-                <div class="spin-line-demo mega text-small" style="text-align: center; margin: 0 auto;">
-                    LA EVOLUCIÓN DE LA ROTACIÓN VERTICAL EN EL ESPACIO TRIDIMENSIONAL REDEFINA NUESTRA PERCEPCIÓN DE LAS INTERFACES DINÁMICAS.
-                </div>
-                <button class="btn" onclick="playS19()">Reiniciar</button>
-            </div>
-        </section>
+        </div>
+        <div class="panel demo">
+          <div class="spin-line-demo mega text-small" style="text-align: center; margin: 0 auto">
+            LA EVOLUCIÓN DE LA ROTACIÓN VERTICAL EN EL ESPACIO TRIDIMENSIONAL REDEFINA NUESTRA PERCEPCIÓN DE LAS INTERFACES
+            DINÁMICAS.
+          </div>
+          <button class="btn" onclick="playS19()">Reiniciar</button>
+        </div>
+      </section>
 
-        <!-- 20. MANIFIESTO V2 -->
-        <section class="section" style="border-bottom:none;">
-            <div class="panel code">
-                <h2>20. Manifiesto <span class="highlight">V2</span></h2>
-                <p>Revelación secuencial de bloques de texto. Una máscara de escala progresiva se aplica a fragmentos multi-línea, guiando la atención del usuario de manera rítmica y elegante.</p>
-                <pre><code><span class="com">// Revelación secuencial de palabras</span>
+      <!-- 20. MANIFIESTO V2 -->
+      <section class="section" style="border-bottom: none">
+        <div class="panel code">
+          <h2>20. Manifiesto <span class="highlight">V2</span></h2>
+          <p>
+            Revelación secuencial de bloques de texto. Una máscara de escala progresiva se aplica a fragmentos multi-línea,
+            guiando la atención del usuario de manera rítmica y elegante.
+          </p>
+          <pre><code><span class="com">// Revelación secuencial de palabras</span>
 <span class="fn">gsap</span>.from(words, {
   duration: 1.5,
   opacity: 0,
@@ -119,17 +133,17 @@
   stagger: 0.04,
   ease: <span class="str">"power4.out"</span>
 });</code></pre>
-            </div>
-            <div class="panel demo">
-                <p class="reveal-text-demo manifesto-mega">
-                    LA TIPOGRAFÍA CINEMÁTICA NO SOLO SE LEA, SE SIENTE.<br>
-                    DIVIDIMOS EL TEXTO EN PALABRAS Y LAS REVELAMOS<br>
-                    CON UNA MÁSCARA DE ESCALA PROGRESIVA QUE GUÍA<br>
-                    LA MIRADA DEL USUARIO HACIA EL NÚCLEO DEL MENSAJE.
-                </p>
-                <button class="btn" onclick="playS20()">Reiniciar</button>
-            </div>
-        </section>
+        </div>
+        <div class="panel demo">
+          <p class="reveal-text-demo manifesto-mega">
+            LA TIPOGRAFÍA CINEMÁTICA NO SOLO SE LEA, SE SIENTE.<br />
+            DIVIDIMOS EL TEXTO EN PALABRAS Y LAS REVELAMOS<br />
+            CON UNA MÁSCARA DE ESCALA PROGRESIVA QUE GUÍA<br />
+            LA MIRADA DEL USUARIO HACIA EL NÚCLEO DEL MENSAJE.
+          </p>
+          <button class="btn" onclick="playS20()">Reiniciar</button>
+        </div>
+      </section>
     </main>
 
     <!-- SCRIPTS -->
@@ -148,5 +162,5 @@
         </div>
       </div>
     </footer>
-</body>
+  </body>
 </html>

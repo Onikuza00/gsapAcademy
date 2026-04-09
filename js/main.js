@@ -1,12 +1,7 @@
-// --- 1. CONFIGURACIÓN DEL CURSOR PERSONALIZADO ---
 const cursor = document.querySelector(".custom-cursor");
-const xToCursor = gsap.quickTo(cursor, "x", { duration: 0.15, ease: "power3" });
-const yToCursor = gsap.quickTo(cursor, "y", { duration: 0.15, ease: "power3" });
-
-window.addEventListener("mousemove", (e) => {
-  xToCursor(e.clientX - 10);
-  yToCursor(e.clientY - 10);
-});
+/* Desactivado: Lógica de cursor personalizado */
+// const xToCursor = gsap.quickTo(cursor, "x", { duration: 0.15, ease: "power3" });
+// const yToCursor = gsap.quickTo(cursor, "y", { duration: 0.15, ease: "power3" });
 
 // --- 2. INTERACCIÓN DE PANTALLA (HERO HOVER) ---
 const shapes = document.querySelectorAll(".hero-shape");
@@ -36,12 +31,12 @@ document.querySelectorAll(".card").forEach((card) => {
   const chars = card.querySelectorAll(".char");
 
   card.addEventListener("mouseenter", () => {
-    cursor.classList.add("active");
+    if(cursor) cursor.classList.add("active");
     gsap.to(chars, { y: -10, stagger: 0.02, duration: 0.3, ease: "back.out(2)", color: "white" });
   });
 
   card.addEventListener("mouseleave", () => {
-    cursor.classList.remove("active");
+    if(cursor) cursor.classList.remove("active");
     gsap.to(chars, { y: 0, stagger: 0.02, duration: 0.3, ease: "power2.in", color: "" });
   });
 

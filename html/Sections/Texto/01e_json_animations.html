@@ -1,84 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>01e. Tipografía JSON - GSAP Academy</title>
     <!-- Fuentes premium -->
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&family=Outfit:wght@300;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&family=Outfit:wght@300;700&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
     <!-- Reutilizamos el estilo de las secciones de texto para coherencia -->
-    <link rel="stylesheet" href="../../../css/01a_texto.css">
+    <link rel="stylesheet" href="../../../css/01a_texto.css" />
     <style>
-        :root {
-            --accent: #00ff88; /* Color de acento de tipografía (Verde) */
-            --bg: #070707; 
-            --text-main: #FFFFFF;
-        }
+      :root {
+        --accent: #00ff88; /* Color de acento de tipografía (Verde) */
+        --bg: #070707;
+        --text-main: #ffffff;
+      }
 
-        /* Ajustes específicos para esta sección */
-        .title-chars {
-            font-family: 'Manrope', sans-serif;
-            font-size: clamp(2rem, 5vw, 4.5rem);
-            font-weight: 800;
-            text-transform: uppercase;
-            line-height: 1.08;
-            letter-spacing: -0.8px;
-            margin: 0;
-            overflow: hidden;
-            text-align: center;
-        }
+      /* Ajustes específicos para esta sección */
+      .title-chars {
+        font-family: "Manrope", sans-serif;
+        font-size: clamp(2rem, 5vw, 4.5rem);
+        font-weight: 800;
+        text-transform: uppercase;
+        line-height: 1.08;
+        letter-spacing: -0.8px;
+        margin: 0;
+        overflow: hidden;
+        text-align: center;
+      }
 
-        .title-words {
-            font-family: 'Manrope', sans-serif;
-            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-            font-weight: 500;
-            line-height: 1.4;
-            margin: 0;
-            color: rgba(255, 255, 255, 0.9);
-            text-align: center;
-            max-width: 90%;
-        }
+      .title-words {
+        font-family: "Manrope", sans-serif;
+        font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+        font-weight: 500;
+        line-height: 1.4;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.9);
+        text-align: center;
+        max-width: 90%;
+      }
 
-        .hover-image {
-            position: absolute;
-            width: 250px;
-            height: auto;
-            pointer-events: none;
-            opacity: 0;
-            z-index: 10;
-            border-radius: 12px;
-            filter: grayscale(100%) brightness(0.8);
-            border: 1px solid var(--acc);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+      .hover-image {
+        position: absolute;
+        width: 250px;
+        height: auto;
+        pointer-events: none;
+        opacity: 0;
+        z-index: 10;
+        border-radius: 12px;
+        filter: grayscale(100%) brightness(0.8);
+        border: 1px solid var(--acc);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
 
-        .panel.demo {
-            position: relative;
-            cursor: auto; /* Restauramos el cursor estándar */
-        }
+      .panel.demo {
+        position: relative;
+        cursor: auto; /* Restauramos el cursor estándar */
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header class="header">
-        <h3>GSAP <span class="highlight">Efectos JSON (5/5)</span></h3>
-        <div class="nav-links">
-            <a href="../../../index.html">Hub</a>
-            <a href="01a_texto.html">1</a>
-            <a href="01b_texto.html">2</a>
-            <a href="01c_texto.html">3</a>
-            <a href="01d_texto.html">4</a>
-            <a href="01e_json_animations.html" class="active">5</a>
-        </div>
+      <h3>GSAP <span class="highlight">Efectos JSON (5/5)</span></h3>
+      <div class="nav-links">
+        <a href="../../../index.html">Hub</a>
+        <a href="01a_texto.html">1</a>
+        <a href="01b_texto.html">2</a>
+        <a href="01c_texto.html">3</a>
+        <a href="01d_texto.html">4</a>
+        <a href="01e_json_animations.html" class="active">5</a>
+      </div>
     </header>
 
     <div class="showcase">
-        
-        <!-- SECCIÓN 21: Animación de Caracteres -->
-        <section class="section">
-            <div class="panel code">
-                <h2>21. Revelado de <span class="highlight">Caracteres</span></h2>
-                <p>Efecto de revelado vertical segmentado por caracteres. Se utiliza un <code>transformOrigin</code> desplazado en el eje Z para añadir sensación de profundidad durante el giro de entrada.</p>
-                <pre><code><span class="com">// Fragmentación por caracteres para control total</span>
+      <!-- SECCIÓN 21: Animación de Caracteres -->
+      <section class="section">
+        <div class="panel code">
+          <h2>21. Revelado de <span class="highlight">Caracteres</span></h2>
+          <p>
+            Efecto de revelado vertical segmentado por caracteres. Se utiliza un <code>transformOrigin</code> desplazado en el eje
+            Z para añadir sensación de profundidad durante el giro de entrada.
+          </p>
+          <pre><code><span class="com">// Fragmentación por caracteres para control total</span>
 <span class="key">const</span> split = <span class="key">new</span> <span class="fn">SplitType</span>(<span class="str">'#text1'</span>, { types: <span class="str">'chars'</span> });
 
 <span class="com">// Animación de entrada vertical con pivote Z profundo</span>
@@ -90,21 +95,29 @@
   ease: <span class="str">"power4.out"</span>,
   transformOrigin: <span class="str">"top center -50"</span>
 });</code></pre>
-            </div>
-            <div class="panel demo" id="section1">
-                <h1 class="title-chars" id="text1" style="font-size: clamp(1.2rem, 2.5vw, 2rem); max-width: 800px; text-align: center; margin: 0 auto;">
-                    EXPERIMENTA EL PODER DE LAS NARRATIVAS INMERSIVAS A TRAVÉS DE SISTEMAS DE DISEÑO DE MOVIMIENTO SOFISTICADOS QUE RESPONDEN A LA INTERACCIÓN HUMANA.
-                </h1>
-                <button class="btn" onclick="playS21()">Reiniciar</button>
-            </div>
-        </section>
+        </div>
+        <div class="panel demo" id="section1">
+          <h1
+            class="title-chars"
+            id="text1"
+            style="font-size: clamp(1.2rem, 2.5vw, 2rem); max-width: 800px; text-align: center; margin: 0 auto"
+          >
+            EXPERIMENTA EL PODER DE LAS NARRATIVAS INMERSIVAS A TRAVÉS DE SISTEMAS DE DISEÑO DE MOVIMIENTO SOFISTICADOS QUE
+            RESPONDEN A LA INTERACCIÓN HUMANA.
+          </h1>
+          <button class="btn" onclick="playS21()">Reiniciar</button>
+        </div>
+      </section>
 
-        <!-- SECCIÓN 22: Animación de Palabras -->
-        <section class="section">
-            <div class="panel code">
-                <h2>22. Desplazamiento de <span class="highlight">Palabras</span></h2>
-                <p>Animación basada en bloques de palabras con desplazamiento lateral coordinado. Ideal para párrafos de alto impacto donde se busca una legibilidad dinámica y una estética de interfaz fluida.</p>
-                <pre><code><span class="com">// Fragmentación por palabras (Words)</span>
+      <!-- SECCIÓN 22: Animación de Palabras -->
+      <section class="section">
+        <div class="panel code">
+          <h2>22. Desplazamiento de <span class="highlight">Palabras</span></h2>
+          <p>
+            Animación basada en bloques de palabras con desplazamiento lateral coordinado. Ideal para párrafos de alto impacto
+            donde se busca una legibilidad dinámica y una estética de interfaz fluida.
+          </p>
+          <pre><code><span class="com">// Fragmentación por palabras (Words)</span>
 <span class="key">const</span> split = <span class="key">new</span> <span class="fn">SplitType</span>(<span class="str">'#text2'</span>, { types: <span class="str">'words'</span> });
 
 <span class="com">// Desplazamiento lateral en el eje X con escalonado (stagger)</span>
@@ -115,43 +128,51 @@
   stagger: 0.04,
   ease: <span class="str">"power2.out"</span>
 });</code></pre>
-            </div>
-            <div class="panel demo" id="section2">
-                <h2 class="title-words" id="text2">
-                    Curaduría experta de experiencias digitales de alta gama mediante animación sofisticada y diseño de movimiento. Superamos los límites de las interfaces web modernas utilizando GSAP para crear interacciones fluidas que cautivan a los usuarios y elevan la identidad de marca.
-                </h2>
-                <button class="btn" onclick="playS22()">Reiniciar</button>
-            </div>
-        </section>
+        </div>
+        <div class="panel demo" id="section2">
+          <h2 class="title-words" id="text2">
+            Curaduría experta de experiencias digitales de alta gama mediante animación sofisticada y diseño de movimiento.
+            Superamos los límites de las interfaces web modernas utilizando GSAP para crear interacciones fluidas que cautivan a
+            los usuarios y elevan la identidad de marca.
+          </h2>
+          <button class="btn" onclick="playS22()">Reiniciar</button>
+        </div>
+      </section>
 
-        <!-- SECCIÓN 23: Text Invert Animation -->
-        <section class="section">
-            <div class="panel code">
-                <h2>23. Text <span class="highlight">Invert</span></h2>
-                <p>Efecto de inversión cromática. El texto cambia de color o contraste dinámicamente, creando un impacto visual de alta fidelidad. Ideal para resaltar conceptos clave sobre fondos complejos o gradientes.</p>
-                <pre><code><span class="com">// Inversión de color mediante capas</span>
+      <!-- SECCIÓN 23: Text Invert Animation -->
+      <section class="section">
+        <div class="panel code">
+          <h2>23. Text <span class="highlight">Invert</span></h2>
+          <p>
+            Efecto de inversión cromática. El texto cambia de color o contraste dinámicamente, creando un impacto visual de alta
+            fidelidad. Ideal para resaltar conceptos clave sobre fondos complejos o gradientes.
+          </p>
+          <pre><code><span class="com">// Inversión de color mediante capas</span>
 <span class="fn">gsap</span>.to(foreground, {
   clipPath: <span class="str">"inset(0% 0% 0% 0%)"</span>,
   duration: 1.5,
   stagger: 0.05,
   ease: <span class="str">"expo.inOut"</span>
 });</code></pre>
-            </div>
-            <div class="panel demo" id="section23">
-                <div class="invert-wrapper">
-                    <h1 class="title-chars invert-base" id="text23-base">TEXT INVERSION MASTERCLASS</h1>
-                    <h1 class="title-chars invert-top" id="text23">TEXT INVERSION MASTERCLASS</h1>
-                </div>
-                <button class="btn" onclick="playS23()">Reiniciar</button>
-            </div>
-        </section>
+        </div>
+        <div class="panel demo" id="section23">
+          <div class="invert-wrapper">
+            <h1 class="title-chars invert-base" id="text23-base">TEXT INVERSION MASTERCLASS</h1>
+            <h1 class="title-chars invert-top" id="text23">TEXT INVERSION MASTERCLASS</h1>
+          </div>
+          <button class="btn" onclick="playS23()">Reiniciar</button>
+        </div>
+      </section>
 
-        <!-- SECCIÓN 24: Text Invert (Scroll) -->
-        <section class="section" style="border-bottom:none;">
-            <div class="panel code">
-                <h2>24. Invert <span class="highlight">Scroll</span></h2>
-                <p>La versión interactiva del efecto Invert. La inversión de color está vinculada directamente al scroll (Scrub), permitiendo que el usuario "descubra" el texto a medida que se desplaza por la sección.</p>
-                <pre><code><span class="com">// ScrollTrigger Scrub Inversion</span>
+      <!-- SECCIÓN 24: Text Invert (Scroll) -->
+      <section class="section" style="border-bottom: none">
+        <div class="panel code">
+          <h2>24. Invert <span class="highlight">Scroll</span></h2>
+          <p>
+            La versión interactiva del efecto Invert. La inversión de color está vinculada directamente al scroll (Scrub),
+            permitiendo que el usuario "descubra" el texto a medida que se desplaza por la sección.
+          </p>
+          <pre><code><span class="com">// ScrollTrigger Scrub Inversion</span>
 <span class="fn">gsap</span>.to(foreground, {
   clipPath: <span class="str">"inset(0% 0% 0% 0%)"</span>,
   scrollTrigger: {
@@ -161,16 +182,15 @@
     end: <span class="str">"bottom 20%"</span>
   }
 });</code></pre>
-            </div>
-            <div class="panel demo" id="section24">
-                <div class="invert-wrapper">
-                    <h1 class="title-chars invert-base" id="text24-base">SCROLL RESPONSIVE ANIMATION</h1>
-                    <h1 class="title-chars invert-top" id="text24">SCROLL RESPONSIVE ANIMATION</h1>
-                </div>
-                <button class="btn" onclick="playS24()">Reiniciar</button>
-            </div>
-        </section>
-
+        </div>
+        <div class="panel demo" id="section24">
+          <div class="invert-wrapper">
+            <h1 class="title-chars invert-base" id="text24-base">SCROLL RESPONSIVE ANIMATION</h1>
+            <h1 class="title-chars invert-top" id="text24">SCROLL RESPONSIVE ANIMATION</h1>
+          </div>
+          <button class="btn" onclick="playS24()">Reiniciar</button>
+        </div>
+      </section>
     </div>
 
     <!-- CARGA DE GSAP Y SPLIT-TYPE -->
@@ -179,94 +199,95 @@
     <script src="https://unpkg.com/split-type"></script>
 
     <script>
-        // Registro del plugin ScrollTrigger para habilitar animaciones ligadas al scroll
-        gsap.registerPlugin(ScrollTrigger);
+      // Registro del plugin ScrollTrigger para habilitar animaciones ligadas al scroll
+      gsap.registerPlugin(ScrollTrigger);
 
-        // Inicializamos SplitType para fragmentar los textos por caracteres o palabras
-        const split1 = new SplitType('#text1', { types: 'chars' });
-        const split2 = new SplitType('#text2', { types: 'words' });
-        // Para Invert, necesitamos duplicar el contenido si queremos un efecto perfecto, 
-        // pero aquí usaremos el div.invert-top que ya contiene el mismo texto.
-        const split23 = new SplitType('#text23', { types: 'chars' });
-        const split24 = new SplitType('#text24', { types: 'chars' });
+      // Inicializamos SplitType para fragmentar los textos por caracteres o palabras
+      const split1 = new SplitType("#text1", { types: "chars" });
+      const split2 = new SplitType("#text2", { types: "words" });
+      // Para Invert, necesitamos duplicar el contenido si queremos un efecto perfecto,
+      // pero aquí usaremos el div.invert-top que ya contiene el mismo texto.
+      const split23 = new SplitType("#text23", { types: "chars" });
+      const split24 = new SplitType("#text24", { types: "chars" });
 
-        // --- EFECTO 21: Revelado Vertical ---
-        function playS21() {
-            gsap.from(split1.chars, {
-                y: 50,
-                opacity: 0,
-                duration: 1.2,
-                stagger: 0.05,
-                ease: "power4.out",
-                transformOrigin: "top center -50",
-                overwrite: true
-            });
-        }
-
-        // --- EFECTO 22: Desplizamiento por Palabras ---
-        function playS22() {
-            gsap.from(split2.words, {
-                x: 60,
-                opacity: 0,
-                duration: 1.2,
-                stagger: 0.04,
-                ease: "power2.out",
-                overwrite: true
-            });
-        }
-
-        // --- EFECTO 23: Text Invert (Manual) ---
-        function playS23() {
-            gsap.set("#text23", { clipPath: "inset(0% 100% 0% 0%)" });
-            gsap.to("#text23", {
-                clipPath: "inset(0% 0% 0% 0%)",
-                duration: 2,
-                ease: "power3.inOut",
-                overwrite: true
-            });
-        }
-
-        // --- EFECTO 24: Text Invert (Scroll) ---
-        function playS24() {
-            gsap.set("#text24", { clipPath: "inset(0% 100% 0% 0%)" });
-            gsap.to("#text24", {
-                clipPath: "inset(0% 0% 0% 0%)",
-                duration: 1.5,
-                ease: "none",
-                overwrite: true
-            });
-        }
-
-        // --- SCROLLTRIGGERS ---
-
-        // Invert Scroll (Effect 24)
-        gsap.fromTo("#text24", 
-            { clipPath: "inset(0% 100% 0% 0%)" },
-            { 
-                clipPath: "inset(0% 0% 0% 0%)",
-                scrollTrigger: {
-                    trigger: "#section24",
-                    start: "top 70%",
-                    end: "center center",
-                    scrub: 1
-                }
-            }
-        );
-
-        // Disparo automático inicial para 23
-        ScrollTrigger.create({
-            trigger: "#section23",
-            start: "top 80%",
-            onEnter: () => playS23()
+      // --- EFECTO 21: Revelado Vertical ---
+      function playS21() {
+        gsap.from(split1.chars, {
+          y: 50,
+          opacity: 0,
+          duration: 1.2,
+          stagger: 0.05,
+          ease: "power4.out",
+          transformOrigin: "top center -50",
+          overwrite: true,
         });
+      }
 
-        // Animación de carga inicial para una entrada fluida
-        window.addEventListener('load', () => {
-            gsap.delayedCall(0.5, () => {
-                playS21();
-                playS22();
-            });
+      // --- EFECTO 22: Desplizamiento por Palabras ---
+      function playS22() {
+        gsap.from(split2.words, {
+          x: 60,
+          opacity: 0,
+          duration: 1.2,
+          stagger: 0.04,
+          ease: "power2.out",
+          overwrite: true,
         });
+      }
+
+      // --- EFECTO 23: Text Invert (Manual) ---
+      function playS23() {
+        gsap.set("#text23", { clipPath: "inset(0% 100% 0% 0%)" });
+        gsap.to("#text23", {
+          clipPath: "inset(0% 0% 0% 0%)",
+          duration: 2,
+          ease: "power3.inOut",
+          overwrite: true,
+        });
+      }
+
+      // --- EFECTO 24: Text Invert (Scroll) ---
+      function playS24() {
+        gsap.set("#text24", { clipPath: "inset(0% 100% 0% 0%)" });
+        gsap.to("#text24", {
+          clipPath: "inset(0% 0% 0% 0%)",
+          duration: 1.5,
+          ease: "none",
+          overwrite: true,
+        });
+      }
+
+      // --- SCROLLTRIGGERS ---
+
+      // Invert Scroll (Effect 24)
+      gsap.fromTo(
+        "#text24",
+        { clipPath: "inset(0% 100% 0% 0%)" },
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          scrollTrigger: {
+            trigger: "#section24",
+            start: "top 70%",
+            end: "center center",
+            scrub: 1,
+          },
+        },
+      );
+
+      // Disparo automático inicial para 23
+      ScrollTrigger.create({
+        trigger: "#section23",
+        start: "top 80%",
+        onEnter: () => playS23(),
+      });
+
+      // Animación de carga inicial para una entrada fluida
+      window.addEventListener("load", () => {
+        gsap.delayedCall(0.5, () => {
+          playS21();
+          playS22();
+        });
+      });
     </script>
     <!-- FOOTER INSTITUCIONAL -->
     <footer class="footer-academy">
@@ -278,5 +299,5 @@
         </div>
       </div>
     </footer>
-</body>
+  </body>
 </html>
