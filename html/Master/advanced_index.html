@@ -12,50 +12,115 @@
     <!-- Reutilizamos el main.css para mantener la coherencia -->
     <link rel="stylesheet" href="../../css/main.css" />
     <style>
+      .grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+      }
       /* Definición de colores premium para cada sección avanzada */
-      .card.s-scroll { --accent-color: #00f2ff; border-color: rgba(0, 242, 255, 0.3); }
-      .card.s-parallax { --accent-color: #ffcc00; border-color: rgba(255, 204, 0, 0.3); }
-      .card.s-split { --accent-color: #ff007a; border-color: rgba(255, 0, 122, 0.3); }
-      .card.s-menu { --accent-color: #39ff14; border-color: rgba(57, 255, 20, 0.3); }
-      .card.s-hover { --accent-color: #00d4ff; border-color: rgba(0, 212, 255, 0.3); }
-      .card.s-css { --accent-color: #7b00ff; border-color: rgba(123, 0, 255, 0.3); }
-      .card.s-trans { --accent-color: #ff3c00; border-color: rgba(255, 60, 0, 0.3); }
+      .card.s-scroll {
+        --accent-color: #00f2ff;
+        border-color: rgba(0, 242, 255, 0.3);
+      }
+      .card.s-parallax {
+        --accent-color: #ffcc00;
+        border-color: rgba(255, 204, 0, 0.3);
+      }
+      .card.s-split {
+        --accent-color: #ff007a;
+        border-color: rgba(255, 0, 122, 0.3);
+      }
+      .card.s-menu {
+        --accent-color: #39ff14;
+        border-color: rgba(57, 255, 20, 0.3);
+      }
+      .card.s-hover {
+        --accent-color: #00d4ff;
+        border-color: rgba(0, 212, 255, 0.3);
+      }
+      .card.s-css {
+        --accent-color: #7b00ff;
+        border-color: rgba(123, 0, 255, 0.3);
+      }
+      .card.s-trans {
+        --accent-color: #ff3c00;
+        border-color: rgba(255, 60, 0, 0.3);
+      }
 
-      .header { 
-        padding: 1.5rem 2rem; 
-        display: flex; 
-        justify-content: space-between; 
-        align-items:center; 
-        position: fixed; 
+      .header {
+        padding: 1.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
         top: 0;
         left: 0;
-        width: 100%; 
-        z-index: 1000; 
-        background: rgba(7,7,7,0.8); 
-        backdrop-filter: blur(20px); 
-        border-bottom: 1px solid rgba(255,255,255,0.1); 
+        width: 100%;
+        z-index: 1000;
+        background: rgba(7, 7, 7, 0.8);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         color: #fff;
       }
-      .header h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px;}
-      .nav-links { display: flex; gap: 15px; }
-      .header a { color: #fff; text-decoration: none; border: 1px solid rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 100px; font-weight: 700; font-size: 0.8rem; transition: 0.3s;}
-      .header a:hover { background: #fff; color: #000; }
-      .highlight { color: #00f2ff; }
-      .card { min-height: 480px; } /* Aseguramos que todas las cards tengan la misma altura */
+      .header h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 15px;
+      }
+      .header a {
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 20px;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        transition: 0.3s;
+      }
+      .header a:hover {
+        background: #fff;
+        color: #000;
+      }
+      .highlight {
+        color: #00f2ff;
+      }
+      .card {
+        max-width: 400px;
+      } /* Aseguramos que todas las cards tengan la misma altura */
     </style>
   </head>
   <body>
     <header class="header">
-        <h3>GSAP <span class="highlight">CodeGrid Mastery</span></h3>
-        <div class="nav-links">
-            <a href="../../index.html">Hub</a>
-        </div>
+      <h3>GSAP <span class="highlight">CodeGrid Mastery</span></h3>
+      <div class="nav-links">
+        <a href="../../index.html">Hub</a>
+      </div>
     </header>
 
     <!-- Fondo Interactivo -->
     <div class="hero-interaction">
-      <div class="hero-shape" style="top: 20%; left: 10%; background: radial-gradient(circle, #00f2ff22 0%, transparent 70%);" data-speed="0.04"></div>
-      <div class="hero-shape" style="top: 60%; left: 70%; width: 400px; height: 400px; background: radial-gradient(circle, #ff007a22 0%, transparent 70%);" data-speed="0.06"></div>
+      <div
+        class="hero-shape"
+        style="top: 20%; left: 10%; background: radial-gradient(circle, #00f2ff22 0%, transparent 70%)"
+        data-speed="0.04"
+      ></div>
+      <div
+        class="hero-shape"
+        style="
+          top: 60%;
+          left: 70%;
+          width: 400px;
+          height: 400px;
+          background: radial-gradient(circle, #ff007a22 0%, transparent 70%);
+        "
+        data-speed="0.06"
+      ></div>
     </div>
 
     <div class="container">
@@ -64,11 +129,13 @@
       <div class="grid">
         <!-- 01. CASCADA 3D REACTIVA -->
         <div class="card s-scroll">
-          <h2>01. Cascada 3D Reactiva</h2>
-          <p>Control total sobre el tiempo y el espacio. Implementa disparadores complejos y secuencias ligadas al desplazamiento.</p>
-          <div class="btn-group" style="flex-direction: column; width: 100%;">
-            <a href="masterGsap.html" class="btn mag-element" style="width: 100%;">1.- Scroll & Parallax</a>
-            <a href="stacking/stack_superio.html" class="btn mag-element" style="width: 100%;">2.- Cascada 3D Reactiva</a>
+          <h2>01. ScrollTrigger</h2>
+          <p>
+            Control total sobre el tiempo y el espacio. Implementa disparadores complejos y secuencias ligadas al desplazamiento.
+          </p>
+          <div class="btn-group" style="flex-direction: column; width: 100%">
+            <a href="masterGsap.html" class="btn mag-element" style="width: 100%">01.- ScrollZoom & Parallax</a>
+            <a href="stacking/stack_superio.html" class="btn mag-element" style="width: 100%">02.- Stacking Cards</a>
           </div>
         </div>
 
@@ -90,42 +157,41 @@
           </div>
         </div>
 
-        <!-- 04. MENU -->
+        <!-- 04. SPINER-->
         <div class="card s-menu">
-            <h2>04. Menu</h2>
-            <p>Sistemas de navegación fluidos. Transiciones entre estados y estructuras modales de alto impacto.</p>
-            <div class="btn-group">
-                <a href="#" class="btn mag-element">Próximamente</a>
-            </div>
+          <h2>04. Spiner</h2>
+          <p>Sistemas de navegación fluidos. Transiciones entre estados y estructuras modales de alto impacto.</p>
+          <div class="btn-group">
+            <a href="Spinner/transicionTEC.html" class="btn mag-element">01.-Spiner Tech</a>
+          </div>
         </div>
 
         <!-- 05. HOVER -->
         <div class="card s-hover">
-            <h2>05. Hover</h2>
-            <p>Micro-interacciones premium. Efectos magnéticos, distorsiones de canvas y estados de interacción reactivos.</p>
-            <div class="btn-group">
-                <a href="#" class="btn mag-element">Próximamente</a>
-            </div>
+          <h2>05. Hover</h2>
+          <p>Micro-interacciones premium. Efectos magnéticos, distorsiones de canvas y estados de interacción reactivos.</p>
+          <div class="btn-group">
+            <a href="#" class="btn mag-element">Próximamente</a>
+          </div>
         </div>
 
         <!-- 06. CSS -->
         <div class="card s-css">
-            <h2>06. CSS</h2>
-            <p>Sincronización híbrida. Potencia tus hojas de estilo con el motor de animación más rápido del mundo.</p>
-            <div class="btn-group">
-                <a href="#" class="btn mag-element">Próximamente</a>
-            </div>
+          <h2>06. CSS</h2>
+          <p>Sincronización híbrida. Potencia tus hojas de estilo con el motor de animación más rápido del mundo.</p>
+          <div class="btn-group">
+            <a href="#" class="btn mag-element">Próximamente</a>
+          </div>
         </div>
 
         <!-- 07. MENUS I TRANSICIONES -->
         <div class="card s-trans">
-            <h2>07. Menus i Transiciones</h2>
-            <p>Fluidez entre mundos. Gestión avanzada de estados y animaciones de entrada/salida entre vistas.</p>
-            <div class="btn-group">
-                <a href="#" class="btn mag-element">Próximamente</a>
-            </div>
+          <h2>07. Menus i Transiciones</h2>
+          <p>Fluidez entre mundos. Gestión avanzada de estados y animaciones de entrada/salida entre vistas.</p>
+          <div class="btn-group">
+            <a href="#" class="btn mag-element">Próximamente</a>
+          </div>
         </div>
-
       </div>
     </div>
 
