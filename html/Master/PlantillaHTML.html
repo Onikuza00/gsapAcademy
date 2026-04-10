@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GSAP Master - Spinner Tech</title>
+    <!-- Importación de fuentes premium para un look profesional -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700&family=Outfit:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Estilos base de la academia para mantener la coherencia visual -->
+    <link rel="stylesheet" href="../../../css/main.css" />
+
+    <style>
+      :root {
+        /* Paleta de colores para las tarjetas */
+        --base-1: #3d2fa9;
+        --base-2: #ff7722;
+        --base-3: #ff3d33;
+        --base-4: #785f47;
+        --base-5: #dfa60b;
+        --accent-color: #00f2ff; /* Color de acento cian característico de ScrollTrigger */
+      }
+
+      /* Estilos específicos para la cabecera (Header) con efecto cristal (Glassmorphism) */
+      .header {
+        padding: 1.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background: rgba(7, 7, 7, 0.8);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+      .header h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 15px;
+      }
+      .header a {
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 20px;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        transition: 0.3s;
+      }
+      .header a:hover {
+        background: #fff;
+        color: #000;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navegación Superior -->
+    <header class="header">
+      <h3>GSAP <span class="highlight">CodeGrid Mastery</span></h3>
+      <div class="nav-links">
+        <a href="../advanced_index.html">Advanced Hub</a>
+      </div>
+    </header>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="footer-academy">
+      <div class="footer-content">
+        <img src="../../../img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
+        <div class="footer-info">
+          <p class="declaration">UNA DECLARACIÓN DE INTENCIONES SOBRE LA EXCELENCIA EN ANIMACIÓN WEB</p>
+          <p class="copyright">© 2026 PAU CROSAS BATISTA — GSAP MASTER ACADEMY</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- LIBRERÍAS EXTERNAS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+
+    <!-- Script global de la academia para interacciones comunes (cursor, magnetismo) -->
+    <script src="../../../js/main.js"></script>
+
+    <script>
+      // Registro del plugin ScrollTrigger en GSAP
+      gsap.registerPlugin(ScrollTrigger);
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Inicialización de Lenis para un desplazamiento suave (Smooth Scroll)
+        const lenis = new Lenis();
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+          lenis.raf(time * 1000); // Sincroniza el ticker de GSAP con Lenis
+        });
+        gsap.ticker.lagSmoothing(0); // Desactivamos el suavizado de lag para evitar saltos
+
+        // Configuración de variables para el efecto de apilamiento
+        const cards = document.querySelectorAll(".sticky-cards .card");
+        const totalCards = cards.length;
+        const segmentSize = 1 / totalCards; // Calcula cuánto scroll corresponde a cada tarjeta
+        const cardYoffSet = 5; // Desplazamiento vertical (en %) entre tarjetas apiladas
+        const CardScaleStep = 0.05; // Cuánto se reduce el tamaño para dar sensación de profundidad
+
+        // Configuración posicional inicial del stack
+        cards.forEach((card, i) => {
+          gsap.set(card, {
+            xPercent: -50, // Centrado horizontal
+            yPercent: -50 + i * cardYoffSet, // Offset vertical graduado
+            scale: 1 - i * CardScaleStep, // Escala graduada (efecto profundidad)
+          });
+        });
+
+        // Creación del ScrollTrigger que controla toda la secuencia de apilamiento
+        ScrollTrigger.create({
+          trigger: ".sticky-cards",
+          start: "top top", // Empieza cuando el contenedor llega al tope de pantalla
+          end: `+=${window.innerHeight * 8}px`, // Alargamos el scroll para transiciones cinemáticas
+          pin: true, // Mantiene la sección bloqueada mientras ocurre la animación
+          pinSpacing: true,
+          scrub: 1.5, // Sincronización muy suave (scrub) con el movimiento del scroll
+          onUpdate: (self) => {
+            const progress = self.progress; // Valor de 0 a 1 del progreso total del scroll
+
+            // Calculamos qué tarjeta es la "activa" en este momento del scroll
+            const activeIndex = Math.min(Math.floor(progress / segmentSize), totalCards - 1);
+
+            // Calculamos cuánto ha progresado el scroll dentro de la tarjeta activa actual
+            const segProgress = (progress - activeIndex * segmentSize) / segmentSize;
+
+            cards.forEach((card, i) => {
+              if (i < activeIndex) {
+                // TARJETAS PASADAS: Se desplazan totalmente hacia arriba con rotación 3D
+                gsap.set(card, {
+                  yPercent: -250,
+                  rotationX: 35,
+                });
+              } else if (i === activeIndex) {
+                // TARJETA ACTIVA: Se desplaza suavemente hacia arriba (centro -> fuera)
+                gsap.set(card, {
+                  // Interpolación: de -50% (posición normal) a -200% (arriba fuera)
+                  yPercent: gsap.utils.interpolate(-50, -200, segProgress),
+                  // Interpolación de rotación: de 0 a 35 grados
+                  rotationX: gsap.utils.interpolate(0, 35, segProgress),
+                  scale: 1, // La activa siempre recupera su tamaño real antes de salir
+                });
+              } else {
+                // TARJETAS FUTURAS: Ganan posición y tamaño a medida que la anterior sale
+                const behindIndex = i - activeIndex;
+                // Cálculo dinámico para evitar saltos bruscos entre estados
+                const currentYOffset = (behindIndex - segProgress) * cardYoffSet;
+                const currentScale = 1 - (behindIndex - segProgress) * CardScaleStep;
+
+                gsap.set(card, {
+                  yPercent: -50 + currentYOffset,
+                  rotationX: 0,
+                  scale: currentScale,
+                });
+              }
+            });
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
