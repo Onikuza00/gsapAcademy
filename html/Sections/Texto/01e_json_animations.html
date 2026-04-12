@@ -10,7 +10,360 @@
       rel="stylesheet"
     />
     <!-- Reutilizamos el estilo de las secciones de texto para coherencia -->
-    <link rel="stylesheet" href="../../../css/01a_texto.css" />
+    <!-- Estilos integrados de ../../../css/01a_texto.css -->
+<style>
+:root {
+  --bg: #070707;
+  --acc: #00ff88;
+  --txt: #f0f0f0;
+  --glass: rgba(255, 255, 255, 0.02);
+  --border: rgba(0, 255, 136, 0.2);
+  --space: clamp(2rem, 5vw, 4rem);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: "Outfit", sans-serif;
+  overflow-x: hidden;
+}
+
+h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.highlight {
+  color: var(--acc);
+}
+
+.header {
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(7, 7, 7, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.header h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.nav-links {
+  display: flex;
+  gap: 15px;
+}
+.header a {
+  color: var(--txt);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-family: "Space Grotesk";
+  font-size: 0.8rem;
+  transition: 0.3s;
+}
+.header a.active {
+  background: var(--acc);
+  color: var(--bg);
+  border-color: var(--acc);
+}
+.header a:hover {
+  background: var(--txt);
+  color: var(--bg);
+}
+
+.section {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space);
+  padding: calc(100px + var(--space)) var(--space) var(--space) var(--space);
+  /* Estilo específico para el Efecto 01: Caja de ejemplo más ancha */
+}
+#sec-1 {
+  grid-template-columns: 0.8fr 1.2fr;
+}
+
+@media (max-width: 1100px) {
+  .section,
+  #sec-1 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Paneles principales de contenido: Code (izq) y Demo (der) */
+.panel {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: var(--space);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  transition: 0.4s;
+  backdrop-filter: blur(5px);
+}
+.panel.code {
+  background: #080808;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+.panel.demo {
+  align-items: center;
+  overflow: hidden;
+  background: radial-gradient(circle at center, rgba(0, 255, 136, 0.03) 0%, transparent 70%);
+  perspective: 1500px; /* Profundidad necesaria para que los efectos de rotación 3D se aprecien correctamente */
+}
+
+.btn {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  background: transparent;
+  border: 1px solid var(--acc);
+  color: var(--acc);
+  padding: 12px 24px;
+  border-radius: 100px;
+  font-family: "Space Grotesk";
+  font-weight: 700;
+  transition: 0.3s;
+}
+.btn:hover {
+  background: var(--acc);
+  color: var(--bg);
+}
+
+pre {
+  background: #000;
+  padding: 1.5rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #a6accd;
+  border: 1px solid #222;
+  overflow-x: auto;
+  margin-top: 1rem;
+  font-family: monospace;
+  line-height: 1.5;
+}
+.com {
+  color: #697098;
+  font-style: italic;
+}
+.str {
+  color: #c3e88d;
+}
+.fn {
+  color: #82aaff;
+}
+.key {
+  color: #c792ea;
+}
+
+/* DEMOS CSS */
+.txt-cascade {
+  font-size: clamp(2.5rem, 4.5vw, 5rem); /* Reducido según petición: texto del ejemplo un poco más pequeño */
+  font-family: "Space Grotesk";
+  font-weight: 700;
+  text-align: center;
+}
+
+.reveal-wrap {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: left;
+}
+.reveal-line {
+  overflow: hidden;
+  padding-bottom: 5px;
+} /* CRÍTICO: overflow hidden */
+.txt-reveal {
+  font-size: clamp(1.5rem, 2.5vw, 3rem); /* Reducido según petición: texto de ejemplo más pequeño */
+  font-family: "Space Grotesk";
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.1;
+  color: #aaa;
+  opacity: 0; /* Oculto inicialmente para que solo sea visible durante la animación */
+}
+
+.term {
+  background: #050505;
+  padding: 2rem;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 1.2rem;
+  border: 1px solid #222;
+  color: var(--acc);
+  width: 80%;
+}
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.2rem;
+  background: var(--acc);
+  animation: blink 1s step-end infinite;
+  vertical-align: bottom;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.scramble-txt {
+  font-size: 2rem;
+  font-family: "Space Grotesk";
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  max-width: 80%;
+  line-height: 1.2;
+}
+
+.blur-txt {
+  font-size: clamp(1.5rem, 4vw, 3rem); /* Reducido según petición: texto de ejemplo más pequeño */
+  font-family: "Space Grotesk";
+  text-align: center;
+  letter-spacing: -2px;
+}
+
+/* Utilitarios para reducir el tamaño del texto en demos complejas */
+.text-small {
+  font-size: clamp(0.8rem, 1.8vw, 1.4rem) !important;
+  max-width: 80% !important;
+  line-height: 1.4 !important;
+}
+
+/* Normalización del cursor: eliminamos estilos de ocultación para usar el puntero estándar del sistema */
+html,
+body {
+  cursor: auto !important;
+}
+.panel.demo {
+  cursor: auto !important;
+}
+
+/* FOOTER STYLES: Estética premium y minimalista para el cierre de sección */
+.footer-academy {
+  width: 100%;
+  padding: 8rem 2rem 6rem; /* Aumentamos el padding para dar más aire al diseño */
+  border-top: 1px solid rgba(0, 255, 136, 0.1); /* Borde muy sutil con el color de acento */
+  margin-top: 8rem;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(to bottom, transparent, rgba(0, 255, 136, 0.02)); /* Degradado sutil de fondo */
+  position: relative;
+}
+
+/* Añadimos un pequeño brillo en la parte superior del footer como detalle de calidad */
+.footer-academy::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 2px;
+  background: var(--acc);
+  box-shadow: 0 0 20px var(--acc);
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  max-width: 900px;
+  text-align: center;
+}
+
+.footer-logo {
+  width: 40px;
+  height: auto;
+  opacity: 0.5;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  filter: grayscale(1) invert(1); /* Logo en blanco para neutralidad */
+}
+
+/* Interacción premium: el logo se ilumina al pasar el ratón */
+.footer-logo:hover {
+  opacity: 1;
+  transform: scale(1.1) rotate(5deg);
+  filter: grayscale(0) invert(0);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.declaration {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 5px; /* Tracking más agresivo para look cinematográfico */
+  color: var(--txt);
+  opacity: 0.6;
+  text-transform: uppercase;
+}
+
+.copyright {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.2);
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+/* INVERT ANIMATION CSS */
+.invert-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.invert-base {
+  color: rgba(255, 255, 255, 0.1);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.invert-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--acc);
+  margin: 0;
+  white-space: nowrap;
+  clip-path: inset(0% 100% 0% 0%); /* Oculto inicialmente dese la derecha */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+</style>
     <style>
       :root {
         --accent: #00ff88; /* Color de acento de tipografía (Verde) */
@@ -140,55 +493,35 @@
       </section>
 
       <!-- SECCIÓN 23: Text Invert Animation -->
-      <section class="section">
+      <section class="section" id="sec-23-wrap" style="border-bottom: none;">
         <div class="panel code">
-          <h2>23. Text <span class="highlight">Invert</span></h2>
+          <h2>23. Text <span class="highlight">Reveal</span></h2>
           <p>
-            Efecto de inversión cromática. El texto cambia de color o contraste dinámicamente, creando un impacto visual de alta
-            fidelidad. Ideal para resaltar conceptos clave sobre fondos complejos o gradientes.
+            Revelado palabra por palabra ligado directamente al largo desplazamiento de la rueda del ratón (Scroll Scrub). Se utiliza un anclaje (<code>pin</code>) para fijar la sección en el espacio durante el barrido interactivo de color.
           </p>
-          <pre><code><span class="com">// Inversión de color mediante capas</span>
-<span class="fn">gsap</span>.to(foreground, {
-  clipPath: <span class="str">"inset(0% 0% 0% 0%)"</span>,
-  duration: 1.5,
-  stagger: 0.05,
-  ease: <span class="str">"expo.inOut"</span>
-});</code></pre>
-        </div>
-        <div class="panel demo" id="section23">
-          <div class="invert-wrapper">
-            <h1 class="title-chars invert-base" id="text23-base">TEXT INVERSION MASTERCLASS</h1>
-            <h1 class="title-chars invert-top" id="text23">TEXT INVERSION MASTERCLASS</h1>
-          </div>
-          <button class="btn" onclick="playS23()">Reiniciar</button>
-        </div>
-      </section>
-
-      <!-- SECCIÓN 24: Text Invert (Scroll) -->
-      <section class="section" style="border-bottom: none">
-        <div class="panel code">
-          <h2>24. Invert <span class="highlight">Scroll</span></h2>
-          <p>
-            La versión interactiva del efecto Invert. La inversión de color está vinculada directamente al scroll (Scrub),
-            permitiendo que el usuario "descubra" el texto a medida que se desplaza por la sección.
-          </p>
-          <pre><code><span class="com">// ScrollTrigger Scrub Inversion</span>
-<span class="fn">gsap</span>.to(foreground, {
-  clipPath: <span class="str">"inset(0% 0% 0% 0%)"</span>,
+          <pre><code><span class="com">// Scrub palabra a palabra con GSAP</span>
+<span class="fn">gsap</span>.to(split.words, {
+  color: <span class="str">"var(--acc)"</span>,
+  stagger: 0.1,
   scrollTrigger: {
-    trigger: <span class="str">"#section24"</span>,
-    scrub: <span class="key">true</span>,
-    start: <span class="str">"top 80%"</span>,
-    end: <span class="str">"bottom 20%"</span>
+    trigger: <span class="str">"#sec-23-wrap"</span>,
+    start: <span class="str">"center center"</span>,
+    end: <span class="str">"+=2000"</span>, <span class="com">// Desplazamiento largo</span>
+    scrub: 1,
+    pin: <span class="key">true</span>
   }
 });</code></pre>
         </div>
-        <div class="panel demo" id="section24">
-          <div class="invert-wrapper">
-            <h1 class="title-chars invert-base" id="text24-base">SCROLL RESPONSIVE ANIMATION</h1>
-            <h1 class="title-chars invert-top" id="text24">SCROLL RESPONSIVE ANIMATION</h1>
+        <div class="panel demo" id="section23">
+          <div class="invert-wrapper" style="width: 100%; text-align: left; padding: 2rem;">
+            <p id="text23-base" style="font-size: 1.4rem; color: rgba(255,255,255,0.1); line-height: 1.6; margin: 0; font-family: 'Outfit'; font-weight: 500;">
+              La tipografía avanzada es el núcleo intrínseco de las interfaces de alta fidelidad. 
+              Controlar su visibilidad progresivamente añade profundidad, ritmo narrativo 
+              y una absoluta sofisticación al producto final. Las técnicas de revelado dinámico 
+              separan de forma sutil el foco principal del fondo oscuro, guiando tu atención 
+              exactamente al ritmo de cada impulso fluido del desplazamiento interactivo.
+            </p>
           </div>
-          <button class="btn" onclick="playS24()">Reiniciar</button>
         </div>
       </section>
     </div>
@@ -205,10 +538,6 @@
       // Inicializamos SplitType para fragmentar los textos por caracteres o palabras
       const split1 = new SplitType("#text1", { types: "chars" });
       const split2 = new SplitType("#text2", { types: "words" });
-      // Para Invert, necesitamos duplicar el contenido si queremos un efecto perfecto,
-      // pero aquí usaremos el div.invert-top que ya contiene el mismo texto.
-      const split23 = new SplitType("#text23", { types: "chars" });
-      const split24 = new SplitType("#text24", { types: "chars" });
 
       // --- EFECTO 21: Revelado Vertical ---
       function playS21() {
@@ -235,50 +564,19 @@
         });
       }
 
-      // --- EFECTO 23: Text Invert (Manual) ---
-      function playS23() {
-        gsap.set("#text23", { clipPath: "inset(0% 100% 0% 0%)" });
-        gsap.to("#text23", {
-          clipPath: "inset(0% 0% 0% 0%)",
-          duration: 2,
-          ease: "power3.inOut",
-          overwrite: true,
-        });
-      }
+      // --- EFECTO 23: Text Reveal (Scroll Scrub Largo) ---
+      const split23 = new SplitType("#text23-base", { types: "words" });
 
-      // --- EFECTO 24: Text Invert (Scroll) ---
-      function playS24() {
-        gsap.set("#text24", { clipPath: "inset(0% 100% 0% 0%)" });
-        gsap.to("#text24", {
-          clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1.5,
-          ease: "none",
-          overwrite: true,
-        });
-      }
-
-      // --- SCROLLTRIGGERS ---
-
-      // Invert Scroll (Effect 24)
-      gsap.fromTo(
-        "#text24",
-        { clipPath: "inset(0% 100% 0% 0%)" },
-        {
-          clipPath: "inset(0% 0% 0% 0%)",
-          scrollTrigger: {
-            trigger: "#section24",
-            start: "top 70%",
-            end: "center center",
-            scrub: 1,
-          },
-        },
-      );
-
-      // Disparo automático inicial para 23
-      ScrollTrigger.create({
-        trigger: "#section23",
-        start: "top 80%",
-        onEnter: () => playS23(),
+      gsap.to(split23.words, {
+        color: "var(--acc)",
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: "#sec-23-wrap",
+          start: "center center",
+          end: "+=2000",
+          scrub: 1,
+          pin: true
+        }
       });
 
       // Animación de carga inicial para una entrada fluida

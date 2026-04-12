@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GSAP Master - Menu Vertical</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Onest:wght@100..900&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&family=Instrument+Serif&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .services {
+        position: absolute;
+        width: 100%;
+        height: 100svh;
+        padding: 2rem;
+        background-color: #171717;
+        color: #ff3831;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Elemento que se va a expandir */
+      .service {
+        position: relative;
+        width: max-content;
+        height: 10rem;
+        display: flex;
+        align-items: flex-end;
+        will-change: height;
+        overflow: hidden;
+        cursor: pointer;
+      }
+
+      .service-name h1 {
+        position: relative;
+        text-transform: uppercase;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 10rem;
+        font-weight: 900;
+        letter-spacing: -0.1rem;
+        line-height: 1;
+        background-color: #171717;
+        z-index: 2;
+      }
+
+      .service-images {
+        position: absolute;
+        top: 0%;
+        left: 50%;
+        /* Centrado horizontal solo */
+        transform: translate(-50%, 0%);
+        width: 25rem;
+        height: 20rem;
+        overflow: hidden;
+      }
+
+      .img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        /* Centrado y posicionarlo hacia abajo para ocultarlo */
+        transform: translate(-50%, 50%);
+        width: 15rem;
+        height: 10rem;
+        border-radius: 0.35rem;
+        overflow: hidden;
+      }
+      /* Poscionamiento: Efecto abanico */
+      .img:nth-child(1) {
+        transform-origin: bottom left;
+        transform: translate(-50%, 50%) rotate(-5deg);
+        margin-top: -1.5rem;
+      }
+
+      .img:nth-child(2) {
+        transform-origin: bottom left;
+        transform: translate(-50%, 50%) rotate(2.5deg);
+        margin-top: -1.5rem;
+      }
+      /* Mini etiquetas */
+      .tags-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        pointer-events: none;
+      }
+
+      .tag {
+        position: absolute;
+        font-family: "Instrument Serif", sans-serif;
+        color: #ffffd9;
+        background-color: #171717;
+        border: 1px solid #ffffd9;
+        border-radius: 4rem;
+        padding: 0.5rem 1.5rem;
+        will-change: transform, opacity;
+        white-space: nowrap;
+        opacity: 0;
+      }
+
+      @media (max-width: 900px) {
+        .service {
+          height: 5rem;
+        }
+
+        .service-name h1 {
+          font-size: 5rem;
+        }
+
+        .service-images {
+          width: 12.5rem;
+          height: 10rem;
+        }
+
+        .img {
+          width: 7.5rem;
+          height: 5rem;
+        }
+
+        .img:nth-child(1) {
+          margin-top: -0.75rem;
+        }
+
+        .img:nth-child(2) {
+          margin-top: -0.75rem;
+        }
+
+        .tag {
+          font-size: 0.75rem;
+          padding: 0.25rem 0.75rem;
+        }
+      }
+
+      body {
+        font-family: "Onest", sans-serif;
+        background-color: #141414;
+      }
+
+      /* Estilos específicos para la cabecera (Header) con efecto cristal (Glassmorphism) */
+      .header {
+        padding: 1.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background: rgba(7, 7, 7, 0.8);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+      .header h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 15px;
+      }
+      .header a {
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 20px;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        transition: 0.3s;
+      }
+      .header a:hover {
+        background: #fff;
+        color: #000;
+      }
+
+      /* FOOTER STYLES */
+      .footer-academy {
+        width: 100%;
+        padding: 6rem 2rem 4rem;
+        border-top: 1px solid var(--glass-border);
+        margin-top: 4rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        max-width: 800px;
+        text-align: center;
+      }
+
+      .footer-logo {
+        width: 100px; /* Reducido para una estética más refinada y minimalista */
+        height: auto;
+        opacity: 1;
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .declaration {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 3px;
+        color: var(--c-adv);
+        text-transform: uppercase;
+      }
+
+      .copyright {
+        font-family: "Outfit", sans-serif;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.3);
+        font-weight: 300;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navegación Superior -->
+    <header class="header">
+      <h3>GSAP <span class="highlight">CodeGrid Mastery</span></h3>
+      <div class="nav-links">
+        <a href="../advanced_index.html">Advanced Hub</a>
+      </div>
+    </header>
+
+    <section class="services">
+      <div class="service" data-tags="Editorial, Fashion Identity, Monochrome, Shadow Play, Minimalism, Studio Portraits">
+        <div class="service-name">
+          <h1>Menu Master</h1>
+        </div>
+        <!-- .service-images>.img*4>img -->
+        <div class="service-images">
+          <div class="img"><img src="../../../img/01.webp" alt="" /></div>
+          <div class="img"><img src="../../../img/02.webp" alt="" /></div>
+          <div class="img"><img src="../../../img/03.webp" alt="" /></div>
+        </div>
+      </div>
+      <div class="service" data-tags="Editorial, Fashion Identity, Monochrome, Shadow Play, Minimalism, Studio Portraits">
+        <div class="service-name">
+          <h1>Menu Principal</h1>
+        </div>
+        <!-- .service-images>.img*4>img -->
+        <div class="service-images">
+          <div class="img"><img src="../../../img/04.webp" alt="" /></div>
+          <div class="img"><img src="../../../img/05.webp" alt="" /></div>
+          <div class="img"><img src="../../../img/06.webp" alt="" /></div>
+        </div>
+      </div>
+      <div class="service" data-tags="Character Design, Portraits, Visual Storetelling, Emotion, Indentity, Artistic Direction">
+        <div class="service-name">
+          <h1>Comunidad</h1>
+        </div>
+        <!-- .service-images>.img*4>img -->
+        <div class="service-images">
+          <div class="img"><img src="../../../img/07.webp" alt="" /></div>
+          <div class="img"><img src="../../../img/08.webp" alt="" /></div>
+          <div class="img"><img src="../../../img/09.webp" alt="" /></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="footer-academy">
+      <div class="footer-content">
+        <img src="../../../img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
+        <div class="footer-info">
+          <p class="declaration">UNA DECLARACIÓN DE INTENCIONES SOBRE LA EXCELENCIA EN ANIMACIÓN WEB</p>
+          <p class="copyright">© 2026 PAU CROSAS BATISTA — GSAP MASTER ACADEMY</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- LIBRERÍAS EXTERNAS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- Libreria para físicas realistas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script>
+      const services = document.querySelectorAll(".service");
+      // Engine: { Ejecuta la simulacion general }, World: { Donde viven los objetos que usaremos }
+      // Bodies: { Formas físicas que creamos }, Body: { Proporciona algunos metodos para controlar esas formas que creamos }
+      const { Engine, World, Bodies, Body } = Matter;
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Función para guardar en memoria (sizeE) el tamaño de alto i ancho de una etiqueta
+        function getTagDimensions(e) {
+          const ghostTag = document.createElement("div");
+          ghostTag.classList.add("tag");
+          ghostTag.textContent = e;
+          document.body.appendChild(ghostTag);
+          //Tomamos las medidas ->
+          const sizeE = { width: ghostTag.offsetWidth, height: ghostTag.offsetHeight };
+          ghostTag.remove();
+          return sizeE;
+        }
+
+        services.forEach((service) => {
+          const servicesImages = service.querySelectorAll(".img");
+          const serviceName = service.querySelector("h1");
+
+          //Cogemos todos las etiquetas que guardamos con los data-sets i las guardamos en una array
+          const tagLabels = service.dataset.tags.split(",");
+          //Los aplicamos en nuestra función ->
+          const tagSizes = tagLabels.map((label) => getTagDimensions(label));
+
+          let engine = null;
+          //Guardamos los elementos del mundo visual (los divs) ->
+          let tagElements = [];
+          //Guardamoa los calculos matemáticos de sus cuerpos(propiedades) ->
+          let tagBodies = [];
+          //Id para luego tener una id de referencia para el bucle ->
+          let rafId = null;
+          let tagsContainer = null;
+          let isHovered = false;
+          let tagDropTimer = null;
+
+          function createTags() {
+            cleanupTags();
+            //Copiamos las medidas de nuestro contenedor ->
+            const serviceWidth = service.offsetWidth;
+            const serviceHeight = service.offsetHeight;
+
+            tagsContainer = document.createElement("div");
+            tagsContainer.classList.add("tags-container");
+            service.appendChild(tagsContainer);
+
+            //Creamos un mundo vacío de Matter.js ->
+            //indicamos: x: 0 { Sin viento lateral}, y: 2 { gravedad normal es 1, 2 es caida pesada}
+            engine = Engine.create({ gravity: { x: 0, y: 1 } });
+
+            //Grosor de paredes y suelo (aseguramos un rebote normal) ->
+            const wallThickness = 20;
+            //Levantamos el suelo en función de la pantalla ->
+            const floorOffset = window.innerWidth < 1000 ? 25 : 50;
+
+            //Construcción del suelo: x: { En la mitad del contenedor }, y: { Ajustamos los limites del muro }
+            const floor = Bodies.rectangle(
+              serviceWidth / 2,
+              serviceHeight - floorOffset + wallThickness / 2,
+              serviceWidth * 3,
+              wallThickness, //20px
+              { isStatic: true }, //Hacemos que el muso es fijo, sino caerian hasta el final
+            );
+
+            const leftWall = Bodies.rectangle(-wallThickness / 2, serviceHeight / 2, wallThickness, serviceHeight * 3, {
+              isStatic: true,
+            });
+
+            const rightWall = Bodies.rectangle(
+              serviceWidth + wallThickness / 2,
+              serviceHeight / 2,
+              wallThickness,
+              serviceHeight * 3,
+              { isStatic: true },
+            );
+            //Añadimos al mundo vacío, los parámetros que hemos definido ->
+            World.add(engine.world, [floor, leftWall, rightWall]);
+
+            tagLabels.forEach((label, i) => {
+              const tagElement = document.createElement("div");
+              tagElement.classList.add("tag");
+              tagElement.textContent = label;
+              tagsContainer.appendChild(tagElement);
+
+              //Recuperamos las dimensiones del contenedor real del objeto ->
+              const tagWidth = tagSizes[i].width;
+              const tagHeight = tagSizes[i].height;
+
+              //Colocamos en una posición aleatoria (contenedor de 1000px) ->
+              const startX =
+                serviceWidth * 0.25 + //250px
+                Math.random() * // 500px
+                  serviceWidth *
+                  0.5; // Random entre 0 i 500
+              //Definimos des de donde cae el objeto, encima del contenedor ->
+              const startY = -(tagHeight / 2) - i * 5;
+              //Aseguramos un angulo tanto positivo como negativo ->
+              const angle = (Math.random() - 0.5) * 0.4;
+
+              //Creamos un rectangulo ->
+              const body = Bodies.rectangle(startX, startY, tagWidth, tagHeight, {
+                chamfer: { radius: tagHeight / 2 }, //Border-radius
+                restitution: 0.15, //Rebote
+                friction: 0.6, //Roce o deslizamiento
+                density: 0.002, //La masa
+              });
+              //Añadimos el cuerpo al mundo ->
+              Body.setAngle(body, angle);
+              World.add(engine.world, body);
+
+              //Hacemos visible las tags ->
+              gsap.to(tagElement, {
+                opacity: 1,
+                duration: 0.3,
+                delay: i * 0.04,
+                ease: "power2.out",
+              });
+
+              tagElements.push(tagElement);
+              tagBodies.push(body);
+            });
+
+            function update() {
+              //Actualizamos el motor de Mattger (motor, 1segundo, 60fps)
+              Engine.update(engine, 1000 / 60);
+
+              //Asociamos los elementos del mundo fisico al mundo real ->
+              for (let i = 0; i < tagElements.length; i++) {
+                const body = tagBodies[i];
+                const tagElement = tagElements[i];
+                const tagWidth = tagSizes[i].width;
+                const tagHeight = tagSizes[i].height;
+
+                tagElement.style.transform = `translate(${body.position.x - tagWidth / 2}px, ${body.position.y - tagHeight / 2}px) rotate(${body.angle}rad)`;
+              }
+              rafId = requestAnimationFrame(update);
+            }
+            rafId = requestAnimationFrame(update);
+          }
+
+          //Reset general ->
+          function cleanupTags() {
+            if (rafId) cancelAnimationFrame(rafId);
+            if (engine) Engine.clear(engine);
+            if (tagsContainer) tagsContainer.remove();
+            tagElements = [];
+            tagBodies = [];
+            engine = null;
+            rafId = null;
+            tagsContainer = null;
+          }
+
+          service.addEventListener("mouseenter", () => {
+            isHovered = true;
+            const expandHeight = window.innerWidth < 1000 ? "12.5rem" : "25rem";
+
+            gsap.killTweensOf(service);
+            gsap.killTweensOf(servicesImages);
+            gsap.killTweensOf(serviceName);
+
+            //Expande el contenedor donde hay las etiquetas ->
+            gsap.to(service, {
+              height: expandHeight,
+              duration: 0.75,
+              ease: "elastic.out(1,0.5)",
+            });
+
+            //Cambiamos el color del titulo
+            gsap.to(serviceName, {
+              color: "#FFFFD9",
+              duration: 0.25,
+              ease: "power4.out",
+            });
+
+            //Aparecen las imagenes por arriba ->
+            gsap.to(servicesImages, {
+              y: "-50%",
+              duration: 0.75,
+              ease: "elastic.out(1,0.5)",
+              stagger: 0.075,
+            });
+
+            //Asociamos un pequeño delay a todas las animaciones ->
+            tagDropTimer = gsap.delayedCall(0.2, () => {
+              if (isHovered) createTags();
+            });
+          });
+
+          service.addEventListener("mouseleave", () => {
+            isHovered = false;
+            const collapsedHeight = window.innerWidth < 1000 ? "5rem" : "10rem";
+
+            if (tagDropTimer) tagDropTimer.kill();
+            cleanupTags();
+
+            gsap.killTweensOf(service);
+            gsap.killTweensOf(servicesImages);
+            gsap.killTweensOf(serviceName);
+
+            gsap.to(serviceName, {
+              color: "#FF3831",
+              duration: 0.25,
+              ease: "power4.out",
+            });
+
+            gsap.to(servicesImages, {
+              y: "50%",
+              duration: 0.75,
+              ease: "elastic.out(1,0.5)",
+              stagger: 0.075,
+            });
+
+            gsap.to(service, {
+              height: collapsedHeight,
+              duration: 0.5,
+              ease: "elastic.out(1,0.75)",
+            });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
