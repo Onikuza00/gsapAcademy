@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GSAP Master - Menu Top + Transition</title>
+    <!-- Importación de fuentes premium para un look profesional -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Estilos base de la academia para mantener la coherencia visual -->
+    <!-- Estilos integrados de ../../../css/main.css -->
+    <style>
+      :root {
+        --bg-base: #0a0a0a;
+        --text-main: #ffffff;
+        --glass-bg: rgba(255, 255, 255, 0.02);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --c-txt: #00ff88;
+        --c-img: #00b3ff;
+        --c-int: #bd00ff;
+        --c-bdk: #ff4400;
+        --c-adv: #00a34c;
+        --cursor-size: 20px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg-base);
+        color: var(--text-main);
+        font-family: "Outfit", sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* Fondo Interactivo (Hover de Pantalla) */
+      .hero-interaction {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+      }
+
+      .hero-shape {
+        position: absolute;
+        width: 300px;
+        height: 450px;
+        border-radius: 200px; /* Forma de óvalo similar a Champions */
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+        opacity: 0.4;
+      }
+
+      /* El cursor personalizado se oculta para usar el del sistema */
+      .custom-cursor {
+        display: none !important;
+      }
+      .custom-cursor.active {
+        transform: scale(4);
+      }
+
+      .container {
+        position: relative;
+        padding: 8rem 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1.title {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(3rem, 15vw, 10rem);
+        text-align: center;
+        margin-bottom: 5rem;
+        line-height: 0.85;
+        text-transform: uppercase;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 3rem;
+        width: 100%;
+        max-width: 1400px;
+        perspective: 1000px;
+      }
+
+      .card {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 30px;
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(5px);
+        transition: border-color 0.4s ease;
+      }
+
+      .card:hover {
+        border-color: var(--accent-color);
+        box-shadow: 0 10px 40px -10px var(--accent-color);
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at center, var(--accent-color, transparent) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.6s ease;
+        pointer-events: none;
+      }
+      .card:hover::before {
+        opacity: 0.25;
+      }
+      .card.txt {
+        --accent-color: var(--c-txt);
+        border-color: rgba(0, 255, 136, 0.3);
+      }
+      .card.img {
+        --accent-color: var(--c-img);
+        border-color: rgba(0, 179, 255, 0.3);
+      }
+      .card.int {
+        --accent-color: var(--c-int);
+        border-color: rgba(189, 0, 255, 0.3);
+      }
+      .card.bdk {
+        --accent-color: var(--c-bdk);
+        border-color: rgba(255, 68, 0, 0.3);
+      }
+      .card.adv {
+        --accent-color: var(--c-adv);
+        border-color: rgba(0, 163, 76, 0.3);
+      }
+
+      .card h2 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+        color: var(--accent-color);
+        overflow: hidden;
+      }
+      .char {
+        display: inline-block;
+      }
+      .card p {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 3rem;
+        flex-grow: 1;
+      }
+      .btn-group {
+        display: flex;
+        gap: 15px;
+      }
+
+      .btn {
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 100px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        flex: 1;
+        text-align: center;
+        transition: 0.3s;
+      }
+      .btn:hover {
+        background: var(--accent-color);
+        color: var(--bg-base);
+      }
+
+      /* FOOTER STYLES */
+      .footer-academy {
+        width: 100%;
+        padding: 6rem 2rem 4rem;
+        border-top: 1px solid var(--glass-border);
+        margin-top: 4rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        max-width: 800px;
+        text-align: center;
+      }
+
+      .footer-logo {
+        width: 100px; /* Reducido para una estética más refinada y minimalista */
+        height: auto;
+        opacity: 1;
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .declaration {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 3px;
+        color: var(--c-adv);
+        text-transform: uppercase;
+      }
+
+      .copyright {
+        font-family: "Outfit", sans-serif;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.3);
+        font-weight: 300;
+      }
+    </style>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Onest:wght@100..900&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Onest", sans-serif;
+        background-color: #141414;
+      }
+
+      .hero {
+        position: relative;
+        width: 100%;
+        height: 100svh;
+        /* Imagen que no se repite y centrada */
+        background: url(../../../img/16.webp) no-repeat 50% 50%;
+        background-size: cover;
+      }
+
+      /* Los top, left solo sirven si se define position */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        z-index: 2;
+      }
+
+      .nav-logo .nav-toggler {
+        padding: 1rem;
+        cursor: pointer;
+      }
+
+      .nav-logo img {
+        width: 100px;
+        height: auto;
+      }
+
+      .nav-toggler {
+        /* Resetea estilos y posiciones del background */
+        background: none;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+      }
+
+      /* Boton de hamburguesa */
+      .nav-toggler span {
+        width: 40px;
+        height: 2px;
+        background-color: #fff;
+        transition: all 0.4s ease;
+        cursor: pointer;
+      }
+
+      /* Preparamos el efecto de las "x" cruzadas del menu hamburguesa*/
+      .nav-toggler.open span:first-child {
+        transform: translateY(3.5px) rotate(45deg) scaleX(0.75);
+      }
+
+      .nav-toggler.open span:nth-child(2) {
+        transform: translateY(-3.5px) rotate(-45deg) scaleX(0.75);
+      }
+
+      .nav-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .nav-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        /* Encoger el elemento hacia arriba, no es visible al inicio */
+        transform: scaleY(0);
+        /* Definimos que se escala desde arriba es decir efecto persiana que subira hacia arriba */
+        transform-origin: top;
+        will-change: transform;
+        pointer-events: none;
+      }
+
+      .nav-bg:nth-child(1) {
+        background-color: #57cea5;
+      }
+
+      .nav-bg:nth-child(2) {
+        background-color: #063124;
+      }
+
+      .nav-bg:nth-child(3) {
+        background-color: #0b5c43;
+      }
+
+      .nav-bg:nth-child(4) {
+        background-color: #21ba80;
+      }
+
+      .nav-items {
+        display: flex;
+        gap: 2rem;
+        padding: 8rem;
+        background-color: #084331;
+        /* Preparamos una recorte en linea recta para animar en Gsap */
+        clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+        will-change: clip-path;
+      }
+
+      /* Usamos en flex numeros altos para tener más control en las rejillas */
+      .nav-items-col:nth-child(1) {
+        /* Ocupa 2 partes de su espacio */
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 2rem;
+        /* border: white 2px solid; */
+      }
+
+      .nav-items-col:nth-child(2) {
+        /* Ocupa 4 partes de su espacio */
+        flex: 4;
+        display: flex;
+        justify-content: space-between;
+        gap: 2rem;
+        /* border: solid yellow; */
+      }
+
+      a {
+        text-decoration: none;
+        color: #dce3e3;
+        display: block;
+        letter-spacing: -2%;
+        line-height: 1.1;
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-socials a {
+        font-size: 1.25rem;
+      }
+
+      .nav-legal a {
+        font-size: 0.9rem;
+        color: #318b6f;
+      }
+
+      .nav-primary-links a {
+        font-size: 3rem;
+      }
+
+      .nav-secondary-links a {
+        font-size: 1.5rem;
+      }
+      .nav-primary-links a:hover,
+      .nav-secondary-links a:hover,
+      .nav-socials a:hover {
+        color: #57cea5;
+        transform: translateY(-5px);
+        /* Asegúrate de tener una transición en el estado normal del enlace */
+        transition: all 0.3s ease;
+      }
+
+      .nav-legal a:hover {
+        color: #fff;
+        transform: translateY(-5px);
+        /* Asegúrate de tener una transición en el estado normal del enlace */
+        transition: all 0.3s ease;
+      }
+
+      .nav-content a .line {
+        position: relative;
+        will-change: transform;
+        /* Preparamos la animación para enviarlo justo debajo a una distancia igual que su altura */
+        transform: translateY(100%);
+      }
+
+      @media (max-width: 1000px) {
+        .nav-content,
+        .nav-items {
+          height: 100svh;
+        }
+
+        .nav-items {
+          flex-direction: column;
+          justify-content: center;
+          padding: 0.2rem;
+        }
+
+        .nav-legal,
+        .nav-secondary-links {
+          display: none;
+        }
+
+        .nav-items-col:nth-child(1),
+        .nav-items-col:nth-child(2) {
+          flex: none;
+        }
+      }
+
+      /* Estilos específicos para la cabecera (Header) con efecto cristal (Glassmorphism) */
+      .header {
+        padding: 1.5rem 2rem;
+        display: none;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background: rgba(7, 7, 7, 0.8);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+      .header h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 15px;
+      }
+      .header a {
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 20px;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        transition: 0.3s;
+      }
+      .header a:hover {
+        background: #fff;
+        color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navegación Superior -->
+    <header class="header">
+      <h3>GSAP <span class="highlight">CodeGrid Mastery</span></h3>
+      <div class="nav-links">
+        <a href="../advanced_index.html">Advanced Hub</a>
+      </div>
+    </header>
+    <nav>
+      <div class="nav-logo">
+        <img src="../../../img/logo.png" alt="" srcset="" />
+      </div>
+      <!-- Menu de Hamburguesa-->
+      <button class="nav-toggler">
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+
+    <div class="nav-content">
+      <div class="nav-bg"></div>
+      <div class="nav-bg"></div>
+      <div class="nav-bg"></div>
+      <div class="nav-bg"></div>
+
+      <div class="nav-items">
+        <div class="nav-items-col">
+          <div class="nav-socials">
+            <a href="#">Bluesky</a>
+            <a href="#">Pinterest</a>
+            <a href="#">Youtube</a>
+            <a href="#">Instagram</a>
+            <a href="#">Linkedin</a>
+            <a href="">X</a>
+          </div>
+          <div class="nav-legal">
+            <a href="#">Politica de Cookies</a>
+            <a href="#">Accesibilidad</a>
+            <a href="#">Datos Legales</a>
+            <a href="#">Derechos de autor</a>
+          </div>
+        </div>
+        <div class="nav-items-col">
+          <div class="nav-primary-links">
+            <a href="../advanced_index.html">Volver al Hub</a>
+            <a href="../../../index.html">Menu Principal</a>
+            <a href="#">Últimas novedades</a>
+            <a href="#">Documentación</a>
+            <a href="#">Comunidad</a>
+          </div>
+
+          <div class="nav-secondary-links">
+            <a href="#">Playground</a>
+            <a href="#">Construye algo</a>
+            <a href="#">Feedback</a>
+            <a href="#">Perfil</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section class="hero"></section>
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="footer-academy">
+      <div class="footer-content">
+        <img src="../../../img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
+        <div class="footer-info">
+          <p class="declaration">UNA DECLARACIÓN DE INTENCIONES SOBRE LA EXCELENCIA EN ANIMACIÓN WEB</p>
+          <p class="copyright">© 2026 PAU CROSAS BATISTA — GSAP MASTER ACADEMY</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- LIBRERÍAS EXTERNAS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/SplitText.min.js"></script>
+    <script>
+      // Registro del plugin ScrollTrigger en GSAP
+      gsap.registerPlugin(SplitText);
+
+      const navToggler = document.querySelector(".nav-toggler");
+      const navsBgs = document.querySelectorAll(".nav-bg");
+
+      document.addEventListener("DOMContentLoaded", () => {
+        let isMenuOpen = false;
+        let isAnimating = false;
+
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>    CONTROL DE ANIMACIÓN DEL MENU        <<<
+        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        const tl = gsap.timeline({
+          //Control total de cuando se reproduce la Timeline ->
+          paused: true,
+          // Aseguramos que se pueda volver a haver clic al boton y activar de nuevo la animación ->
+          onComplete: () => {
+            isAnimating = false;
+          },
+          // Cuando vuelve al punto inicial de la animación ->
+          onReverseComplete: () => {
+            linkBlocks.forEach((sel) => gsap.set(sel, { y: "100%" }));
+            isAnimating = false;
+          },
+        });
+
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>          MENU DE HAMBURGUESA             <<<
+        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        navToggler.addEventListener("click", () => {
+          // Si ya se esta animando, devuelve directamente ->
+          if (isAnimating) return;
+
+          //Definimos el estado que se esta animando ->
+          isAnimating = true;
+
+          //Toogler para alternar la clase, si no tiene la clase se le añade si no se la quita ->
+          navToggler.classList.toggle("open");
+
+          if (!isMenuOpen) {
+            document.querySelector(".nav-content").style.pointerEvents = "auto";
+            tl.play();
+            animateLinksIn();
+          } else {
+            document.querySelector(".nav-content").style.pointerEvents = "none";
+            //Invertimos la animación ->
+            tl.reverse();
+          }
+          // Invertimos el estado del estado de la animación ->
+          isMenuOpen = !isMenuOpen;
+        });
+
+        //Efecto cortina dede varios fondos del Menu ->
+        tl.to(navsBgs, {
+          //En el CSS esta establecido a 0, al 1 lo expandimos al maximo ->
+          scaleY: 1,
+          duration: 0.75,
+          stagger: 0.1,
+          ease: "power3.inOut",
+        });
+        //Aquí hacemos visible el menu de los enlaces
+        tl.to(
+          ".nav-items",
+          {
+            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            duration: 0.75,
+            ease: "power3.inOut",
+          },
+          "-=0.6",
+        );
+
+        const splitLinks = SplitText.create(".nav-content a", {
+          type: "lines",
+          mask: "lines",
+          linesClass: "line",
+        });
+        //Separamos los enlaces en 3 bloques para poder animarlos por separado ->
+        const linkBlocks = [".nav-socials .line, .nav-legal .line", ".nav-primary-links .line", ".nav-secondary-links .line"];
+
+        //Efecto cortina del texto de los menus que sube ->
+        function animateLinksIn() {
+          linkBlocks.forEach((selector) => {
+            gsap.fromTo(selector, { y: "100%" }, { y: "0%", duration: 0.75, stagger: 0.05, ease: "power3.out", delay: 0.85 });
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

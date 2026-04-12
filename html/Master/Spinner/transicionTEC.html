@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GSAP Master - Spinner Tech</title>
+    <!-- Importación de fuentes premium para un look profesional -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700&family=Outfit:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Estilos base de la academia para mantener la coherencia visual -->
+    <!-- Estilos integrados de ../../../css/main.css -->
+<style>
+:root {
+  --bg-base: #0a0a0a;
+  --text-main: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --c-txt: #00ff88;
+  --c-img: #00b3ff;
+  --c-int: #bd00ff;
+  --c-bdk: #ff4400;
+  --c-adv: #00a34c;
+  --cursor-size: 20px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background: var(--bg-base);
+  color: var(--text-main);
+  font-family: "Outfit", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Fondo Interactivo (Hover de Pantalla) */
+.hero-interaction {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.hero-shape {
+  position: absolute;
+  width: 300px;
+  height: 450px;
+  border-radius: 200px; /* Forma de óvalo similar a Champions */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+  opacity: 0.4;
+}
+
+/* El cursor personalizado se oculta para usar el del sistema */
+.custom-cursor {
+  display: none !important;
+}
+.custom-cursor.active {
+  transform: scale(4);
+}
+
+.container {
+  position: relative;
+  padding: 8rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1.title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(3rem, 15vw, 10rem);
+  text-align: center;
+  margin-bottom: 5rem;
+  line-height: 0.85;
+  text-transform: uppercase;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 3rem;
+  width: 100%;
+  max-width: 1400px;
+  perspective: 1000px;
+}
+
+.card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 30px;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+  transition: border-color 0.4s ease;
+}
+
+.card:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 10px 40px -10px var(--accent-color);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, var(--accent-color, transparent) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+.card:hover::before {
+  opacity: 0.25;
+}
+.card.txt {
+  --accent-color: var(--c-txt);
+  border-color: rgba(0, 255, 136, 0.3);
+}
+.card.img {
+  --accent-color: var(--c-img);
+  border-color: rgba(0, 179, 255, 0.3);
+}
+.card.int {
+  --accent-color: var(--c-int);
+  border-color: rgba(189, 0, 255, 0.3);
+}
+.card.bdk {
+  --accent-color: var(--c-bdk);
+  border-color: rgba(255, 68, 0, 0.3);
+}
+.card.adv {
+  --accent-color: var(--c-adv);
+  border-color: rgba(0, 163, 76, 0.3);
+}
+
+.card h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  color: var(--accent-color);
+  overflow: hidden;
+}
+.char {
+  display: inline-block;
+}
+.card p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+  flex-grow: 1;
+}
+.btn-group {
+  display: flex;
+  gap: 15px;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 100px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  flex: 1;
+  text-align: center;
+  transition: 0.3s;
+}
+.btn:hover {
+  background: var(--accent-color);
+  color: var(--bg-base);
+}
+
+/* FOOTER STYLES */
+.footer-academy {
+  width: 100%;
+  padding: 6rem 2rem 4rem;
+  border-top: 1px solid var(--glass-border);
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 800px;
+  text-align: center;
+}
+
+.footer-logo {
+  width: 100px; /* Reducido para una estética más refinada y minimalista */
+  height: auto;
+  opacity: 1;
+  margin-bottom: 0.5rem;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.declaration {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  color: var(--c-adv);
+  text-transform: uppercase;
+}
+
+.copyright {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 300;
+}
+
+</style>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Geist+Mono:wght@100..900&display=swap");
+
+      :root {
+        --base-100: #fff;
+        --base-200: #7a7a7a;
+        --base-300: #000;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Estilos específicos para la cabecera (Header) con efecto cristal (Glassmorphism)  */
+      header {
+        padding: 1.5rem 2rem;
+        display: none;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background: rgba(7, 7, 7, 0.8);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+      .header h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 15px;
+      }
+      .header a {
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 20px;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        transition: 0.3s;
+      }
+      .header a:hover {
+        background: #fff;
+        color: #000;
+      }
+      h1 {
+        text-transform: uppercase;
+        font-family: "Barlow Condensed", sans-serif;
+        /* Valor mínimo - ideal - maximo */
+        font-size: clamp(5rem, 15vw, 15rem);
+        font-weight: 800;
+        letter-spacing: -2%;
+        line-height: 0.8;
+      }
+
+      p {
+        text-transform: uppercase;
+        font-family: "Geist Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 500;
+        line-height: 1;
+      }
+
+      h1 .word p .line {
+        position: relative;
+        /* Se desplaza exactamente debajo de su posición original */
+        transform: translateY(100%);
+        will-change: transform;
+      }
+
+      .preloader-backdrop {
+        position: fixed;
+        width: 100%;
+        height: 100svh;
+        background-color: var(--base-100);
+        color: var(--base-200);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 0;
+      }
+
+      .pb-row {
+        width: 100%;
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .pb-row:nth-child(2) {
+        align-items: flex-end;
+      }
+
+      .pb-row #pb-logo {
+        width: 2.5rem;
+        height: 2.5rem;
+        padding: 0.25rem;
+        border: 1px dashed var(--base-200);
+      }
+
+      .preloader {
+        position: fixed;
+        width: 100%;
+        height: 100svh;
+        background-color: var(--base-300);
+        color: var(--base-100);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        /* Superior Izquierda -  Superior Derecha - Inferior Derecho - inferior Izquierda
+        -  Pon un punto en el 0% horizontal y 0% vertical (arriba izquierda).
+        - Tira una línea hasta el 100% horizontal y 0% vertical (Linia recta superior). 
+        - Baja la línea hasta el 100% horizontal y 100% vertical (Marcas el limite horizontal y bajas).
+        - Mueve la línea hasta el 0% horizontal y 100% vertical (Linea recta inferior hacia la izquierda).
+        El navegador cierra automáticamente el camino volviendo al primer punto.; */
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        will-change: transform, clip-path;
+        z-index: 2;
+      }
+
+      .p-row {
+        width: 100%;
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .p-row .p-col {
+        display: flex;
+        gap: 6rem;
+        align-items: flex-end;
+      }
+
+      .preloader-btn-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20rem;
+        height: 20rem;
+      }
+      .preloader-btn-container img {
+        width: 50%;
+        height: auto;
+      }
+
+      .pbc-svg-strokes,
+      #pbc-logo,
+      #pbc-label,
+      #pbc-outro-label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      #pbc-logo {
+        width: 60%;
+        height: auto;
+        top: 47%;
+        left: 47%;
+      }
+
+      #pbc-label,
+      #pbc-outro-label {
+        font-size: 0.9rem;
+      }
+
+      .pbc-svg-strokes,
+      .pbc-svg-strokes svg {
+        width: 100%;
+        height: 100%;
+        will-change: transform;
+      }
+
+      .hero {
+        position: relative;
+        width: 100%;
+        height: 100svh;
+        padding: 1.5rem;
+        background-color: var(--base-300);
+        color: var(--base-100);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        transform: scale(0.75);
+        will-change: transform;
+        z-index: 1;
+      }
+
+      .hero .preloader-revealer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--base-100);
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        will-change: clip-path;
+      }
+
+      .hero h1 {
+        width: 90%;
+      }
+
+      @media (max-width: 1000px) {
+        .pb-row .pb-col:nth-child(1),
+        .pb-row .pb-col:nth-child(2),
+        .pb-row .pb-col:nth-child(5) {
+          display: none;
+        }
+      }
+
+      /* FOOTER STYLES */
+      .footer-academy {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        border-top: 1px solid var(--glass-border);
+        justify-content: center;
+        display: none;
+        z-index: 1000;
+        margin-bottom: -3rem;
+      }
+
+      .footer-academy p {
+        color: var(--base-200);
+      }
+
+      .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        max-width: 800px;
+        text-align: center;
+      }
+
+      .footer-logo {
+        width: 35px; /* Reducido para una estética más refinada y minimalista */
+        height: auto;
+        opacity: 0.8;
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .declaration {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 3px;
+        color: var(--c-adv);
+        text-transform: uppercase;
+      }
+
+      .copyright {
+        font-family: "Outfit", sans-serif;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.3);
+        font-weight: 300;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navegación Superior -->
+    <header class="header">
+      <h3>GSAP <span class="highlight">CodeGrid Mastery</span></h3>
+      <div class="nav-links">
+        <a href="../advanced_index.html">Advanced Hub</a>
+      </div>
+    </header>
+
+    <div class="preloader-backdrop">
+      <div class="pb-row">
+        <div class="pb-col">
+          <p>Surface Memory</p>
+        </div>
+        <div class="pb-col">
+          <p>// / / ////// / / / / ////</p>
+        </div>
+        <div class="pb-col">
+          <p>Phase Offset > 17%</p>
+        </div>
+        <div class="pb-col">
+          <p>Fragments Aligning</p>
+          <p>Pattern Emerging</p>
+        </div>
+        <div class="pb-col">
+          <p>Collapse Pending</p>
+          <p>Return -- Layer Zero</p>
+        </div>
+        <div class="pb-col">
+          <p>457891</p>
+        </div>
+      </div>
+      <div class="pb-row">
+        <div class="pb-col">
+          <p>Main class internal</p>
+        </div>
+        <div class="pb-col">
+          <p>0478 - 78 -- 000457</p>
+        </div>
+        <div class="pb-col">
+          <p>Conecting rulz server...</p>
+        </div>
+        <div class="pb-col">
+          <p>#4as 23768 @#ASAS</p>
+        </div>
+        <div class="pb-col">
+          <p>Acces violation</p>
+        </div>
+        <div class="pb-col">
+          <p>WARNING CAUTION ACCES</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="preloader">
+      <div class="p-row">
+        <p>Initialiting</p>
+      </div>
+      <div class="p-row">
+        <div class="p-col">
+          <div class="p-sub-col">
+            <p>Phase 01</p>
+          </div>
+          <div class="p-sub-col">
+            <p>07 Layers</p>
+          </div>
+        </div>
+        <div class="p-col">
+          <p>PX-17</p>
+        </div>
+      </div>
+      <div class="preloader-btn-container">
+        <img id="pbc-logo" src="../../../img/logo.png" alt="" />
+        <p id="pbc-label">Engage</p>
+        <p id="pbc-outro-label">Acces Granted</p>
+
+        <div class="pbc-svg-strokes">
+          <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+            <circle
+              class="stroke-track"
+              id="pb-logo"
+              cx="160"
+              cy="160"
+              r="155"
+              stroke="#2b2b2b"
+              stroke-width="2"
+              stroke-dasharray="974"
+              stroke-dashoffset="974"
+            />
+            <circle
+              class="stroke-progress"
+              cx="160"
+              cy="160"
+              r="155"
+              stroke="#fff"
+              stroke-width="2"
+              stroke-dasharray="974"
+              stroke-dashoffset="974"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="preloader-revealer"></div>
+      <h1>The system is now visible</h1>
+    </section>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="footer-academy">
+      <div class="footer-content">
+        <img src="../../../img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
+        <div class="footer-info">
+          <p class="declaration">UNA DECLARACIÓN DE INTENCIONES SOBRE LA EXCELENCIA EN ANIMACIÓN WEB</p>
+          <p class="copyright">© 2026 PAU CROSAS BATISTA — GSAP MASTER ACADEMY</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- LIBRERÍAS EXTERNAS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/SplitText.min.js"></script>
+    <script>
+      // CustomEase -> Permite hacer curvas de animacion personalizadas ->
+      gsap.registerPlugin(SplitText, CustomEase);
+      //Controles de velocidad -> hop: Tarda en arrancar 0.9 arranque, 0-> stop, 0-> stop, 1-> arranca
+      // Hop i glide son nombres personalizados ->
+      CustomEase.create("hop", "0.9,0,0.1,1");
+      CustomEase.create("glide", "0.8,0,0.2,1");
+
+      document.addEventListener("DOMContentLoaded", () => {
+        let preoloaderComplete = false;
+        const preloaderTexts = document.querySelectorAll(".preloader p");
+        const preloaderBtn = document.querySelector(".preloader-btn-container");
+        const btnOutlineTracks = document.querySelector(".stroke-track");
+        const btnOutlineProgress = document.querySelector(".stroke-progress");
+        const svgPathLength = btnOutlineTracks.getTotalLength();
+
+        //////////////////////////////////////////////////////////////////////////////////
+        //////                           ANIMACIÓN DE ENTRADA                       //////
+        /////////////////////////////////////////////////////////////////////////////////
+
+        gsap.set([btnOutlineTracks, btnOutlineProgress], {
+          //Define la longitud pintada, al darle el valor máximo, el borde lo cubre todo
+          strokeDasharray: svgPathLength,
+          //Define se empieza a dibujar ese borde, en ese caso lo tapamos todo al ocuparlo todo
+          strokeDashoffset: svgPathLength,
+        });
+
+        preloaderTexts.forEach((p) => {
+          new SplitText(p, {
+            type: "lines", //Rompe por linea
+            linesClass: "line", //Asigna la clase CSS
+            mask: "lines", // Igual a overflow: hidden;
+          });
+        });
+
+        new SplitText(".hero h1", {
+          type: "words",
+          wordsClass: "word",
+          mask: "words",
+        });
+
+        // Oculta ambos textos desde el inicio usando el propio sistema de máscara
+        gsap.set("#pbc-label .line", { y: "100%" }); // Engage: debajo, oculto
+        gsap.set("#pbc-outro-label .line", { y: "100%" }); // Access Granted: debajo, oculto
+
+        const introTl = gsap.timeline({ delay: 1 });
+
+        introTl
+          //Aparece el texto de abajo
+          .to(".preloader .p-row p .line", {
+            y: "0%",
+            duration: 0.75,
+            ease: "power3.out",
+            stagger: 0.1,
+          })
+          //Empieza a dibujar el circulo gris en el fondo
+          .to(
+            btnOutlineTracks,
+            {
+              strokeDashoffset: 0,
+              duration: 2,
+              ease: "hop",
+            },
+            "<", //Al mismo tiempo que la animacion anterior
+          )
+          //Rota el circulo en 270grados mientras se dibuja, dando sensación de carga
+          .to(
+            ".pbc-svg-strokes svg",
+            {
+              rotation: 270,
+              duration: 2,
+              ease: "hop",
+            },
+            "<",
+          );
+        //Creamos 4 puntos de progreso de la barra de carga -> El ultimo siempre debe ser 1
+        const progressStops = [0.2, 0.25, 0.85, 1].map((base, i) => {
+          if (i === 3) return 1;
+          return base + (Math.random() - 0.5) * 0.1;
+        });
+
+        progressStops.forEach((stop, i) => {
+          introTl.to(btnOutlineProgress, {
+            //Pintar por segmentos ->
+            strokeDashoffset: svgPathLength - svgPathLength * stop,
+            duration: 0.75,
+            ease: "glide",
+            //Delay simulando tirones ->
+            delay: i === 0 ? 0.3 : 0.3 + Math.random() * 0.2,
+          });
+        });
+
+        /////////////////////////////FIN  ANIMACIÓN DE ENTRADA////////////////////////////
+        //Desvanecimiento del logo ->
+        introTl
+          .to(
+            "#pbc-logo",
+            {
+              opacity: 0,
+              duration: 0.35,
+              ease: "power1.out",
+            },
+            "-=0.25",
+          )
+          //Hacemos mas pequeño el boton ->
+          .to(
+            preloaderBtn,
+            {
+              scale: 0.9,
+              duration: 1.5,
+              ease: "hop",
+            },
+            "-=0.5",
+          )
+          .to(
+            "#pbc-label .line",
+            {
+              opacity: 1,
+              duration: 0,
+            },
+            "-=0.5",
+          )
+          //Eleva el texto: Engage
+          .to(
+            "#pbc-label .line",
+            {
+              y: "0%",
+              duration: 0.75,
+              ease: "power3.out",
+              onComplete: () => {
+                preoloaderComplete = true;
+              },
+            },
+            "-=0.75",
+          );
+
+        //Evitamos que se hagan clic si no se ha completado la animación de stroke
+        preloaderBtn.addEventListener("click", () => {
+          if (!preoloaderComplete) return;
+          preoloaderComplete = false;
+
+          //Reduce el contenedor de la redonda ->
+          const exitTL = gsap.timeline();
+          exitTL
+            .to(".preloader", {
+              scale: 0.75,
+              duration: 1.25,
+              ease: "hop",
+            })
+            //Recorre todo el trazo en negativo, haciendo que el traza salga por el lado opuesto ->
+            .to(
+              [btnOutlineTracks, btnOutlineProgress],
+              {
+                strokeDashoffset: -svgPathLength,
+                duration: 1.25,
+                ease: "hop",
+              },
+              "<",
+            )
+            //oculta el texto: Engage
+            .to(
+              "#pbc-label .line",
+              {
+                y: "-100%",
+                duration: 0.75,
+                ease: "power3.out",
+              },
+              "-=1.25",
+            )
+            //Eleva el texto: Acces Garanted
+            .to(
+              "#pbc-outro-label .line",
+              {
+                y: "0%",
+                duration: 1,
+                ease: "power3.out",
+              },
+              "-=0.5",
+            )
+            //Efecto de escaneo de derecha a izquierda ->
+            .to(".preloader", {
+              clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)",
+              duration: 1.5,
+              ease: "hop",
+            })
+            //Efecto de escaneo completo ->
+            .to(
+              ".preloader-revealer",
+              {
+                clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)",
+                duration: 1.5,
+                ease: "hop",
+                onComplete: () => {
+                  gsap.set(".preloader", { display: "none" });
+                },
+              },
+              "-=1.45",
+            )
+            //El hero recupera su tamaño ->
+            .to(".hero", {
+              scale: 1,
+              duration: 1.25,
+              ease: "hop",
+            })
+            //Los textos negros son visibles ->
+            .to(
+              ".hero h1 .word",
+              {
+                y: "0%",
+                duration: 1,
+                ease: "glide",
+                stagger: 0.05,
+                onComplete: () => {
+                  gsap.set(".header, .footer-academy", { display: "flex" });
+                },
+              },
+              "-=1.75",
+            );
+        });
+      });
+    </script>
+  </body>
+</html>

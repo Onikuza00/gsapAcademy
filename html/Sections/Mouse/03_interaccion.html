@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03. Interacción UI - GSAP Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Syne:wght@600;800&display=swap" rel="stylesheet">
+        <!-- Estilos integrados de ../../../css/03_interaccion.css -->
+<style>
+:root {
+            --bg: #070707; --acc: #00ff88; --acc-v: #8800ff;
+            --txt: #f0f0f0; --glass: rgba(255,255,255,0.02); --border: rgba(255,255,255,0.06);
+            --space: clamp(2rem, 5vw, 4rem);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--txt); font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+        h2 { font-family: 'Syne', sans-serif; font-size: 2.5rem; margin-bottom: 1rem; }
+        .highlight { color: var(--acc); }
+        .header { padding: 2rem; display: flex; justify-content: space-between; position: fixed; width: 100%; z-index: 10; background: rgba(7,7,7,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+        .header a { color: var(--txt); text-decoration: none; border: 1px solid var(--border); padding: 8px 16px; border-radius: 20px; font-weight: 600;}
+        .header a:hover { background: var(--txt); color: var(--bg); }
+        
+        .section { min-height: 100vh; display: grid; gap: var(--space); padding: calc(80px + var(--space)) var(--space); border-bottom: 1px solid var(--border);}
+        .grid-2 { grid-template-columns: 1fr 1fr; }
+        @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+        
+        .panel { background: var(--glass); border: 1px solid var(--border); border-radius: 20px; padding: var(--space); display: flex; flex-direction: column; justify-content: center; position: relative;}
+        .demo { align-items: center; overflow: hidden; }
+        
+        pre { background: rgba(0,0,0,0.5); padding: 1.5rem; border-radius: 12px; font-size: 0.9rem; color: #a6accd; border: 1px solid var(--border); overflow-x: auto; margin-top: 1rem;}
+        .com { color: #697098; font-style: italic; } .str { color: #c3e88d; } .fn { color: #82aaff; }
+
+        /* QUICK TO */
+        .mag-wrap { padding: 80px; border-radius: 50%; border: 1px dashed var(--border); }
+        .mag-btn { border: 1px solid var(--acc); background: var(--bg); color: var(--acc); padding: 20px 40px; border-radius: 50px; cursor: pointer; font-family: 'Syne'; font-size: 1.2rem; }
+
+        /* DRAGGABLE */
+        .drag-bounds { width: 100%; height: 300px; border: 2px dashed var(--border); border-radius: 20px; position: relative; overflow: hidden; display:flex; align-items:center; padding: 20px;}
+        .drag-slider { display: flex; gap: 20px; width: max-content; }
+        .drag-card { width: 300px; height: 200px; background: #222; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-family: 'Syne'; user-select: none; box-shadow: 0 10px 20px rgba(0,0,0,0.5);}
+
+        /* MARQUEE */
+        .marquee-wrapper { width: 100vw; margin-left: calc(-1 * var(--space)); overflow: hidden; background: var(--acc-v); padding: 20px 0; transform: rotate(-2deg); margin-top: 50px; margin-bottom: 50px;}
+        .marquee-inner { display: flex; width: max-content; }
+        .marquee-txt { font-size: 4rem; font-family: 'Syne'; font-weight: 800; color: #fff; padding: 0 20px; white-space: nowrap; text-transform: uppercase; }
+</style>
+</head>
+<body>
+    <header class="header">
+        <h3 style="font-family:'Syne'">GSAP <span class="highlight">Academy</span></h3>
+        <a href="../../../index.html">← Volver al Hub</a>
+    </header>
+
+    <!-- 1. DRAGGABLE -->
+    <section class="section grid-2" style="padding-top: 150px;">
+        <div class="panel code">
+            <h2>Draggable con <span class="highlight">Inercia</span></h2>
+            <p>Usado para sliders de productos o galerías premium. No solo sigue al ratón, sino que la inercia (InertiaPlugin) simula el peso del contenido al soltar, como el iPadOS.</p>
+            <pre><code><span class="com">// Hacemos que el '.drag-slider' sea arrastrable solo en el eje X</span>
+<span class="fn">Draggable</span>.create(".drag-slider", {
+  type: <span class="str">"x"</span>,
+  bounds: ".drag-bounds", <span class="com">// Limita el movimiento a su padre</span>
+  inertia: true,          <span class="com">// Requiere el plugin de Inercia físico</span>
+  edgeResistance: 0.65,   <span class="com">// Efecto goma cuando intentas tirar más allá del límite</span>
+  onDragStart: () => console.log("Lanzado!")
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="drag-bounds">
+                <div class="drag-slider">
+                    <div class="drag-card" style="background:#00b3ff; color:#000;">Drag Me 1</div>
+                    <div class="drag-card" style="background:var(--acc2);">Slide 2</div>
+                    <div class="drag-card" style="background:var(--acc); color:#000;">Flick 3</div>
+                </div>
+            </div>
+            <p style="margin-top:10px; opacity: 0.5;">* Utiliza el ratón para arrastrar y soltar horizontalmente.</p>
+        </div>
+    </section>
+
+    <!-- 2. QUICKTO -->
+    <section class="section grid-2">
+        <div class="panel demo">
+            <div class="mag-wrap">
+                <button class="mag-btn">Acércate</button>
+            </div>
+        </div>
+        <div class="panel code">
+            <h2>Trackers Ultrarrápidos <span class="highlight">(quickTo)</span></h2>
+            <p>En eventos masivos (`mousemove`), pre-compilar las tuberías del motor GSAP evita un Memory Leak atroz y clava el rendimiento.</p>
+            <pre><code><span class="com">// 1. Enganche de las tuberías directamente al motor (BYPASS de gsap.to)</span>
+const xTo = <span class="fn">gsap</span>.quickTo(btn, <span class="str">"x"</span>, {duration: 0.4, ease: <span class="str">"power3"</span>});
+const yTo = <span class="fn">gsap</span>.quickTo(btn, <span class="str">"y"</span>, {duration: 0.4, ease: <span class="str">"power3"</span>});
+
+<span class="com">// 2. En el evento del DOM que va a mil por hora...</span>
+wrap.addEventListener(<span class="str">"mousemove"</span>, (e) => {
+  <span class="com">// Solo alimentamos números puros a las tuberías con un amortiguador (* 0.4)</span>
+  xTo((e.clientX - centerX) * 0.4);
+  yTo((e.clientY - centerY) * 0.4);
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 3. MARQUEE INFINITO Y DIRECCIONAL -->
+    <section class="section">
+        <h2 style="text-align: center;">Marquesina Infinita Sensible</h2>
+        <p style="text-align: center; max-width: 600px; margin: 0 auto;">El efecto <i>Ticker</i>. Analiza la dirección de la rueda del ratón y enruta esa información hacia la línea de tiempo (timeline) de la marquesina invirtiendo la velocidad automáticamente.</p>
+        
+        <div class="marquee-wrapper">
+            <div class="marquee-inner">
+                <div class="marquee-txt">MÁS FLUIDO QUE EL AGUA - RENDIMIENTO CERO ESTRÉS - GSAP ELITE - </div>
+                <div class="marquee-txt">MÁS FLUIDO QUE EL AGUA - RENDIMIENTO CERO ESTRÉS - GSAP ELITE - </div>
+            </div>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto;">
+<pre><code><span class="com">// 1. El pase infinito. xPercent: -100 sobre un clon idéntico solapa el final con el inicio</span>
+const tl = <span class="fn">gsap</span>.to(".marquee-inner", {
+  xPercent: -50,  <span class="com">// Contiene dos hijos identicos, al 50% empieza de cero exacto.</span>
+  repeat: -1, duration: 10, ease: <span class="str">"none"</span>
+});
+
+<span class="com">// 2. Detector Maestro del Scroll (ScrollTrigger)</span>
+<span class="fn">ScrollTrigger</span>.create({
+  start: 0, end: <span class="str">"max"</span>,
+  onUpdate: (self) => {
+    <span class="com">// self.direction es 1 (Hacia abajo) o -1 (Hacia arriba)</span>
+    <span class="com">// Invierte la escala temporal de la animación con inercia</span>
+    <span class="fn">gsap</span>.to(tl, { timeScale: self.direction * 1.5, overwrite: true });
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+    <!-- Inertia Trial from GSAP -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/InertiaPlugin.min.js"></script>
+
+        <!-- Lógica integrada de ../../../js/03_interaccion.js -->
+<script>
+gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin);
+
+        // --- 1. DRAGGABLE ---
+        Draggable.create(".drag-slider", {
+            type: "x",
+            bounds: ".drag-bounds",
+            inertia: true,
+            edgeResistance: 0.65
+        });
+
+        // --- 2. QUICKTO ---
+        const wrap = document.querySelector(".mag-wrap");
+        const btn = document.querySelector(".mag-btn");
+        const xTo = gsap.quickTo(btn, "x", {duration: 0.4, ease: "power3"});
+        const yTo = gsap.quickTo(btn, "y", {duration: 0.4, ease: "power3"});
+
+        wrap.addEventListener("mousemove", (e) => {
+            const rect = btn.getBoundingClientRect();
+            // Desplazamiento reactivo de un 40% de atracción
+            xTo((e.clientX - rect.left - rect.width/2) * 0.4);
+            yTo((e.clientY - rect.top - rect.height/2) * 0.4);
+        });
+        wrap.addEventListener("mouseleave", () => {
+            // Elástico potente al retorno original
+            gsap.to(btn, { x: 0, y: 0, duration: 0.8, ease: "elastic.out(1, 0.4)", overwrite:"auto"});
+        });
+
+        // --- 3. MARQUEE ---
+        // Duplicamos el contenido internamente para el loop
+        const inner = document.querySelector(".marquee-inner");
+        inner.innerHTML += inner.innerHTML; // Hack veloz para loops
+
+        const tlTicker = gsap.to(".marquee-inner", {
+            xPercent: -50, // Como duplicamos, hay 2 partes. 50% es toda la primera parte real.
+            ease: "none",
+            duration: 15,
+            repeat: -1
+        });
+
+        // Control dinámico de escala de tiempo en base a la dirección
+        ScrollTrigger.create({
+            start: 0, 
+            end: "max",
+            onUpdate: (self) => {
+                // Al hacer scroll hacia arriba (direction == -1), timeScale se vuelve negativo y retrocede veloz.
+                gsap.to(tlTicker, { timeScale: self.direction * 1.5, duration: 0.5, overwrite: "auto", ease: "power1.inOut" });
+            }
+        });
+        // Control de reposo pasados unos milisegundos tras el scroll...
+        // Aquí volvería a timeScale: 1
+        ScrollTrigger.addEventListener("scrollEnd", () => {
+             // Retomamos la velocidad lenta en la dirección en la que quedó
+             const curDir = tlTicker.timeScale() > 0 ? 1 : -1;
+             gsap.to(tlTicker, { timeScale: curDir * 1, duration: 0.5, overwrite: "auto", ease: "power1.inOut" });
+        });
+</script>
+</body>
+</html>

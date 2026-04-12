@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>01d. Tipografía (4/4) - GSAP Academy</title>
+    <!-- Estilos integrados de ../../../css/01d_texto.css -->
+<style>
+/* 
+  ---------------------------------------------------------
+  GSAP ACADEMY: TIPOGRAFÍA MASTER (PARTE 4)
+  ---------------------------------------------------------
+  Estilos compartidos para mantener coherencia visual
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@600;700&family=Teko:wght@400;700&display=swap");
+
+:root {
+  --bg: #0a0a0a;
+  --acc: #00ff88; /* Color de acento de tipografía */
+  --txt: #ffffff;
+  --panel-bg: rgba(255, 255, 255, 0.02);
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: "Outfit", sans-serif;
+  overflow-y: auto; /* Aseguramos que el scroll vertical esté siempre habilitado */
+  overflow-x: hidden;
+  transition:
+    background-color 0.8s ease,
+    color 0.5s ease;
+  cursor: auto !important; /* Restauramos el cursor normal del sistema */
+}
+
+a,
+button,
+.btn,
+.nav-links a,
+.mag-element {
+  cursor: pointer !important; /* Cursor de mano para elementos interactivos */
+}
+
+/* Estilización de la barra de desplazamiento para que sea visible y acorde al diseño dark */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+  transition: 0.3s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--acc);
+}
+
+/* Header */
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 1.5rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+}
+
+.header h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+.header .highlight {
+  color: var(--acc);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: 0.3s;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  color: var(--acc);
+}
+
+/* Cursor Custom */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transform: translate(-100%, -100%); /* Fuera de vista inicial */
+}
+
+/* Layout de Sección */
+.section {
+  min-height: 100vh;
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  padding-top: 65px;
+}
+
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem;
+}
+
+.panel.code {
+  background: rgba(0, 0, 0, 0.2);
+  border-right: 1px solid var(--border);
+}
+
+.panel.demo {
+  background: var(--bg);
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipografía de Paneles */
+h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.highlight {
+  color: var(--acc);
+}
+
+p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+}
+
+.footer-logo {
+  width: 35px; /* Reducido para una estética más refinada y minimalista */
+  height: auto;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+/* Code Block */
+pre {
+  background: #000;
+  padding: 1.5rem;
+  border-radius: 12px;
+  font-family: "monospace";
+  font-size: 0.9rem;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+}
+
+code {
+  color: #888;
+}
+.com {
+  color: #555;
+  font-style: italic;
+}
+.key {
+  color: #ff79c6;
+}
+.fn {
+  color: #50fa7b;
+}
+.str {
+  color: #f1fa8c;
+}
+
+/* Botones */
+.btn {
+  margin-top: 2rem;
+  padding: 12px 30px;
+  border: 1px solid var(--acc);
+  background: transparent;
+  color: var(--acc);
+  border-radius: 100px;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: var(--acc);
+  color: #000;
+}
+
+/* --- ESTILOS ESPECÍFICOS DE EFECTOS (PARTE 4) --- */
+
+.mega {
+  font-size: clamp(2rem, 8vw, 5rem) !important;
+  font-weight: 800;
+}
+
+.manifesto-mega {
+  font-size: clamp(1rem, 2.5vw, 1.8rem) !important;
+  text-align: center;
+  line-height: 1.2 !important;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Utilitario para el tamaño del texto en demos 18 y 19 - Ajustado para mejor legibilidad */
+.text-small {
+  font-size: clamp(
+    1rem,
+    1.8vw,
+    1.5rem
+  ) !important; /* Aumentado ligeramente a petición del usuario para mejor apreciación visual */
+  max-width: 90% !important;
+  line-height: 1.2 !important;
+  font-weight: 600 !important;
+}
+
+/* 1. VORA INTRO */
+.vora-demo {
+  font-family: "Teko", sans-serif;
+  font-size: 5rem;
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+}
+.vora-fixed {
+  display: inline-block;
+  opacity: 0;
+}
+
+/* VORA VERTICAL MASK */
+.vora-demo-v {
+  font-family: "Teko", sans-serif;
+  font-size: 3.5rem; /* Ajustado para que no parta */
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap; /* Evita que las palabras largas salten de línea */
+}
+.vora-fixed-v {
+  display: inline-block;
+  opacity: 0;
+}
+.vora-words-container {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  text-align: left;
+  opacity: 0;
+}
+
+/* 2. CINEMATIC SCALE */
+.reveal-line-wrap {
+  overflow: hidden;
+}
+.reveal-line {
+  font-family: "Teko", sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 0.9;
+  text-transform: uppercase;
+  opacity: 0;
+}
+.reveal-line.small {
+  font-size: 2rem;
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+/* 3. X-VALUE TRANSFORM */
+.scrub-line {
+  font-family: "Teko", sans-serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  text-transform: uppercase;
+  perspective: 1000px;
+}
+.char {
+  display: inline-block;
+}
+
+/* 4. 3D SPIN */
+.spin-line {
+  font-family: "Teko", sans-serif;
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 0.85;
+  text-transform: uppercase;
+  perspective: 1000px;
+}
+.char-spin {
+  display: inline-block;
+  transform-origin: 50% 0% -50px;
+}
+
+/* 5. MANIFESTO REVEAL */
+.reveal-text {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1.3;
+  max-width: 600px;
+  text-align: center;
+}
+.reveal-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+@media (max-width: 900px) {
+  .section {
+    flex-direction: column;
+  }
+  .panel {
+    padding: 3rem 2rem;
+  }
+  .header {
+    padding: 1.5rem 2rem;
+  }
+}
+
+/* FOOTER STYLES */
+.footer-academy {
+  width: 100%;
+  padding: 6rem 2rem 4rem;
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 800px;
+  text-align: center;
+}
+
+.footer-logo {
+  width: 35px; /* Reducido para una estética más refinada y minimalista */
+  height: auto;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.declaration {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  color: var(--acc);
+  text-transform: uppercase;
+}
+
+.copyright {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 300;
+}
+
+</style>
+  </head>
+  <body>
+    <!-- Menú de paginación estandarizado -->
+    <header class="header">
+      <h3>GSAP <span class="highlight">Tipografía (4/5)</span></h3>
+      <div class="nav-links">
+        <a href="../../../index.html">Hub</a>
+        <a href="01a_texto.html">1</a>
+        <a href="01b_texto.html">2</a>
+        <a href="01c_texto.html">3</a>
+        <a href="01d_texto.html" class="active">4</a>
+        <a href="01e_json_animations.html">5</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- 16. INTRO VORA -->
+      <section class="section">
+        <div class="panel code">
+          <h2>16. Entrada <span class="highlight">Cinemática</span></h2>
+          <p>
+            Efecto de marca de alto impacto. Combina un espaciado entre letras (<code>letterSpacing</code>) masivamente negativo
+            que se expande, junto con una transición de escala y opacidad con suavizado exponencial.
+          </p>
+          <pre><code><span class="com">// Expansión de caracteres comprimidos</span>
+<span class="fn">gsap</span>.from(".vora", { 
+  duration: 1.8, 
+  letterSpacing: <span class="str">"-40px"</span>, 
+  opacity: 0, scale: 0.8, 
+  ease: <span class="str">"expo.out"</span> 
+});</code></pre>
+        </div>
+        <div class="panel demo">
+          <div class="vora-demo"><span class="vora-fixed">VORA</span><span class="type-target-demo"></span></div>
+          <button class="btn" onclick="playS16()">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- 17. ENTRADA CINEMÁTICA MASK -->
+      <section class="section">
+        <div class="panel code">
+          <h2>17. Máscara <span class="highlight">Vertical</span></h2>
+          <p>
+            Al combinar la descomposición de <code>SplitText</code> asignándole <code>overflow: hidden</code> a las palabras, y animando los caracteres sobre el eje <code>yPercent</code>, simulamos increíbles máscaras verticales orgánicas.
+          </p>
+          <pre><code><span class="com">// Efecto máscara con SplitText</span>
+<span class="fn">gsap</span>.set(<span class="str">".mask-word"</span>, { overflow: <span class="str">"hidden"</span> });
+<span class="fn">gsap</span>.from(split.chars, { 
+  yPercent: 120, 
+  stagger: 0.05, 
+  ease: <span class="str">"expo.out"</span> 
+});</code></pre>
+        </div>
+        <div class="panel demo">
+          <div class="vora-demo-v">
+            <span class="vora-fixed-v">VORA</span>&nbsp;
+            <span class="vora-words-container">
+               <span class="vw" style="color:#00ff88; position:absolute; top:0; left:0;">STUDIO</span>
+               <span class="vw" style="color:#ff2a2a; position:absolute; top:0; left:0;">DESIGN</span>
+               <span class="vw" style="color:#00d4ff; position:absolute; top:0; left:0;">MOTION</span>
+               <span class="vw" style="color:#f1c40f; position:relative; visibility: hidden;">ACADEMY</span>
+               <span class="vw" style="color:#f1c40f; position:absolute; top:0; left:0;">ACADEMY</span>
+            </span>
+          </div>
+          <button class="btn" onclick="playS17()">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- 18. TRANSFORMACIÓN EJE X -->
+      <section class="section">
+        <div class="panel code">
+          <h2>18. Profundidad <span class="highlight">Eje X</span></h2>
+          <p>
+            Los caracteres rotan tridimensionalmente sobre el eje X mientras se desplazan lateralmente. Esta combinación de
+            traslación en Z y rotación crea un efecto de "vuelo" técnico y preciso.
+          </p>
+          <pre><code><span class="com">// Rotación y desplazamiento en 3D</span>
+<span class="fn">gsap</span>.from(chars, {
+  x: 80, z: -100,
+  rotateX: -90,
+  opacity: 0,
+  stagger: 0.04,
+  ease: <span class="str">"power4.out"</span>
+});</code></pre>
+        </div>
+        <div class="panel demo">
+          <div class="scrub-line-demo mega text-small" style="text-align: center; margin: 0 auto">
+            LOS SISTEMAS DE MOVIMIENTO KINÉTICO IMPULSAN EL FUTURO DE LAS EXPERIENCIAS INTERACTIVAS MEDIANTE LA PRECISIÓN Y
+            FLUIDEZ.
+          </div>
+          <button class="btn" onclick="playS18()">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- 19. GIRO 3D PRO -->
+      <section class="section">
+        <div class="panel code">
+          <h2>19. Giro <span class="highlight">3D Pro</span></h2>
+          <p>
+            Rotación circular completa de 360 grados sobre el eje X. Al desplazar el origen de transformación
+            (<code>transformOrigin</code>) hacia el fondo en Z, el giro se percibe como una revolución orbital.
+          </p>
+          <pre><code><span class="com">// Revolución orbital de caracteres</span>
+<span class="fn">gsap</span>.from(chars, {
+  rotateX: -360,
+  opacity: 0,
+  duration: 2,
+  stagger: 0.1,
+  transformOrigin: <span class="str">"50% 0% -50px"</span>
+});</code></pre>
+        </div>
+        <div class="panel demo">
+          <div class="spin-line-demo mega text-small" style="text-align: center; margin: 0 auto">
+            LA EVOLUCIÓN DE LA ROTACIÓN VERTICAL EN EL ESPACIO TRIDIMENSIONAL REDEFINA NUESTRA PERCEPCIÓN DE LAS INTERFACES
+            DINÁMICAS.
+          </div>
+          <button class="btn" onclick="playS19()">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- 20. MANIFIESTO V2 -->
+      <section class="section" style="border-bottom: none">
+        <div class="panel code">
+          <h2>20. Manifiesto <span class="highlight">V2</span></h2>
+          <p>
+            Revelación secuencial de bloques de texto. Una máscara de escala progresiva se aplica a fragmentos multi-línea,
+            guiando la atención del usuario de manera rítmica y elegante.
+          </p>
+          <pre><code><span class="com">// Revelación secuencial de palabras</span>
+<span class="fn">gsap</span>.from(words, {
+  duration: 1.5,
+  opacity: 0,
+  y: 50,
+  stagger: 0.04,
+  ease: <span class="str">"power4.out"</span>
+});</code></pre>
+        </div>
+        <div class="panel demo">
+          <p class="reveal-text-demo manifesto-mega">
+            LA TIPOGRAFÍA CINEMÁTICA NO SOLO SE LEA, SE SIENTE.<br />
+            DIVIDIMOS EL TEXTO EN PALABRAS Y LAS REVELAMOS<br />
+            CON UNA MÁSCARA DE ESCALA PROGRESIVA QUE GUÍA<br />
+            LA MIRADA DEL USUARIO HACIA EL NÚCLEO DEL MENSAJE.
+          </p>
+          <button class="btn" onclick="playS20()">Reiniciar</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js"></script>
+    <!-- Lógica integrada de ../../../js/01d_texto.js -->
+<script>
+/* 
+  ---------------------------------------------------------
+  GSAP ACADEMY: TIPOGRAFÍA MASTER (PARTE 4)
+  ---------------------------------------------------------
+*/
+
+gsap.registerPlugin(ScrollTrigger, TextPlugin, SplitText);
+
+document.addEventListener("DOMContentLoaded", () => {
+    // --- EFECTO 16: VORA INTRO ---
+    let tl16;
+    function playS16() {
+        if(tl16) tl16.kill();
+        const vHead = document.querySelector(".vora-fixed");
+        const typeT = document.querySelector(".type-target-demo");
+        
+        gsap.set(vHead, { opacity: 1, visibility: "visible", x: 0 });
+        tl16 = gsap.timeline();
+        tl16.from(vHead, { 
+            duration: 1.8, 
+            letterSpacing: "-40px", 
+            opacity: 0, 
+            scale: 0.8, 
+            ease: "expo.out" 
+        });
+        tl16.to(typeT, { duration: 0.5, text: " STUDIO", color: "#00ff88", ease: "none" }, "-=0.5");
+        tl16.to(typeT, { duration: 0.3, text: "", ease: "none", delay: 1 });
+        tl16.to(typeT, { duration: 0.5, text: " DESIGN", color: "#ff2a2a", ease: "none" });
+        tl16.to(typeT, { duration: 0.3, text: "", ease: "none", delay: 1 });
+        tl16.to(typeT, { duration: 0.5, text: " MOTION", color: "#00d4ff", ease: "none" });
+        tl16.to(typeT, { duration: 0.3, text: "", ease: "none", delay: 1 });
+        tl16.to(typeT, { duration: 0.5, text: " ACADEMY", color: "#f1c40f", ease: "none" });
+    }
+
+    // --- EFECTO 17: VORA MÁSCARA VERTICAL ---
+    let tl17;
+    let sSplit17;
+    function playS17() {
+        if(tl17) tl17.kill();
+        if(sSplit17) sSplit17.revert();
+        
+        const vHeadV = document.querySelector(".vora-fixed-v");
+        // Filtramos para obviar el elemento invisible de control de achura
+        const vwWords = gsap.utils.toArray(".vw").filter(el => el.style.visibility !== "hidden");
+        
+        gsap.set(vHeadV, { opacity: 1, visibility: "visible", x: 0 });
+        gsap.set(".vora-words-container", { opacity: 1 });
+        
+        sSplit17 = new SplitText(vwWords, { type: "words,chars", wordsClass: "mask-word", charsClass: "c-char" });
+        gsap.set(".mask-word", { overflow: "hidden", display: "inline-block", verticalAlign: "top" });
+        
+        const charGroups = vwWords.map(el => el.querySelectorAll(".c-char"));
+        charGroups.forEach(chars => gsap.set(chars, { yPercent: 120 }));
+        
+        tl17 = gsap.timeline();
+        tl17.from(vHeadV, { 
+            duration: 1.8, 
+            letterSpacing: "-40px", 
+            opacity: 0, 
+            scale: 0.8, 
+            ease: "expo.out" 
+        });
+        
+        // Entramado tipo máscara interactiva
+        charGroups.forEach((chars, index) => {
+           tl17.to(chars, { yPercent: 0, duration: 0.5, stagger: 0.05, ease: "back.out(2)" }, index === 0 ? "-=0.5" : "+=0");
+           if (index < charGroups.length - 1) {
+              tl17.to(chars, { yPercent: -120, duration: 0.4, stagger: 0.03, ease: "power2.in" }, "+=1");
+           }
+        });
+    }
+
+    // --- EFECTO 18: X-VALUE DEPTH (Play with Scroll) ---
+    let s18, tl18;
+    function playS18() {
+        if(s18) s18.revert();
+        if(tl18) tl18.kill();
+        s18 = new SplitText(".scrub-line-demo.mega", { type: "chars" });
+        tl18 = gsap.timeline();
+        tl18.from(s18.chars, {
+            x: 100,
+            z: -150,
+            rotateX: -90,
+            opacity: 0,
+            duration: 1.5,
+            stagger: 0.04,
+            ease: "power4.out",
+            transformOrigin: "50% 0% -50px",
+        });
+    }
+
+    // Activación automática al hacer scroll para el efecto 18
+    const s18_init = new SplitText(".scrub-line-demo.mega", { type: "chars" });
+    gsap.from(s18_init.chars, {
+        x: 100, z: -150, rotateX: -90, opacity: 0,
+        stagger: 0.03, duration: 1.2, ease: "power2.out",
+        scrollTrigger: {
+            trigger: ".scrub-line-demo.mega",
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+        }
+    });
+
+    // --- EFECTO 19: 3D CHARACTER SPIN PRO (Play with Scroll) ---
+    let s19, tl19;
+    function playS19() {
+        if(s19) s19.revert();
+        if(tl19) tl19.kill();
+        s19 = new SplitText(".spin-line-demo.mega", { type: "chars" });
+        tl19 = gsap.timeline();
+        tl19.from(s19.chars, {
+            rotateX: -360,
+            opacity: 0,
+            duration: 2,
+            stagger: 0.08,
+            ease: "expo.out",
+            transformOrigin: "50% 0% -50px",
+        });
+    }
+
+    // Activación por scroll para el efecto 19
+    const s19_init = new SplitText(".spin-line-demo.mega", { type: "chars" });
+    gsap.from(s19_init.chars, {
+        rotateX: -360, opacity: 0,
+        stagger: 0.05, duration: 1.8, ease: "expo.out",
+        scrollTrigger: {
+            trigger: ".spin-line-demo.mega",
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+        }
+    });
+
+    // --- EFECTO 20: MANIFESTO V2 ---
+    let s20, tl20;
+    function playS20() {
+        if(s20) s20.revert();
+        if(tl20) tl20.kill();
+        s20 = new SplitText(".reveal-text-demo.manifesto-mega", { type: "words,lines" });
+        tl20 = gsap.timeline();
+        tl20.from(s20.words, {
+            duration: 1.5,
+            opacity: 0,
+            y: 50,
+            stagger: 0.04,
+            ease: "power4.out"
+        });
+    }
+
+    // --- ASIGNAR PLAYERS A BOTONES ---
+    window.playS16 = playS16;
+    window.playS17 = playS17;
+    window.playS18 = playS18;
+    window.playS19 = playS19;
+    window.playS20 = playS20;
+
+    // --- INIT ALL ---
+    window.addEventListener('load', () => {
+        playS16(); playS17(); playS18(); playS19(); playS20();
+    });
+});
+
+</script>
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="footer-academy">
+      <div class="footer-content">
+        <img src="../../../img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
+        <div class="footer-info">
+          <p class="declaration">UNA DECLARACIÓN DE INTENCIONES SOBRE LA EXCELENCIA EN ANIMACIÓN WEB</p>
+          <p class="copyright">© 2026 PAU CROSAS BATISTA — GSAP MASTER ACADEMY</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

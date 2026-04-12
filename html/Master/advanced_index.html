@@ -3,13 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GSAP Master Academy - Premium Demos</title>
-    <!-- Importación de fuentes premium para un look más profesional y moderno -->
+    <title>Advanced GSAP - Master Academy</title>
+    <!-- Importación de fuentes premium -->
     <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Space+Grotesk:wght@600;700&display=swap"
       rel="stylesheet"
     />
-    <!-- Estilos integrados de css/main.css -->
+    <!-- Reutilizamos el main.css para mantener la coherencia -->
+    <!-- Estilos integrados de ../../css/main.css -->
     <style>
       :root {
         --bg-base: #0a0a0a;
@@ -156,6 +157,7 @@
       .char {
         display: inline-block;
       }
+      
       .card p {
         color: rgba(255, 255, 255, 0.5);
         font-size: 1.1rem;
@@ -166,6 +168,7 @@
       .btn-group {
         display: flex;
         gap: 15px;
+        flex-direction: column;
       }
 
       .btn {
@@ -233,80 +236,215 @@
         color: rgba(255, 255, 255, 0.3);
         font-weight: 300;
       }
+      .grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+      }
+      /* Definición de colores premium para cada sección avanzada */
+      .card.s-scroll {
+        --accent-color: #00f2ff;
+        border-color: rgba(0, 242, 255, 0.3);
+      }
+      .card.s-parallax {
+        --accent-color: #ffcc00;
+        border-color: rgba(255, 204, 0, 0.3);
+      }
+      .card.s-split {
+        --accent-color: #ff007a;
+        border-color: rgba(255, 0, 122, 0.3);
+      }
+      .card.s-menu {
+        --accent-color: #39ff14;
+        border-color: rgba(57, 255, 20, 0.3);
+      }
+      .card.s-hover {
+        --accent-color: #00d4ff;
+        border-color: rgba(0, 212, 255, 0.3);
+      }
+      .card.s-css {
+        --accent-color: #7b00ff;
+        border-color: rgba(123, 0, 255, 0.3);
+      }
+      .card.s-trans {
+        --accent-color: #ff3c00;
+        border-color: rgba(255, 60, 0, 0.3);
+      }
+
+      .header {
+        padding: 1.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background: rgba(7, 7, 7, 0.8);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+      .header h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 15px;
+      }
+      .header a {
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 20px;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        transition: 0.3s;
+      }
+      .header a:hover {
+        background: #fff;
+        color: #000;
+      }
+      .highlight {
+        color: #00f2ff;
+      }
+      .card {
+        max-width: 400px;
+      } /* Aseguramos que todas las cards tengan la misma altura */
     </style>
   </head>
   <body>
-    <!-- Fondo Interactivo (Hover Pantalla) -->
+    <header class="header">
+      <h3>GSAP <span class="highlight">CodeGrid Mastery</span></h3>
+      <div class="nav-links">
+        <a href="../../index.html">Hub</a>
+      </div>
+    </header>
+
+    <!-- Fondo Interactivo -->
     <div class="hero-interaction">
-      <div class="hero-shape" style="top: 10%; left: 5%" data-speed="0.05"></div>
-      <div class="hero-shape" style="top: 50%; left: 80%; width: 200px; height: 300px" data-speed="0.08"></div>
-      <div class="hero-shape" style="top: 70%; left: 15%; width: 250px; height: 400px" data-speed="0.03"></div>
+      <div
+        class="hero-shape"
+        style="top: 20%; left: 10%; background: radial-gradient(circle, #00f2ff22 0%, transparent 70%)"
+        data-speed="0.04"
+      ></div>
+      <div
+        class="hero-shape"
+        style="
+          top: 60%;
+          left: 70%;
+          width: 400px;
+          height: 400px;
+          background: radial-gradient(circle, #ff007a22 0%, transparent 70%);
+        "
+        data-speed="0.06"
+      ></div>
     </div>
 
     <div class="container">
-      <h1 class="title mag-element">GSAP <br /><span style="font-weight: 300; opacity: 0.2">Academy</span></h1>
+      <h1 class="title mag-element">Advanced <br /><span style="font-weight: 300; opacity: 0.2">Mastery</span></h1>
 
       <div class="grid">
-        <!-- TIPOGRAFÍA -->
-        <div class="card txt">
-          <h2>01. Tipografía</h2>
-          <p>Domina el arte de fragmentar texto. SplitText, máscaras cinemáticas y efectos de glitch que reaccionan al scroll.</p>
-          <div class="btn-group">
-            <a href="html/Sections/Texto/01a_texto.html" class="btn mag-element">1</a>
-            <a href="html/Sections/Texto/01b_texto.html" class="btn mag-element">2</a>
-            <a href="html/Sections/Texto/01c_texto.html" class="btn mag-element">3</a>
-            <a href="html/Sections/Texto/01d_texto.html" class="btn mag-element">4</a>
-            <a href="html/Sections/Texto/01e_json_animations.html" class="btn mag-element">5</a>
-          </div>
-        </div>
-        <!-- SCROLL (ANTERIOR VISUALS) -->
-        <div class="card img">
-          <h2>02. Scroll</h2>
-          <p>Parallax multinivel, zooms inmersivos y layouts que cobran vida al interactuar con el scroll y el ratón.</p>
-          <div class="btn-group" style="flex-wrap: wrap">
-            <a href="html/Sections/Scroll/02a_imagenes.html" class="btn mag-element">1</a>
-            <a href="html/Sections/Scroll/02b_imagenes.html" class="btn mag-element">2</a>
-            <a href="html/Sections/Scroll/02c_imagenes.html" class="btn mag-element">3</a>
-            <a href="html/Sections/Scroll/02d_imagenes.html" class="btn mag-element">4</a>
-          </div>
-        </div>
-        <!-- MOUSE (ANTERIOR INTERACCIÓN) -->
-        <div class="card int">
-          <h2>03. Mouse</h2>
-          <p>La magia del `quickTo`. Micro-interacciones magnéticas, sistemas de arrastre y navegaciones no lineales.</p>
-          <div class="btn-group" style="flex-wrap: wrap">
-            <a href="html/Sections/Mouse/03a_interaccion.html" class="btn mag-element">1</a>
-            <a href="html/Sections/Mouse/03b_interaccion.html" class="btn mag-element">2</a>
-            <a href="html/Sections/Mouse/03c_interaccion.html" class="btn mag-element">3</a>
-            <a href="html/Sections/Mouse/03d_interaccion.html" class="btn mag-element">4</a>
-          </div>
-        </div>
-        <!-- BRUTALISMO -->
-        <div class="card bdk">
-          <h2>04. Brutalismo</h2>
-          <p>Estética cruda de alto impacto. Velocity Skew, transiciones elásticas y morphing de formas orgánicas.</p>
-          <div class="btn-group">
-            <a href="html/Sections/Butalismo/04a_bodak.html" class="btn mag-element">1</a>
-            <a href="html/Sections/Butalismo/04b_bodak.html" class="btn mag-element">2</a>
-          </div>
-        </div>
-        <!-- CODEGRID (ANTERIOR ADVANCED GSAP) -->
-        <div class="card adv">
-          <h2>05. CodeGrid</h2>
+        <!-- 01. CASCADA 3D REACTIVA -->
+        <div class="card s-scroll">
+          <h2>01. ScrollTrigger</h2>
           <p>
-            Técnicas maestras de nivel senior. Scroll inmersivo, Parallax Photo Wall y optimizaciones de rendimiento extremas.
+            ScrollTrigger vincula animaciones al desplazamiento de la página, permitiendo que el usuario controle el progreso con
+            su scroll en lugar de basarse en el tiempo.
+          </p>
+          <div class="btn-group" style="flex-direction: column; width: 100%">
+            <a href="masterGsap.html" class="btn mag-element" style="width: 100%">01.- ScrollZoom & Parallax</a>
+            <a href="stacking/stack_superio.html" class="btn mag-element" style="width: 100%">02.- Stacking Cards</a>
+          </div>
+        </div>
+
+        <!-- 02. PARALLAX -->
+        <div class="card s-parallax">
+          <h2>02. Parallax</h2>
+          <p>
+            Parallax es una técnica visual que mueve diferentes capas de contenido a velocidades distintas durante el scroll,
+            creando una ilusión de profundidad y perspectiva en 2D.
           </p>
           <div class="btn-group">
-            <a href="html/Master/advanced_index.html" class="btn mag-element">Master GSAP</a>
+            <a href="#" class="btn mag-element">Próximamente</a>
+          </div>
+        </div>
+
+        <!-- 03. SPLITTEXT -->
+        <div class="card s-split">
+          <h2>03. SplitText</h2>
+          <p>
+            SplitText es una herramienta que divide automáticamente bloques de texto en caracteres, palabras o líneas individuales
+            envolviéndolos en etiquetas.
+          </p>
+          <div class="btn-group">
+            <a href="#" class="btn mag-element">Próximamente</a>
+          </div>
+        </div>
+
+        <!-- 04. SPINER-->
+        <div class="card s-menu">
+          <h2>04. Spiner</h2>
+          <p>
+            Un spinner es un elemento visual de carga que indica al usuario que un proceso está en marcha (como el envío de un
+            formulario o la carga de datos).
+          </p>
+          <div class="btn-group">
+            <a href="Spinner/transicionTEC.html" class="btn mag-element">01.-Spiner Tech</a>
+          </div>
+        </div>
+
+        <!-- 05. MENU -->
+        <div class="card s-hover">
+          <h2>05. Menu</h2>
+          <p>
+            Los efectos de menú son transiciones animadas que mejoran la experiencia de navegación al abrir o interactuar con el
+            panel de enlaces.
+          </p>
+          <div class="btn-group">
+            <a href="menus/Menu 01 - menuTop_withTransition.html" class="btn mag-element">Menu Top Transition</a>
+            <a href="menus/Menu 02 - Menu Vertical.html" class="btn mag-element">Menu Vertical</a>
+          </div>
+        </div>
+
+        <!-- 06. CSS -->
+        <div class="card s-css">
+          <h2>06. CSS</h2>
+          <p>
+            Los efectos de CSS son propiedades que permiten modificar la apariencia y el comportamiento visual de los elementos
+            sin necesidad de scripts externos.
+          </p>
+          <div class="btn-group">
+            <a href="#" class="btn mag-element">Próximamente</a>
+          </div>
+        </div>
+
+        <!-- 07. TRANSICIONES -->
+        <div class="card s-trans">
+          <h2>07. Transiciones</h2>
+          <p>
+            Las transiciones son propiedades de CSS que permiten controlar la velocidad y suavidad con la que un elemento cambia
+            de un estado a otro.
+          </p>
+          <div class="btn-group">
+            <a href="#" class="btn mag-element">Próximamente</a>
           </div>
         </div>
       </div>
     </div>
 
+    <a href="../../index.html" class="back-btn mag-element">VOLVER AL INICIO</a>
+
     <!-- FOOTER INSTITUCIONAL -->
     <footer class="footer-academy">
       <div class="footer-content">
-        <img src="img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
+        <img src="../../img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
         <div class="footer-info">
           <p class="declaration">UNA DECLARACIÓN DE INTENCIONES SOBRE LA EXCELENCIA EN ANIMACIÓN WEB</p>
           <p class="copyright">© 2026 PAU CROSAS BATISTA — GSAP MASTER ACADEMY</p>
@@ -314,12 +452,10 @@
       </div>
     </footer>
 
-    <!-- CARGA DE LIBRERÍAS GSAP Y SPLIT-TYPE -->
+    <!-- CARGA DE LIBRERÍAS GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/split-type"></script>
-
-    <!-- Lógica integrada de js/main.js -->
+    <!-- Lógica integrada de ../../js/main.js -->
     <script>
       const cursor = document.querySelector(".custom-cursor");
       /* Desactivado: Lógica de cursor personalizado */

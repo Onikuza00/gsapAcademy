@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02a. Scroll & Imágenes - GSAP Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+        <!-- Estilos integrados de ../../../css/02a_imagenes.css -->
+<style>
+:root {
+            --bg: #070707; --acc: #00b3ff; --txt: #f0f0f0;
+            --glass: rgba(255,255,255,0.02); --border: rgba(0,179,255,0.2);
+            --space: clamp(2rem, 5vw, 4rem);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--txt); font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+
+        h2 { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; margin-bottom: 1.5rem; line-height: 1; letter-spacing: -2px;}
+        .highlight { color: var(--acc); }
+        
+        .header { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items:center; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: rgba(7,7,7,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+        .header h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px;}
+        .nav-links { display: flex; gap: 15px; }
+        .header a { color: var(--txt); text-decoration: none; border: 1px solid var(--border); padding: 10px 20px; border-radius: 100px; font-weight: 700; font-family:'Space Grotesk'; font-size: 0.8rem; transition: 0.3s;}
+        .header a.active { background: var(--acc); color: var(--bg); border-color: var(--acc); }
+        .header a:hover { background: var(--txt); color: var(--bg); }
+        
+        .section { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space); padding: calc(100px + var(--space)) var(--space) var(--space) var(--space); border-bottom: 1px solid rgba(255,255,255,0.05);}
+        @media (max-width: 1100px) { .section { grid-template-columns: 1fr; } }
+        
+        .panel { background: var(--glass); border: 1px solid var(--border); border-radius: 24px; padding: var(--space); display: flex; flex-direction: column; justify-content: center; position: relative; transition: 0.4s; backdrop-filter: blur(5px);}
+        .panel.code { background: #080808; border-color: rgba(255,255,255,0.05);}
+        .panel.demo { align-items: center; overflow: hidden; background: radial-gradient(circle at center, rgba(0,179,255,0.03) 0%, transparent 70%); }
+        
+        .btn { position: absolute; bottom: 30px; right: 30px; background: transparent; border: 1px solid var(--acc); color: var(--acc); padding: 12px 24px; border-radius: 100px; font-family: 'Space Grotesk'; font-weight:700; transition: 0.3s;}
+        .btn:hover { background: var(--acc); color: var(--bg); }
+        
+        pre { background: #000; padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; color: #a6accd; border: 1px solid #222; overflow-x: auto; margin-top: 1rem; font-family: monospace; line-height: 1.5;}
+        .com { color: #697098; font-style: italic; } .str { color: #c3e88d; } .fn { color: #82aaff; } .key { color: #c792ea; }
+
+        /* DEMOS CSS */
+        /* 1. Parallax */
+        .img-mask { width: 80%; height: 50vh; overflow: hidden; border-radius: 12px; position: relative;}
+        .img-parallax { width: 100%; height: 200%; position: absolute; top: -50%; left: 0; object-fit: cover; }
+        
+        /* 2. Scroll Horizontal Verdadero (Solucionado vacío) */
+        /* El panel .demo actuará como 'viewport' restrictivo ocultando lo que sale. El scroller bajará el doc normal. */
+        .horizontal-sec .panel.demo { padding: 0; display:flex; align-items: stretch; justify-content: flex-start; }
+        .hs-wrapper { display: flex; width: max-content; height: 100%; padding: 0; }
+        /* Las diapositivas ahora ocupan todo el alto del contenedor para un efecto inmersivo total */
+        .hs-item { width: 45vw; height: 100%; object-fit: cover; border-right: 2px solid var(--bg); flex-shrink: 0; border-radius: 0; margin: 0; }
+        
+        /* 3. Stacking CSS mejorado */
+        .stack-wrap { width: 100%; height: 80vh; overflow-y: scroll; position: relative; border-radius: 12px; scrollbar-width: none; -ms-overflow-style: none; }
+        .stack-wrap::-webkit-scrollbar { display: none; }
+        .scard { width: 90%; height: 50vh; margin: 0 auto; position: sticky; top: 5vh; border-radius: 20px; display:flex; align-items:center; justify-content:center; font-family: 'Space Grotesk'; font-size: 2.5rem; box-shadow: 0 -10px 40px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); }
+        .sc1 { background: #6200ee; color:#fff; } /* Violeta Intenso */
+        .sc2 { background: #03dac6; color:#000; } /* Cian Eléctrico */
+        .sc3 { background: #ffde03; color:#000; } /* Amarillo Brillante */
+        .sc4 { background: #ff0266; color:#fff; } /* Rosa Neón */
+        .sc5 { background: #00b0ff; color:#fff; } /* Azul Vivo */
+        .sc6 { background: #ff6d00; color:#fff; } /* Naranja Vibrante */
+
+        /* 4. Zoom Out */
+        .zoom-mask { width: 100%; height: 100%; border-radius: 12px; overflow: hidden;}
+        .zoom-img { width: 100%; height: 100%; object-fit: cover; transform: scale(3); transform-origin: center;}
+
+        /* 5. Wipe Reveal */
+        .wipe-mask { width: 80%; height: 60vh; position: relative; display: flex; align-items:center; justify-content:center; background: #111; border-radius: 12px; overflow: hidden; }
+        .wipe-img { width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%); }
+
+/* FOOTER STYLES */
+.footer-academy {
+  width: 100%;
+  padding: 6rem 2rem 4rem;
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 800px;
+  text-align: center;
+}
+
+.footer-logo {
+  width: 35px; /* Reducido para una estética más refinada y minimalista */
+  height: auto;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.declaration {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  color: var(--acc);
+  text-transform: uppercase;
+}
+
+.copyright {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 300;
+}
+</style>
+</head>
+<body>
+    <header class="header">
+        <h3>GSAP <span class="highlight">Visuales (1/4)</span></h3>
+        <div class="nav-links">
+            <a href="../../../index.html">Hub</a>
+            <a href="02a_imagenes.html" class="active">1</a>
+            <a href="02b_imagenes.html">2</a>
+            <a href="02c_imagenes.html">3</a>
+            <a href="02d_imagenes.html">4</a>
+        </div>
+    </header>
+
+    <!-- 1. PARALLAX -->
+    <section class="section" style="padding-top: 15vh;">
+        <div class="panel code">
+            <h2>01. Parallax <span class="highlight">Interno</span></h2>
+            <p>Efecto de profundidad donde la imagen se desplaza a una velocidad distinta al scroll dentro de un contenedor con máscara. Al tener una altura superior (160%), permite un recorrido visual fluido y cinemático.</p>
+            <pre><code><span class="com">// Movimiento vertical y zoom progresivo</span>
+<span class="fn">gsap</span>.to(".img-parallax", {
+  yPercent: 80,     
+  scale: 1.15,      
+  scrollTrigger: {
+    trigger: ".img-mask",
+    scrub: <span class="key">true</span>
+  }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="img-mask">
+                <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800" class="img-parallax" alt="Parallax">
+            </div>
+            <button class="btn" onclick="playS25()">Reiniciar</button>
+        </div>
+    </section>
+
+    <!-- 2. SCROLL HORIZONTAL (FIXED) -->
+    <section class="section horizontal-sec">
+        <div class="panel demo">
+            <div class="hs-wrapper">
+                <img class="hs-item" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800" alt="Slide 1">
+                <img class="hs-item" src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=800" alt="Slide 2">
+                <img class="hs-item" src="https://images.unsplash.com/photo-1550684848-86a5d8727436?q=80&w=800" alt="Slide 3">
+                <img class="hs-item" src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800" alt="Slide 4">
+                <img class="hs-item" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800" alt="Slide 5">
+            </div>
+        </div>
+        <div class="panel code">
+            <h2>02. Scroll <span class="highlight">Horizontal</span></h2>
+            <p>Técnica de desplazamiento lateral que utiliza <code>pin: true</code> para fijar la sección mientras se traslada el contenido horizontalmente. El recorrido se calcula dinámicamente según el ancho del contenedor.</p>
+            <pre><code><span class="com">// Traslación horizontal vinculada al scroll</span>
+<span class="fn">gsap</span>.to(wrap, {
+  x: -dist,
+  scrollTrigger: {
+    trigger: ".horizontal-sec",
+    pin: <span class="key">true</span>,      
+    scrub: 1
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 3. STACKING -->
+    <section class="section">
+        <div class="panel code">
+            <h2>03. Apilamiento <span class="highlight">Sticky</span></h2>
+            <p>Combinación de <code>position: sticky</code> de CSS con animaciones de escala de GSAP. Las tarjetas se apilan visualmente mientras se reduce su tamaño y opacidad al ser superpuestas por la siguiente.</p>
+            <pre><code><span class="com">// Reducción de escala y opacidad progresiva</span>
+<span class="fn">gsap</span>.to(card, {
+  scale: 0.9, opacity: 0.4,
+  scrollTrigger: {
+    trigger: cards[i + 1],
+    scrub: <span class="key">true</span>
+  }
+});</code></pre>
+        </div>
+        <div class="panel demo" style="padding:0; background:transparent;">
+            <div class="stack-wrap">
+                <div style="height: 10vh;"></div>
+                <div class="scard sc1">ALPHA</div>
+                <div class="scard sc2">BETA</div>
+                <div class="scard sc3">GAMMA</div>
+                <div class="scard sc4">DELTA</div>
+                <div style="height: 60vh;"></div>
+            </div>
+            <button class="btn" onclick="playS27()">Reiniciar</button>
+        </div>
+    </section>
+
+    <!-- 4. ZOOM OUT -->
+    <section class="section">
+        <div class="panel demo" style="padding:0;">
+            <div class="zoom-mask">
+                <img src="https://images.unsplash.com/photo-1550684376-efcbd6e3f031?q=80&w=800" class="zoom-img">
+            </div>
+            <button class="btn" onclick="playS28()">Reiniciar</button>
+        </div>
+        <div class="panel code">
+            <h2>04. Zoom Out <span class="highlight">Inmersivo</span></h2>
+            <p>Efecto de retrospectiva donde la imagen comienza con una escala masiva (x3) y se asienta en su tamaño original. Crea una transición suave desde el detalle hacia el plano general.</p>
+            <pre><code><span class="com">// Retorno al tamaño original (scale: 1)</span>
+<span class="fn">gsap</span>.to(".zoom-img", {
+  scale: 1,         
+  scrollTrigger: {
+    trigger: ".zoom-mask",
+    scrub: 1
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- 5. WIPE REVEAL -->
+    <section class="section" style="border-bottom:none;">
+        <div class="panel code">
+            <h2>05. Barrido <span class="highlight">Vectorial</span></h2>
+            <p>Revelación mediante el uso de polígonos vectoriales (<code>clip-path</code>). La imagen se descubre progresivamente manipulando las coordenadas de sus vértices, permitiendo barridos limpios y geométricos.</p>
+            <pre><code><span class="com">// Animación de coordenadas de clip-path</span>
+<span class="fn">gsap</span>.to(".wipe-img", {
+  clipPath: <span class="str">"polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"</span>,
+  scrollTrigger: {
+    trigger: ".wipe-mask",
+    scrub: 1         
+  }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+            <div class="wipe-mask">
+                <img src="https://images.unsplash.com/photo-1542626991-cbc4e32524cc?q=80&w=800" class="wipe-img">
+            </div>
+            <button class="btn" onclick="playS29()">Reiniciar</button>
+        </div>
+    </section>
+
+    <!-- Espaciador final para permitir que el scroll se complete en la última demo -->
+    <div style="height: 50vh;"></div>
+
+    <!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+        <!-- Lógica integrada de ../../../js/02a_imagenes.js -->
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+        // --- 1. PARALLAX MEJORADO (EFECTO CINE) ---
+        // Incrementamos el recorrido y añadimos escala para profundidad 3D
+        gsap.to(".img-parallax", {
+            yPercent: 80,          // Movimiento extremo (Parallax agresivo)
+            scale: 1.15,           // Zoom sutil para efecto 'Inmersivo'
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".img-mask",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // --- Demo 2: Horizontal Scroll Seguro ---
+        const hsWrap = document.querySelector(".hs-wrapper");
+        if(hsWrap) {
+            ScrollTrigger.create({
+                trigger: ".horizontal-sec",
+                pin: true,
+                start: "top top",
+                end: () => "+=" + (hsWrap.scrollWidth - hsWrap.parentElement.clientWidth),
+                animation: gsap.to(hsWrap, { x: () => -(hsWrap.scrollWidth - hsWrap.parentElement.clientWidth), ease: "none" }),
+                scrub: 1
+            });
+        }
+
+        // --- Demo 3: Stacking Interno (Corregido) ---
+        const scards = gsap.utils.toArray(".scard");
+        scards.forEach((card, i) => {
+            // No animamos la última carta porque no tiene nada que la cubra
+            if(i !== scards.length - 1){
+                gsap.to(card, {
+                    scale: 0.85, 
+                    opacity: 0, 
+                    y: -50, // Pequeño desplazamiento hacia arriba al ser cubierta
+                    ease: "none",
+                    scrollTrigger: { 
+                        trigger: scards[i+1], // El disparador es la siguiente carta
+                        scroller: ".stack-wrap", 
+                        start: "top 80%",    // Empieza a encogerse cuando la siguiente está cerca
+                        end: "top 15%",      // Termina cuando la siguiente está a punto de pisarla
+                        scrub: true 
+                    }
+                });
+            }
+        });
+
+        // --- Demo 4: Zoom Out ---
+        gsap.to(".zoom-img", {
+            scale: 1, ease: "power2.out",
+            scrollTrigger: { trigger: ".zoom-mask", start: "top 80%", end: "top 20%", scrub: 1 }
+        });
+
+        // --- Demo 5: Clip Wipe (Corregido para cierre completo) ---
+        gsap.to(".wipe-img", {
+            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            ease: "none",
+            scrollTrigger: { 
+                trigger: ".wipe-mask", 
+                start: "top 85%",    // Empieza un poco antes
+                end: "top 15%",      // Termina mucho antes de que el elemento salga
+                scrub: 1 
+            }
+        });
+        // --- LÓGICA DE INTERACCIÓN        // Efectos magnéticos suaves para elementos interactivos
+        document.querySelectorAll('.mag-element, .btn').forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const { left, top, width, height } = el.getBoundingClientRect();
+                const x = e.clientX - (left + width / 2);
+                const y = e.clientY - (top + height / 2);
+                gsap.to(el, { x: x * 0.3, y: y * 0.3, duration: 0.3 });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+            });
+        });
+</script>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="footer-academy">
+      <div class="footer-content">
+        <img src="../../../img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
+        <div class="footer-info">
+          <p class="declaration">UNA DECLARACIÓN DE INTENCIONES SOBRE LA EXCELENCIA EN ANIMACIÓN WEB</p>
+          <p class="copyright">© 2026 PAU CROSAS BATISTA — GSAP MASTER ACADEMY</p>
+        </div>
+      </div>
+    </footer>
+</body>
+</html>
