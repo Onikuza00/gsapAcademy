@@ -189,30 +189,10 @@ window.addEventListener("DOMContentLoaded", () => {
     });
     //#endregion STRATEGY INTRO & PARALLAX
 
+    //#region MASCARA
     /* ==========================================================================
-     ANIMACIÓN: 02. Revelado por Máscara (Servicios)
-     Descripción: Título deslizándose hacia arriba a través de una máscara.
+     SECCION 03 -  Revelado por Máscara -> (Servicios)
      ========================================================================== */
-    gsap.from(".services-title", {
-      scrollTrigger: {
-        trigger: ".services-title-mask",
-        start: "top 90%",
-        toggleActions: "play none none reverse",
-      },
-      yPercent: 110,
-      duration: 1.2,
-      ease: "power4.out",
-      clearProps: "all",
-    });
-    /* ==========================================================================
-     FIN ANIMACIÓN: 02. Revelado por Máscara
-     ========================================================================== */
-    /* 
-  ==========================================================================
-   SECCIÓN: MASK REVEAL (SOLUCIÓN FINAL)
-   ========================================================================== */
-    // 1. Corrección del Parallax: Venimos de 100 y terminamos en 0
-    // Así, cuando la sección llega al "top", está perfectamente alineada.
     let media = gsap.matchMedia();
 
     // 2. Definimos las condiciones (igual que en CSS)
@@ -268,49 +248,68 @@ window.addEventListener("DOMContentLoaded", () => {
           .to(".mask-title", { opacity: 1, y: -20, duration: 0.5, ease: "power2.out" }, "-=0.2");
       },
     );
+    //#endregion MASCARA
 
+    //#region SERVICIOS
     /* ==========================================================================
-     FIN SECCIÓN: MASK REVEAL
+     SECCCION 04: SERVICIOS
      ========================================================================== */
-
-    /* ==========================================================================
-     TRANSICIÓN DE FONDO GLOBAL
-     ========================================================================== */
-    // Al llegar a la sección de servicios, tapamos la imagen con un gradiente blanco de forma suave
-    gsap.to("body", {
-      "--bg-opacity": 1,
+    //ENTRADA DEL TITULO
+    const splitServicios = new SplitText(".services-title2", { type: "lines" });
+    const tlServicios = gsap.timeline({
       scrollTrigger: {
-        trigger: ".services-section",
-        start: "top 75%", // Empieza un poco antes de ver las tarjetas
-        end: "top 50%",
-        scrub: 1, // Transición suave atada al scroll
-        invalidateOnRefresh: true,
+        trigger: ".services-title-mask",
+        start: "top 90%",
+        toggleActions: "play none none reverse",
       },
     });
-
-    // 1. Preparación para Loop Infinito (Común a ambos)
-    const rows = document.querySelectorAll(".divergent-grid__row");
-    rows.forEach((row) => {
-      const content = row.innerHTML;
-      row.innerHTML = content + content + content;
-    });
-
-    /* ==========================================================================
-     OPTIMIZACIÓN: MATCH MEDIA (RESPONSIVIDAD)
-     ========================================================================== */
+    tlServicios
+      .from(".services-title", {
+        yPercent: 110,
+        duration: 3,
+        ease: "power4.out",
+        clearProps: "all",
+      })
+      .from(
+        splitServicios.lines,
+        {
+          autoAlpha: 0,
+          stagger: 0.5,
+          yPercent: 100,
+          duration: 1,
+          ease: "power4.out",
+        },
+        "<0.5",
+      )
+      .from(
+        ".services-desc p",
+        {
+          autoAlpha: 0,
+          duration: 0.5,
+        },
+        "<1",
+      )
+      .from(
+        ".btn-orange-strategy",
+        {
+          autoAlpha: 0,
+          duration: 0.5,
+          scale: 0.8,
+        },
+        ">",
+      );
+    // 1. STACKING CARDS (Solo en Desktop)
     const mm = gsap.matchMedia();
-
-    // ----- DESKTOP & TABLET LANDSCAPE -----
     mm.add("(min-width: 992px)", () => {
-      // 1. STACKING CARDS (Solo en Desktop)
       const cards = gsap.utils.toArray(".service-card");
       cards.forEach((card, i) => {
         gsap.to(card, {
           scrollTrigger: {
             trigger: card,
-            start: () => `top ${2 + i * 1.5}%`,
+            start: () => `top ${2 + i * 2}%`,
             endTrigger: ".services-stack",
-            end: "bottom bottom",
+            //Evitem el stacking flow de les tarjes asegurant 1 scroll enter de paginació per tarja
+            end: () => `+=${window.innerHeight * 6}`,
             pin: true,
             pinSpacing: false,
             scrub: true,
@@ -322,6 +321,29 @@ window.addEventListener("DOMContentLoaded", () => {
         });
       });
 
+      //Fin de las cards
+      //#endregion SERVICIOS
+
+      //#region PROYECTOS
+      /*==========================================================================
+      SECCION 05 -> PROYECTOS
+     ========================================================================== */
+      const divergentTitle = document.querySelector(".divergent-grid__title");
+      if (divergentTitle) {
+        const originalHTML = divergentTitle.innerHTML;
+        divergentTitle.innerHTML = `<span class="mask-inner">${originalHTML}</span>`;
+
+        gsap.from(".divergent-grid__title .mask-inner", {
+          scrollTrigger: {
+            trigger: ".divergent-grid__title",
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+          yPercent: 100,
+          duration: 1.5,
+          ease: "power4.out",
+        });
+      }
       // 2. PARRILLA DIVERGENTE (Scroll Largo)
       const tlDivergent = gsap.timeline({
         scrollTrigger: {
@@ -340,12 +362,10 @@ window.addEventListener("DOMContentLoaded", () => {
           },
         },
       });
-
       tlDivergent
         .to(".divergent-grid__row--top", { xPercent: -40, ease: "none" }, 0)
         .fromTo(".divergent-grid__row--bottom", { xPercent: -40 }, { xPercent: 0, ease: "none" }, 0);
     });
-
     const logoSpin = gsap.to(".gallery-badge-img", {
       rotation: 360,
       duration: 15,
@@ -354,79 +374,89 @@ window.addEventListener("DOMContentLoaded", () => {
       paused: true,
       transformOrigin: "50% 50%",
     });
-
-    /* ==========================================================================
-     ANIMACIÓN: 02. Revelado por Máscara (Proyectos)
-     Descripción: Revelado ascendente a través de un contenedor overflow:hidden.
-     ========================================================================== */
-    const divergentTitle = document.querySelector(".divergent-grid__title");
-    if (divergentTitle) {
-      const originalHTML = divergentTitle.innerHTML;
-      divergentTitle.innerHTML = `<span class="mask-inner">${originalHTML}</span>`;
-
-      gsap.from(".divergent-grid__title .mask-inner", {
-        scrollTrigger: {
-          trigger: ".divergent-grid__title",
-          start: "top 90%",
-          toggleActions: "play none none reverse",
-        },
-        yPercent: 100,
-        duration: 1.2,
-        ease: "power4.out",
-      });
-    }
-    /* ==========================================================================
-     FIN ANIMACIÓN: 02. Revelado por Máscara
-     ========================================================================== */
-
     // ----- MOBILE & TABLET PORTRAIT -----
     mm.add("(max-width: 991px)", () => {
-      // 1. Navegación del Slider Móvil
       const nextBtn = document.getElementById("gallery-next");
       const prevBtn = document.getElementById("gallery-prev");
       const rowTop = document.querySelector(".divergent-grid__row--top");
 
+      let cleanupSliderEvents = () => {};
+      let resizeTimeout;
+
       if (nextBtn && prevBtn && rowTop) {
         let currentIndex = 0;
-        gsap.set(rowTop, { x: 0 });
+
+        const getCardWidth = () => {
+          const item = rowTop.querySelector(".divergent-grid__item");
+          return item ? item.offsetWidth : 0;
+        };
+
+        const getGap = () => 20;
+        const items = rowTop.querySelectorAll(".divergent-grid__item");
+        const total = items.length;
 
         const updateSlider = () => {
-          const items = rowTop.querySelectorAll(".divergent-grid__item");
-          const realTotal = items.length / 3; // El número original de items (6)
+          const offset = -(currentIndex * (getCardWidth() + getGap()));
 
-          // Cada paso es 100vw
           gsap.to(rowTop, {
-            x: `-${currentIndex * 100}vw`,
+            x: offset,
             duration: 0.6,
             ease: "power2.inOut",
           });
         };
 
-        nextBtn.addEventListener("click", () => {
-          const items = rowTop.querySelectorAll(".divergent-grid__item");
-          const realTotal = items.length / 3;
-          currentIndex = (currentIndex + 1) % realTotal;
+        const handleNext = () => {
+          currentIndex = (currentIndex + 1) % total;
           updateSlider();
+        };
+
+        const handlePrev = () => {
+          currentIndex = (currentIndex - 1 + total) % total;
+          updateSlider();
+        };
+
+        nextBtn.addEventListener("click", handleNext);
+        prevBtn.addEventListener("click", handlePrev);
+
+        // 👇 IMPORTANTE: empezar en 0
+        gsap.set(rowTop, { x: 0 });
+
+        window.addEventListener("resize", () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(() => {
+            gsap.set(rowTop, {
+              x: -(currentIndex * (getCardWidth() + getGap())),
+            });
+          }, 100);
         });
 
-        prevBtn.addEventListener("click", () => {
-          const items = rowTop.querySelectorAll(".divergent-grid__item");
-          const realTotal = items.length / 3;
-          currentIndex = (currentIndex - 1 + realTotal) % realTotal;
-          updateSlider();
-        });
+        cleanupSliderEvents = () => {
+          nextBtn.removeEventListener("click", handleNext);
+          prevBtn.removeEventListener("click", handlePrev);
+        };
       }
 
-      // 2. Logo giratorio
-      gsap.to(logoSpin, {
-        scrollTrigger: {
+      let logoST;
+
+      if (typeof logoSpin !== "undefined") {
+        logoST = ScrollTrigger.create({
           trigger: ".divergent-grid",
           start: "top center",
           onEnter: () => logoSpin.play(),
           onLeaveBack: () => logoSpin.pause(),
-        },
-      });
+        });
+      }
+
+      return () => {
+        cleanupSliderEvents();
+        if (logoST) logoST.kill();
+      };
     });
+
+    /* ==========================================================================
+     ANIMACIÓN: 02. Revelado por Máscara (Proyectos)
+     Descripción: Revelado ascendente a través de un contenedor overflow:hidden.
+     ========================================================================== */
 
     /* ==========================================================================
      SECCIÓN: PRICING ANIMATION
@@ -476,7 +506,27 @@ window.addEventListener("DOMContentLoaded", () => {
     /* ==========================================================================
      FIN ANIMACIÓN: 02. Revelado por Máscara
      ========================================================================== */
+    /* ==========================================================================
+     TRANSICIÓN DE FONDO GLOBAL
+     ========================================================================== */
+    // Al llegar a la sección de servicios, tapamos la imagen con un gradiente blanco de forma suave
+    gsap.to("body", {
+      "--bg-opacity": 1,
+      scrollTrigger: {
+        trigger: ".services-section",
+        start: "top 75%", // Empieza un poco antes de ver las tarjetas
+        end: "top 50%",
+        scrub: 1, // Transición suave atada al scroll
+        invalidateOnRefresh: true,
+      },
+    });
 
+    // 1. Preparación para Loop Infinito (Común a ambos)
+    const rows = document.querySelectorAll(".divergent-grid__row");
+    rows.forEach((row) => {
+      const content = row.innerHTML;
+      row.innerHTML = content + content + content;
+    });
     /* ==========================================================================
      SECCIÓN: CONTACT ANIMATION
      Descripción: Revelación del formulario moderno.
