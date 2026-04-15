@@ -320,6 +320,14 @@ window.addEventListener("DOMContentLoaded", () => {
           },
         });
       });
+      gsap.to(".service-card", {
+        autoAlpha: 0,
+        scrollTrigger: {
+          trigger: ".divergent-grid", // Cuando entras en la siguiente sección (proyectos)
+          start: "top center",
+          toggleActions: "play none none reverse",
+        },
+      });
 
       //Fin de las cards
       //#endregion SERVICIOS
