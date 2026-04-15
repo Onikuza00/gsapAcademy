@@ -355,7 +355,7 @@
 
             //Creamos un mundo vacío de Matter.js ->
             //indicamos: x: 0 { Sin viento lateral}, y: 2 { gravedad normal es 1, 2 es caida pesada}
-            engine = Engine.create({ gravity: { x: 0, y: 1 } });
+            engine = Engine.create({ gravity: { x: 0.5, y: 1 } });
 
             //Grosor de paredes y suelo (aseguramos un rebote normal) ->
             const wallThickness = 20;

@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>01 - Ventana de avion</title>
+    <!-- Importación de fuentes premium para un look profesional -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap");
+
+      :root {
+        --light: #e3e3db;
+        --dark: #0f0f0f;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Archivo", serif;
+        background-color: var(--light);
+        color: var(--dark);
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      h1 {
+        font-size: clamp(5rem, 8vw, 7rem);
+        font-weight: 500;
+        line-height: 0.8;
+      }
+
+      p {
+        font-size: 1.35rem;
+        line-height: 1;
+      }
+
+      .col p {
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 2rem;
+        margin-bottom: 5rem;
+        margin-left: 5rem;
+      }
+
+      section {
+        position: relative;
+        width: 100%;
+        height: 100svh;
+        overflow: hidden;
+      }
+
+      /* Añade profundidad */
+      .hero {
+        perspective: 1000px;
+        color: var(--light);
+        background-color: red;
+      }
+
+      .outro {
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+
+      .sky-container,
+      .hero-copy,
+      .window-container,
+      .hero-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        will-change: transform;
+      }
+
+      .sky-container {
+        height: 200svh;
+      }
+
+      .hero-copy {
+        height: 100svh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        /* border: solid red 2px; */
+      }
+
+      .hero-copy h1 {
+        width: 70%;
+        font-weight: 500;
+        font-size: 5rem;
+        line-height: 1;
+        color: #fff;
+        transform: scaleX(1) scaleY(0.8);
+        letter-spacing: -6%;
+        mix-blend-mode: overlay; /* o "soft-light" */
+        text-shadow:
+          0 0 30px rgba(45, 44, 44, 0.3),
+          0 0 60px rgba(255, 255, 255, 0.4);
+      }
+
+      @media (max-width: 1000px) {
+        .hero-copy {
+          padding: 0rem;
+          border: solid red 2px;
+          width: 100%;
+        }
+        .hero-copy h1 {
+          font-size: 3rem;
+          width: 90%;
+          line-height: 1.1;
+        }
+      }
+
+      .window-container {
+        height: 100svh;
+      }
+
+      .hero-header {
+        height: 100svh;
+        padding: 2rem;
+        display: flex;
+        transform-style: preserve-3d;
+      }
+
+      .hero-header .col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      #titulo1 {
+        position: relative;
+        margin-top: 10rem;
+        font-weight: 500;
+        /* Obligatorio para que transform funcione */
+        display: inline-block;
+        /* scale(X, Y) -> 1.5 la estira a lo ancho, 0.7 la aplasta a lo alto */
+        transform: scale(1.2, 0.7) scaleX(0.8);
+        line-height: 1;
+        left: 15%;
+        top: -10%;
+        letter-spacing: -5%;
+        color: #fff;
+      }
+
+      #titulo2 {
+        position: relative;
+        margin-top: 10rem;
+        font-weight: 500;
+        /* Obligatorio para que transform funcione */
+        display: inline-block;
+        /* scale(X, Y) -> 1.5 la estira a lo ancho, 0.7 la aplasta a lo alto */
+        transform: scale(1.2, 0.7) scaleX(0.8);
+        line-height: 1;
+        right: 10%;
+        top: -25%;
+        letter-spacing: -5%;
+        text-align: right;
+        color: #fff;
+      }
+      .hero-header .col p {
+        width: 50%;
+      }
+
+      .hero-header .col:nth-child(2) {
+        align-items: flex-end;
+        text-align: right;
+      }
+
+      @media (max-width: 1000px) {
+        h1 {
+          font-size: 3rem;
+        }
+
+        p {
+          font-size: 1.125rem;
+        }
+      }
+      /* Estilos específicos para la cabecera (Header) con efecto cristal (Glassmorphism) */
+      .header {
+        padding: 1.5rem 2rem;
+        display: none;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background: rgba(7, 7, 7, 0.8);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+      .header h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 15px;
+      }
+      .header a {
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 20px;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        transition: 0.3s;
+      }
+      .header a:hover {
+        background: #fff;
+        color: #000;
+      }
+
+      /* FOOTER STYLES */
+      .footer-academy {
+        width: 100%;
+        padding: 6rem 2rem 4rem;
+        border-top: 1px solid var(--glass-border);
+        margin-top: 4rem;
+        display: flex;
+        justify-content: center;
+        position: sticky;
+        top: 100%;
+      }
+
+      .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        max-width: 800px;
+        text-align: center;
+      }
+
+      .footer-logo {
+        width: 100px; /* Reducido para una estética más refinada y minimalista */
+        height: auto;
+        opacity: 1;
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .declaration {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 3px;
+        color: var(--c-adv);
+        text-transform: uppercase;
+      }
+
+      .copyright {
+        font-family: "Outfit", sans-serif;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.3);
+        font-weight: 300;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navegación Superior -->
+    <header class="header">
+      <h3>GSAP <span class="highlight">CodeGrid Mastery</span></h3>
+      <div class="nav-links">
+        <a href="../advanced_index.html">Advanced Hub</a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="sky-container">
+        <img src="../../../img/cielo.webp" alt="" />
+      </div>
+      <div class="hero-copy">
+        <h1 id="descrp-sky">
+          Esta sera una breve despcripción para la compañia que se quiera promocionar. Ess una transición o espacio web ideal para
+          compañias de vuelos, aviación y transporte aéreo. Esta transición esta hecha con SplitText.
+        </h1>
+      </div>
+
+      <div class="window-container">
+        <img src="../../../img/ventana.webp" alt="" />
+      </div>
+
+      <div class="hero-header">
+        <div class="col">
+          <h1 id="titulo1">
+            Volar <br />
+            sin limites
+          </h1>
+          <p>La nueva forma de volar libre, seguro <br />y sin limite por todo el mundo.</p>
+        </div>
+        <div class="col">
+          <p>Disfruta de las vistas</p>
+          <h1 id="titulo2">
+            Somos <br />
+            la diferencia
+          </h1>
+        </div>
+      </div>
+    </section>
+    <section class="outro">
+      <h1>final de la sección</h1>
+    </section>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="footer-academy">
+      <div class="footer-content">
+        <img src="../../../img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
+        <div class="footer-info">
+          <p class="declaration">UNA DECLARACIÓN DE INTENCIONES SOBRE LA EXCELENCIA EN ANIMACIÓN WEB</p>
+          <p class="copyright">© 2026 PAU CROSAS BATISTA — GSAP MASTER ACADEMY</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- LIBRERÍAS EXTERNAS -->
+    <!-- Cargamos GSAP y sus plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/SplitText.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script>
+      // Registramos los plugins necesarios para que GSAP los reconozca
+      gsap.registerPlugin(ScrollTrigger, SplitText);
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Inicialización de Lenis para un scroll suave y profesional
+        const lenis = new Lenis();
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+
+        const isMobile = window.innerWidth <= 900;
+
+        // Usamos 'new SplitText' (constructor estándar) en lugar de '.create'
+        // Dividimos el texto en caracteres para animarlos uno a uno
+        const textoSky = new SplitText("#descrp-sky", { type: "chars" });
+
+        const windowContainer = document.querySelector(".window-container");
+        const skyContainer = document.querySelector(".sky-container"); // Corregido typo 'skyContianer'
+        const heroCopy = document.querySelector(".hero-copy");
+        const heroHeader = document.querySelector(".hero-header"); // Renombrado para mayor claridad (antes heroReader)
+
+        // Tomamos la altura del contenedor del cielo para calcular el desplazamiento parallax
+        const skyContainerHeight = skyContainer.offsetHeight;
+        const viewportHeight = window.innerHeight;
+        // Calculamos cuánto debe moverse el fondo del cielo
+        const skyMoveDistance = skyContainerHeight - viewportHeight;
+
+        // Configuración inicial: situamos el texto fuera de vista y con opacidad 0.2
+        gsap.set(heroCopy, { yPercent: 100 });
+        gsap.set(textoSky.chars, { opacity: 0.2 });
+
+        // Creamos la animación principal vinculada al scroll
+        ScrollTrigger.create({
+          trigger: ".hero",
+          start: "top top",
+          end: `+=${window.innerHeight * 3}px`, // Duración del scroll de 3 pantallas
+          pin: true, // Bloqueamos la sección para el efecto de zoom
+          pinSpacing: true,
+          scrub: 1, // Suavizado de la animación vinculada al scroll
+          onUpdate: (self) => {
+            const progress = self.progress;
+            let windowScale;
+
+            // Efecto de Zoom de la Ventana
+            if (progress <= 0.5) {
+              // Escalamos la ventana hasta 6 veces su tamaño original
+              windowScale = 1 + (progress / 0.5) * 5;
+              gsap.set(windowContainer, { scale: windowScale, autoAlpha: 1 });
+            } else {
+              // Una vez superado el 50%, la ventana desaparece (entramos "dentro")
+              windowScale = 6;
+              gsap.set(windowContainer, { scale: windowScale, autoAlpha: 0 });
+            }
+
+            // Aplicamos escala y profundidad al cabecero del avión
+            gsap.set(heroHeader, { scale: windowScale, z: progress * 500 });
+
+            // Movimiento parallax del cielo de fondo
+            gsap.set(skyContainer, {
+              y: -progress * skyMoveDistance,
+            });
+
+            // Lógica para que el bloque de texto aparezca subiendo desde abajo
+            let heroCopyY;
+            if (isMobile && progress <= 0.1) {
+              heroCopyY = 100; // Se mantiene abajo
+            } else if (!isMobile && progress <= 0.2) {
+              heroCopyY = 100; // Finaliza en su posición original
+            } else if (progress >= 1) {
+              heroCopyY = 0; // Finaliza en su posición original
+            } else {
+              // Transición suave entre 0.66 y 1.0 de progreso
+              heroCopyY = 100 * (1 - (isMobile ? progress - 0.2 : progress - 0.1) / 0.34);
+            }
+            gsap.set(heroCopy, { yPercent: heroCopyY });
+
+            // Animación de letras (SplitText): de opacidad 0.2 a 1.0
+            const textStart = isMobile ? 0.2 : 0.1; // Empieza la animación de letras al 60% del scroll
+            const textEnd = isMobile ? 0.9 : 0.6; // Termina al 90%
+            // Calculamos el progreso local dentro de ese rango
+            const textProgress = Math.max(0, Math.min(1, (progress - textStart) / (textEnd - textStart)));
+
+            const total = textoSky.chars.length;
+            textoSky.chars.forEach((char, i) => {
+              // Cada carácter tiene su propio mini-rango de progreso para crear el efecto secuencial
+              const charProgress = Math.max(0, Math.min(1, (textProgress - i / total) / (1 / total)));
+              // Aplicamos la opacidad: base 0.2 + incremento hasta llegar a 1.0
+              gsap.set(char, { opacity: 0.2 + charProgress * 0.8 });
+            });
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
