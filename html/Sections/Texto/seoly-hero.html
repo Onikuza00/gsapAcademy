@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GSAP Effects Demo - All Animations</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/split-type/0.3.3/split-type.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      padding: 2rem;
+    }
+
+    h1 { text-align: center; margin-bottom: 3rem; font-size: 2.5rem; }
+    h2 { font-size: 1.2rem; color: #666; margin: 3rem 0 1.5rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem; }
+
+    .container { max-width: 900px; margin: 0 auto 4rem; }
+
+    .tag {
+      font-size: 12px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .hero-title {
+      font-size: clamp(48px, 8vw, 80px);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      color: #fff;
+      display: block;
+    }
+
+    .body-text {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.55;
+      color: #aaa;
+      margin-top: 1.5rem;
+      display: block;
+    }
+
+    .btn-wrapper {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 16px 32px;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-wrapper .btn-item {
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-hover-bgchange {
+      position: relative;
+      display: inline-block;
+      margin-left: 20px;
+      padding: 16px 32px;
+      background: #222;
+      color: #fff;
+      border-radius: 50px;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .btn-hover-bgchange span:first-child {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: #fff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .image-reveal {
+      width: 100%;
+      height: 300px;
+      background: #222;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .image-reveal img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-scale {
+      width: 100%;
+      height: 300px;
+      background: #222;
+      overflow: hidden;
+    }
+
+    .image-scale img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-stretch {
+      width: 100%;
+      height: 300px;
+      background: #222;
+      overflow: hidden;
+    }
+
+    .image-stretch img {
+      width: 80%;
+      height: 100%;
+      object-fit: cover;
+      margin: 0 auto;
+    }
+
+    .demo-section {
+      min-height: 200px;
+      padding: 2rem;
+      background: #111;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .controls button {
+      padding: 10px 20px;
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .controls button:hover { background: #333; }
+
+    .spacer { height: 100vh; }
+  </style>
+</head>
+<body>
+
+  <h1>GSAP Effects Demo</h1>
+
+  <div class="controls">
+    <button onclick="replayAll()">↺ Replay All</button>
+    <button onclick="testTextMove()">1. text_move</button>
+    <button onclick="testTextReveal()">2. text_reveal</button>
+    <button onclick="testTextInvert()">3. text_invert</button>
+    <button onclick="testTextSpin()">4. text_spin</button>
+    <button onclick="testTextScale()">5. text_scale</button>
+    <button onclick="testImageReveal()">6. image_reveal</button>
+    <button onclick="testImageScale()">7. image_scale</button>
+    <button onclick="testImageStretch()">8. image_stretch</button>
+    <button onclick="testFade()">9. fade</button>
+    <button onclick="testMove()">10. move</button>
+  </div>
+
+  <div id="demo-content">
+    <!-- TEXT MOVE -->
+    <h2>1. text_move</h2>
+    <div class="demo-section">
+      <div class="container">
+        <div class="tag" id="tag1">Award winning SEO agency</div>
+        <div class="hero-title" id="title1">SEO Marketing</div>
+        <div class="body-text" id="body1">We build strong productive market</div>
+      </div>
+    </div>
+
+    <!-- TEXT REVEAL -->
+    <h2>2. text_reveal</h2>
+    <div class="demo-section">
+      <div class="container">
+        <div class="body-text" id="body2">Professional services that increase your sales growth dramatically</div>
+      </div>
+    </div>
+
+    <!-- TEXT INVERT -->
+    <h2>3. text_invert (scroll to see)</h2>
+    <div class="demo-section">
+      <div class="container">
+        <div class="body-text text-invert" id="body3">Scroll to see the invert effect on text colors</div>
+      </div>
+    </div>
+
+    <!-- TEXT SPIN -->
+    <h2>4. text_spin</h2>
+    <div class="demo-section">
+      <div class="container">
+        <div class="hero-title text-spin" id="title4">Spin Effect</div>
+      </div>
+    </div>
+
+    <!-- TEXT SCALE -->
+    <h2>5. text_scale</h2>
+    <div class="demo-section">
+      <div class="container">
+        <div class="hero-title" id="title5">Scale Effect</div>
+      </div>
+    </div>
+
+    <!-- IMAGE REVEAL -->
+    <h2>6. image_reveal</h2>
+    <div class="demo-section">
+      <div class="image-reveal" id="img-reveal">
+        <img src="https://picsum.photos/800/400" alt="demo">
+      </div>
+    </div>
+
+    <!-- IMAGE SCALE -->
+    <h2>7. image_scale (scroll to see)</h2>
+    <div class="demo-section">
+      <div class="image-scale" id="img-scale">
+        <img src="https://picsum.photos/800/400" alt="demo">
+      </div>
+    </div>
+
+    <!-- IMAGE STRETCH -->
+    <h2>8. image_stretch (scroll to see)</h2>
+    <div class="demo-section" id="stretch-wrapper">
+      <div class="image-stretch" id="img-stretch">
+        <img src="https://picsum.photos/800/400" alt="demo">
+      </div>
+    </div>
+
+    <!-- FADE ANIMATION -->
+    <h2>9. fade (from bottom)</h2>
+    <div class="demo-section">
+      <div class="container">
+        <div class="tag" id="tag9">Fade from bottom</div>
+        <div class="hero-title" id="title9">Fade Animation</div>
+      </div>
+    </div>
+
+    <!-- MOVE ANIMATION -->
+    <h2>10. move (3D rotation)</h2>
+    <div class="demo-section">
+      <div class="container">
+        <div class="hero-title" id="title10">Move Animation</div>
+      </div>
+    </div>
+
+    <!-- BUTTON EFFECTS -->
+    <h2>11. Button Effects</h2>
+    <div class="demo-section">
+      <div class="btn-wrapper" id="btn-tilt">
+        <span class="btn-item">Hover me - Tilt</span>
+      </div>
+      <div class="btn-hover-bgchange" id="btn-bg">
+        <span></span>
+        <span class="btn-item">Hover me - BG</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// Manual SplitText implementation
+function splitText(element, type) {
+  const text = element.textContent;
+  element.innerHTML = '';
+  
+  const result = { lines: [], words: [], chars: [] };
+  
+  if (type.includes('lines')) {
+    const lines = text.split('\n');
+    lines.forEach((lineText, i) => {
+      const lineEl = document.createElement('div');
+      lineEl.className = 'line';
+      lineEl.style.display = 'block';
+      lineEl.textContent = lineText;
+      element.appendChild(lineEl);
+      result.lines.push(lineEl);
+    });
+  }
+  
+  if (type.includes('words') || type.includes('chars')) {
+    const words = text.split(' ');
+    element.querySelectorAll('.line').forEach(line => {
+      const lineWords = line.textContent.split(' ');
+      line.innerHTML = '';
+      lineWords.forEach(wordText => {
+        if (!wordText.trim()) return;
+        const wordEl = document.createElement('span');
+        wordEl.className = 'word';
+        wordEl.style.display = 'inline';
+        wordEl.textContent = wordText + ' ';
+        line.appendChild(wordEl);
+        result.words.push(wordEl);
+      });
+    });
+  }
+  
+  if (type.includes('chars')) {
+    element.querySelectorAll('.word').forEach(word => {
+      const chars = word.textContent.split('');
+      word.innerHTML = '';
+      chars.forEach(charText => {
+        const charEl = document.createElement('span');
+        charEl.className = 'char';
+        charEl.style.display = 'inline';
+        charEl.textContent = charText;
+        word.appendChild(charEl);
+        result.chars.push(charEl);
+      });
+    });
+  }
+  
+  return result;
+}
+
+let splitInstances = {};
+let timelineInstances = [];
+
+function clearAll() {
+  // Kill all timelines
+  timelineInstances.forEach(tl => tl.kill());
+  timelineInstances = [];
+  
+  // Kill all ScrollTriggers
+  ScrollTrigger.getAll().forEach(st => st.kill());
+  
+  // Revert split type
+  Object.values(splitInstances).forEach(s => s && s.revert());
+  splitInstances = {};
+  
+  // Reset elements
+  document.querySelectorAll('.split-type').forEach(el => {
+    el.style.perspective = '';
+    el.querySelectorAll('.line, .word, .char').forEach(child => {
+      child.style.transform = '';
+      child.style.opacity = '';
+      child.style.display = '';
+    });
+  });
+  
+  // Reset images
+  document.querySelectorAll('.image-reveal').forEach(el => {
+    gsap.set(el, { clearProps: 'all' });
+    gsap.set(el.querySelector('img'), { clearProps: 'all' });
+  });
+  
+  document.querySelectorAll('.image-scale img').forEach(el => {
+    gsap.set(el, { clearProps: 'all' });
+  });
+  
+  document.querySelectorAll('.image-stretch').forEach(el => {
+    gsap.set(el, { clearProps: 'all' });
+    el.style.paddingBottom = '';
+  });
+  
+  document.querySelectorAll('.image-stretch img').forEach(el => {
+    gsap.set(el, { clearProps: 'all' });
+  });
+}
+
+function testTextMove() {
+  clearAll();
+  
+  const config = {
+    duration: 1,
+    delay: 0.15,
+    stagger: 0.02,
+    rotationX: -80,
+    transformOrigin: 'top center -50',
+    perspective: 400,
+    ease: 'power3.out'
+  };
+
+  ['#tag1', '#title1', '#body1'].forEach(selector => {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    
+    const split = splitText(el, 'lines');
+    splitInstances[selector] = split;
+    gsap.set(el, { perspective: config.perspective });
+    
+    gsap.from(split.lines, {
+      duration: config.duration,
+      delay: config.delay,
+      opacity: 0,
+      rotationX: config.rotationX,
+      force3D: true,
+      transformOrigin: config.transformOrigin,
+      stagger: config.stagger,
+      ease: config.ease
+    });
+  });
+}
+
+function testTextReveal() {
+  clearAll();
+  
+  const el = document.querySelector('#body2');
+  if (!el) return;
+
+  const split = new SplitType(el, { 
+    type: 'lines,words,chars',
+    linesClass: 'anim-reveal-line'
+  });
+  splitInstances['#body2'] = split;
+
+  gsap.from(split.chars, {
+    duration: 1,
+    delay: 0.15,
+    ease: 'circ.out',
+    y: 80,
+    stagger: 0.02,
+    opacity: 0
+  });
+}
+
+function testTextInvert() {
+  clearAll();
+  
+  const el = document.querySelector('#body3');
+  if (!el) return;
+
+  const split = new SplitType(el, { 
+    type: 'lines',
+    linesClass: 'invert-line'
+  });
+  splitInstances['#body3'] = split;
+
+  split.lines.forEach((line, i) => {
+    line.style.background = 'linear-gradient(to right, #fff 50%, #aaa 50%)';
+    line.style.backgroundClip = 'text';
+    line.style.webkitBackgroundClip = 'text';
+    line.style.color = 'transparent';
+    line.style.backgroundSize = '200% 100%';
+    line.style.backgroundPosition = '100% 0';
+    
+    gsap.to(line, {
+      backgroundPositionX: '0%',
+      ease: 'none',
+      scrollTrigger: {
+        trigger: line,
+        scrub: 1,
+        start: 'top 85%',
+        end: 'bottom center'
+      }
+    });
+  });
+}
+
+function testTextSpin() {
+  clearAll();
+  
+  const el = document.querySelector('#title4');
+  if (!el) return;
+
+  el.innerHTML = 'Spin Effect';
+  
+  gsap.set(el, {
+    perspective: '600px',
+    overflow: 'visible'
+  });
+
+  const split = new SplitType(el, { type: 'chars' });
+  splitInstances['#title4'] = split;
+
+  const delay = 0;
+  const duration = 0.4;
+  const transformOrigin = `50% 50% -${el.offsetHeight / 2}`;
+
+  const tl = gsap.timeline();
+  timelineInstances.push(tl);
+  
+  // Create duplicate for animation
+  const originalChars = split.chars;
+  const chars2 = originalChars.map(c => c.cloneNode(true));
+  
+  gsap.set(chars2, { 
+    opacity: 0, 
+    position: 'absolute', 
+    top: 0, 
+    left: 0,
+    rotationX: -90,
+    transformOrigin: transformOrigin
+  });
+  
+  originalChars.forEach((c, i) => {
+    c.parentNode.appendChild(chars2[i]);
+  });
+  
+  tl.to(originalChars, {
+    delay: delay,
+    duration: duration,
+    rotationX: 90,
+    transformOrigin: transformOrigin,
+    opacity: 0,
+    stagger: { each: 0.03, ease: 'power1', from: 'start' },
+    ease: 'power2.in'
+  });
+  
+  tl.to(chars2, {
+    duration: 0.001,
+    delay: delay,
+    opacity: 1,
+    stagger: { each: 0.03, ease: 'power1', from: 'start' }
+  }, '<');
+  
+  tl.to(chars2, {
+    duration: duration,
+    rotationX: 0,
+    stagger: { each: 0.03, ease: 'power1', from: 'start' }
+  }, '<');
+}
+
+function testTextScale() {
+  clearAll();
+  
+  const el = document.querySelector('#title5');
+  if (!el) return;
+
+  const split = new SplitType(el, { 
+    type: 'lines',
+    linesClass: 'text-scale-anim'
+  });
+  splitInstances['#title5'] = split;
+
+  gsap.from(split.lines, {
+    duration: 1,
+    autoAlpha: 0,
+    scale: 1.5,
+    stagger: 0.02,
+    transformOrigin: '50% 0%',
+    ease: 'power3.out',
+    delay: 0.15
+  });
+}
+
+function testImageReveal() {
+  clearAll();
+  
+  const container = document.querySelector('#img-reveal');
+  const img = container.querySelector('img');
+  
+  container.style.overflow = 'hidden';
+  container.style.position = 'relative';
+  
+  const tl = gsap.timeline();
+  timelineInstances.push(tl);
+  
+  // Create reveal effect - slide container in from left
+  gsap.set(container, { xPercent: 100 });
+  gsap.set(img, { xPercent: -100, scale: 1.3 });
+  
+  tl.to(container, {
+    duration: 1.5,
+    xPercent: 0,
+    ease: 'power3.out'
+  });
+  
+  tl.to(img, {
+    duration: 1.5,
+    xPercent: 0,
+    scale: 1,
+    ease: 'power3.out'
+  }, '<');
+}
+
+function testImageScale() {
+  clearAll();
+  
+  const img = document.querySelector('#img-scale img');
+  const container = document.querySelector('#img-scale');
+  
+  container.style.overflow = 'hidden';
+  gsap.set(img, { scale: 0.5 });
+  
+  gsap.to(img, {
+    scrollTrigger: {
+      trigger: '#img-scale',
+      start: 'top 85%',
+      scrub: true,
+      toggleActions: 'play none none none'
+    },
+    scale: 1,
+    ease: 'none'
+  });
+}
+
+function testImageStretch() {
+  clearAll();
+  
+  const container = document.querySelector('#img-stretch');
+  const wrapper = document.querySelector('#stretch-wrapper');
+  const img = container.querySelector('img');
+  
+  container.style.overflow = 'hidden';
+  container.style.paddingBottom = '395px';
+  container.style.position = 'relative';
+  
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: wrapper,
+      start: 'top top',
+      end: 'bottom bottom+=100',
+      scrub: 1,
+      pin: false
+    }
+  });
+  timelineInstances.push(tl);
+  
+  tl.to(img, {
+    width: '100%',
+    borderRadius: '0px',
+    ease: 'none'
+  });
+}
+
+function testFade() {
+  clearAll();
+  
+  const el = document.querySelector('#title9');
+  if (!el) return;
+
+  gsap.from(el, {
+    duration: 1,
+    delay: 0.15,
+    opacity: 0,
+    y: 50,
+    ease: 'power3.out'
+  });
+}
+
+function testMove() {
+  clearAll();
+  
+  const el = document.querySelector('#title10');
+  if (!el) return;
+
+  gsap.set(el.parentElement, { perspective: 400 });
+
+  gsap.from(el, {
+    duration: 1.2,
+    opacity: 0,
+    rotationX: -80,
+    force3D: true,
+    transformOrigin: 'top center -50',
+    ease: 'power3.out'
+  });
+}
+
+function replayAll() {
+  testTextMove();
+  setTimeout(testTextReveal, 800);
+  setTimeout(testFade, 1600);
+  setTimeout(testMove, 2200);
+}
+
+// Button Tilt
+const btnTilt = document.querySelector('#btn-tilt');
+const btnItemTilt = btnTilt?.querySelector('.btn-item');
+if (btnTilt && btnItemTilt) {
+  btnTilt.addEventListener('mousemove', function(e) {
+    const rect = btnTilt.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    gsap.to(btnItemTilt, 0.5, {
+      x: (x - rect.width / 2) / rect.width * 80,
+      y: (y - rect.height / 2) / rect.height * 80,
+      ease: 'power2.out'
+    });
+  });
+  btnTilt.addEventListener('mouseleave', function() {
+    gsap.to(btnItemTilt, 0.5, { x: 0, y: 0, ease: 'power2.out' });
+  });
+}
+
+// Button BG Change
+const btnBg = document.querySelector('#btn-bg');
+if (btnBg) {
+  const btnBgSpan = btnBg.querySelector('span:first-child');
+  btnBg.addEventListener('mouseenter', function(e) {
+    const rect = btnBg.getBoundingClientRect();
+    btnBgSpan.style.left = (e.clientX - rect.left) + 'px';
+    btnBgSpan.style.top = (e.clientY - rect.top) + 'px';
+    btnBgSpan.style.opacity = '1';
+  });
+  btnBg.addEventListener('mousemove', function(e) {
+    const rect = btnBg.getBoundingClientRect();
+    btnBgSpan.style.left = (e.clientX - rect.left) + 'px';
+    btnBgSpan.style.top = (e.clientY - rect.top) + 'px';
+  });
+  btnBg.addEventListener('mouseleave', function() {
+    btnBgSpan.style.opacity = '0';
+  });
+}
+
+// Auto run on load
+document.fonts.ready.then(() => {
+  setTimeout(replayAll, 500);
+});
+
+}); // Close window.addEventListener
+
+</script>
+</body>
+</html>

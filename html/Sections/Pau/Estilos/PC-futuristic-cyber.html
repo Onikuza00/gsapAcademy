@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pau Cros | Futuristic Cyber</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      :root {
+        --bg: #050508;
+        --bg-alt: #0a0a12;
+        --surface: #0f0f1a;
+        --cyber: #00f3ff;
+        --cyber-pink: #ff00aa;
+        --cyber-purple: #aa00ff;
+        --cyber-yellow: #f0ff00;
+        --text: #e0e0e0;
+        --text-dim: #707080;
+        --glow: rgba(0, 243, 255, 0.5);
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { background: var(--bg); color: var(--text); font-family: 'Rajdhani', sans-serif; overflow-x: hidden; }
+
+      /* Scanlines */
+      body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 243, 255, 0.03) 2px, rgba(0, 243, 255, 0.03) 4px);
+        pointer-events: none;
+        z-index: 1000;
+      }
+
+      /* Header */
+      header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        padding: 1rem 4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 100;
+        background: rgba(5, 5, 8, 0.95);
+        border-bottom: 1px solid var(--cyber);
+        box-shadow: 0 0 20px var(--glow);
+      }
+
+      .logo { display: flex; align-items: center; gap: 0.8rem; }
+      .logo img { height: 35px; filter: drop-shadow(0 0 10px var(--cyber)); }
+      .logo-text { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; color: var(--cyber); text-shadow: 0 0 10px var(--cyber); }
+
+      nav { display: flex; align-items: center; gap: 2rem; }
+      nav a { color: var(--text-dim); text-decoration: none; font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s; }
+      nav a:hover { color: var(--cyber); text-shadow: 0 0 10px var(--cyber); }
+
+      .nav-btn {
+        padding: 0.5rem 1.5rem;
+        background: transparent;
+        border: 2px solid var(--cyber);
+        color: var(--cyber) !important;
+        font-family: 'Orbitron', sans-serif !important;
+        font-size: 0.75rem !important;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: all 0.3s;
+      }
+      .nav-btn:hover { background: var(--cyber); color: var(--bg) !important; box-shadow: 0 0 30px var(--cyber); }
+
+      /* Mega Menu */
+      .mega-menu-wrapper { position: relative; }
+      .mega-menu-trigger { display: flex; align-items: center; gap: 0.5rem; color: var(--cyber) !important; cursor: pointer; font-weight: 700; letter-spacing: 1px; }
+      .mega-menu-trigger i { font-size: 0.6rem; transition: transform 0.3s; }
+      .mega-menu-wrapper:hover .mega-menu-trigger i { transform: rotate(180deg); }
+      .mega-menu {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        width: 520px;
+        background: var(--surface);
+        border: 1px solid var(--cyber);
+        padding: 1.5rem;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        box-shadow: 0 0 30px var(--glow), inset 0 0 30px rgba(0, 243, 255, 0.1);
+      }
+      .mega-menu-wrapper:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(10px); }
+      .mega-menu-header { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: var(--cyber); letter-spacing: 3px; margin-bottom: 1rem; border-bottom: 1px solid var(--cyber); padding-bottom: 0.5rem; }
+      .mega-menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .mega-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border: 1px solid var(--text-dim); transition: all 0.3s; }
+      .mega-item:hover { border-color: var(--cyber); background: rgba(0, 243, 255, 0.1); }
+      .mega-item.active { border-color: var(--cyber); background: rgba(0, 243, 255, 0.2); }
+      .mega-item-num { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: var(--cyber); text-shadow: 0 0 10px var(--cyber); }
+      .mega-item-title { font-weight: 700; font-size: 0.85rem; display: block; }
+      .mega-item-desc { font-size: 0.7rem; color: var(--text-dim); }
+      .mega-menu-footer { display: block; margin-top: 1rem; padding: 1rem; background: var(--cyber); color: var(--bg) !important; text-align: center; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; text-decoration: none !important; }
+      .mega-menu-footer:hover { box-shadow: 0 0 30px var(--cyber); }
+
+      .menu-toggle { display: none; }
+
+      /* Hero */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 8rem 4rem 4rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 1000px;
+        height: 1000px;
+        background: radial-gradient(circle, rgba(0, 243, 255, 0.1) 0%, transparent 60%);
+        animation: pulse 4s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+        50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        max-width: 1400px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-content h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: clamp(2.5rem, 6vw, 5rem);
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 1.5rem;
+        letter-spacing: 4px;
+      }
+
+      .hero-content h1 .line { display: block; }
+      .hero-content h1 .cyber { color: var(--cyber); text-shadow: 0 0 30px var(--cyber), 0 0 60px var(--cyber); animation: flicker 2s infinite; }
+      .hero-content h1 .pink { color: var(--cyber-pink); text-shadow: 0 0 30px var(--cyber-pink); }
+
+      @keyframes flicker {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.8; }
+        52% { opacity: 1; }
+        54% { opacity: 0.9; }
+      }
+
+      .hero-content p {
+        font-size: 1.1rem;
+        color: var(--text-dim);
+        max-width: 450px;
+        margin-bottom: 2.5rem;
+        line-height: 1.8;
+      }
+
+      .hero-buttons { display: flex; gap: 1rem; }
+
+      .btn {
+        padding: 1rem 2rem;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: all 0.3s;
+      }
+
+      .btn-primary {
+        background: var(--cyber);
+        color: var(--bg);
+        border: 2px solid var(--cyber);
+      }
+
+      .btn-primary:hover {
+        box-shadow: 0 0 40px var(--cyber);
+        transform: translateY(-3px);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--cyber-pink);
+        border: 2px solid var(--cyber-pink);
+      }
+
+      .btn-secondary:hover {
+        background: var(--cyber-pink);
+        color: var(--bg);
+        box-shadow: 0 0 30px var(--cyber-pink);
+      }
+
+      .hero-visual {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .hero-box {
+        width: 400px;
+        height: 400px;
+        border: 2px solid var(--cyber);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hero-box::before, .hero-box::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 1px solid var(--cyber);
+      }
+
+      .hero-box::before { transform: translate(20px, 20px); }
+      .hero-box::after { transform: translate(-20px, -20px); opacity: 0.5; }
+
+      .hero-icon {
+        font-size: 8rem;
+        color: var(--cyber);
+        text-shadow: 0 0 30px var(--cyber);
+        animation: rotate 20s linear infinite;
+      }
+
+      @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+      /* Glitch Stats */
+      .hero-stats {
+        display: flex;
+        gap: 3rem;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--cyber);
+      }
+
+      .stat {
+        text-align: center;
+      }
+
+      .stat-num {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--cyber);
+        text-shadow: 0 0 20px var(--cyber);
+      }
+
+      .stat-label {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      /* Features */
+      .features {
+        padding: 8rem 4rem;
+        background: var(--surface);
+      }
+
+      .section-header { text-align: center; margin-bottom: 4rem; }
+
+      .section-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        letter-spacing: 4px;
+        margin-bottom: 1rem;
+      }
+
+      .section-title .cyber { color: var(--cyber); text-shadow: 0 0 20px var(--cyber); }
+
+      .section-line {
+        width: 100px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--cyber), var(--cyber-pink), var(--cyber-purple));
+        margin: 0 auto;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .feature-card {
+        background: var(--bg-alt);
+        border: 1px solid var(--text-dim);
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s;
+      }
+
+      .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: var(--cyber);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s;
+      }
+
+      .feature-card:hover { border-color: var(--cyber); transform: translateY(-10px); }
+      .feature-card:hover::before { transform: scaleX(1); }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        color: var(--cyber);
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 20px var(--cyber);
+      }
+
+      .feature-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        letter-spacing: 2px;
+      }
+
+      .feature-desc {
+        font-size: 0.9rem;
+        color: var(--text-dim);
+        line-height: 1.7;
+      }
+
+      /* About */
+      .about {
+        padding: 8rem 4rem;
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 6rem;
+        align-items: center;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .about-image {
+        position: relative;
+      }
+
+      .about-image img {
+        width: 100%;
+        filter: hue-rotate(180deg) saturate(200%);
+        border: 2px solid var(--cyber);
+      }
+
+      .about-image::after {
+        content: '';
+        position: absolute;
+        inset: 10px;
+        border: 1px solid var(--cyber-pink);
+        z-index: -1;
+      }
+
+      .about-content h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        letter-spacing: 3px;
+      }
+
+      .about-content h2 span {
+        color: var(--cyber);
+        text-shadow: 0 0 20px var(--cyber);
+      }
+
+      .about-content p {
+        color: var(--text-dim);
+        line-height: 1.9;
+        margin-bottom: 1.5rem;
+      }
+
+      .about-list { list-style: none; }
+      .about-list li {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--surface);
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.9rem;
+      }
+
+      .about-list li::before {
+        content: '>';
+        color: var(--cyber);
+        font-weight: 700;
+      }
+
+      /* Services */
+      .services { padding: 8rem 4rem; }
+
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background: var(--cyber);
+        border: 1px solid var(--cyber);
+      }
+
+      .service-card {
+        background: var(--bg-alt);
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s;
+      }
+
+      .service-card:hover {
+        background: var(--surface);
+      }
+
+      .service-card:hover .service-icon {
+        color: var(--cyber-pink);
+        text-shadow: 0 0 20px var(--cyber-pink);
+        transform: scale(1.2);
+      }
+
+      .service-icon {
+        font-size: 2rem;
+        color: var(--cyber);
+        margin-bottom: 1rem;
+        transition: all 0.3s;
+      }
+
+      .service-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+
+      /* Work */
+      .work {
+        padding: 8rem 4rem;
+        background: var(--surface);
+      }
+
+      .work h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 4rem;
+        letter-spacing: 4px;
+      }
+
+      .work h2 span { color: var(--cyber); text-shadow: 0 0 20px var(--cyber); }
+
+      .work-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .work-item {
+        position: relative;
+        aspect-ratio: 16/9;
+        border: 1px solid var(--cyber);
+        overflow: hidden;
+        cursor: pointer;
+      }
+
+      .work-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(100%) hue-rotate(180deg);
+        transition: all 0.5s;
+      }
+
+      .work-item:hover img {
+        filter: grayscale(0%);
+        transform: scale(1.1);
+      }
+
+      .work-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 20%, var(--cyber) 100%);
+        opacity: 0;
+        transition: opacity 0.4s;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 1.5rem;
+      }
+
+      .work-item:hover .work-overlay { opacity: 0.8; }
+
+      .work-category {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.7rem;
+        color: var(--bg);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .work-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        color: var(--bg);
+        margin-top: 0.5rem;
+      }
+
+      /* Testimonials */
+      .testimonials { padding: 8rem 4rem; }
+
+      .testimonials h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 4rem;
+        letter-spacing: 4px;
+      }
+
+      .test-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .test-card {
+        background: var(--surface);
+        border: 1px solid var(--text-dim);
+        padding: 2rem;
+      }
+
+      .test-card:hover { border-color: var(--cyber); }
+
+      .test-text {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.9rem;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        color: var(--text-dim);
+      }
+
+      .test-author strong { display: block; color: var(--cyber); }
+      .test-author span { font-size: 0.8rem; color: var(--text-dim); }
+
+      /* Contact */
+      .contact {
+        padding: 8rem 4rem;
+        background: var(--surface);
+      }
+
+      .contact-content {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .contact h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        letter-spacing: 4px;
+      }
+
+      .contact h2 span { color: var(--cyber); text-shadow: 0 0 20px var(--cyber); }
+
+      .contact p { color: var(--text-dim); margin-bottom: 3rem; }
+
+      .contact-form {
+        background: var(--bg-alt);
+        border: 2px solid var(--cyber);
+        padding: 3rem;
+        box-shadow: 0 0 30px var(--glow);
+      }
+
+      .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+
+      .form-group { text-align: left; }
+
+      .form-group label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--cyber);
+        margin-bottom: 0.5rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 1rem;
+        background: var(--bg);
+        border: 1px solid var(--text-dim);
+        color: var(--text);
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: var(--cyber);
+        box-shadow: 0 0 20px var(--glow);
+      }
+
+      .form-submit {
+        width: 100%;
+        padding: 1.2rem;
+        background: var(--cyber);
+        border: none;
+        color: var(--bg);
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.9rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .form-submit:hover {
+        background: var(--cyber-pink);
+        box-shadow: 0 0 40px var(--cyber-pink);
+      }
+
+      /* Footer */
+      footer {
+        padding: 2rem 4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--bg);
+        border-top: 1px solid var(--cyber);
+      }
+
+      .footer-logo { height: 25px; filter: invert(1) drop-shadow(0 0 5px var(--cyber)); }
+      .footer-text { color: var(--text-dim); font-size: 0.8rem; font-family: 'Share Tech Mono', monospace; }
+
+      /* Responsive */
+      @media (max-width: 1100px) {
+        .features-grid, .services-grid, .test-grid { grid-template-columns: repeat(2, 1fr); }
+        .work-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+
+      @media (max-width: 900px) {
+        header { padding: 1rem 1.5rem; }
+        .menu-toggle { display: flex; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+        .menu-toggle span { width: 25px; height: 2px; background: var(--cyber); }
+        nav { display: none; position: fixed; top: 0; right: -100%; width: 80%; max-width: 300px; height: 100vh; background: var(--bg); flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; transition: right 0.4s; z-index: 101; border-left: 1px solid var(--cyber); }
+        nav.active { right: 0; }
+        .hero-grid { grid-template-columns: 1fr; }
+        .hero-visual { display: none; }
+        .hero, .features, .about, .services, .work, .testimonials, .contact { padding: 5rem 1.5rem; }
+        .about { grid-template-columns: 1fr; gap: 3rem; }
+        .features-grid, .services-grid, .test-grid, .work-grid { grid-template-columns: 1fr; }
+        .form-row { grid-template-columns: 1fr; }
+        footer { flex-direction: column; gap: 1rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="../../../../img/logo.png" alt="Pau Cros">
+        <span class="logo-text">PAU CROS</span>
+      </div>
+      <button class="menu-toggle" id="navToggle"><span></span><span></span><span></span></button>
+      <nav id="mainNav">
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        
+        <div class="mega-menu-wrapper">
+          <a href="#" class="mega-menu-trigger">ESTILOS <i class="fas fa-chevron-down"></i></a>
+          <div class="mega-menu">
+            <div class="mega-menu-header">NUESTROS ESTILOS</div>
+            <div class="mega-menu-grid">
+              <a href="PC-3d-inmersivo.html" class="mega-item"><span class="mega-item-num">01</span><div><span class="mega-item-title">3D Inmersivo</span><span class="mega-item-desc">WebGL y efectos 3D</span></div></a>
+              <a href="PC-neo-brutalismo.html" class="mega-item"><span class="mega-item-num">02</span><div><span class="mega-item-title">Neo-Brutalismo</span><span class="mega-item-desc">Bordes duros, colores</span></div></a>
+              <a href="PC-bold-typography.html" class="mega-item"><span class="mega-item-num">03</span><div><span class="mega-item-title">Bold Typography</span><span class="mega-item-desc">Tipografía impactante</span></div></a>
+              <a href="PC-scrollytelling.html" class="mega-item"><span class="mega-item-num">04</span><div><span class="mega-item-title">Scrollytelling</span><span class="mega-item-desc">Narrativa scroll</span></div></a>
+              <a href="PC-dark-mode.html" class="mega-item"><span class="mega-item-num">05</span><div><span class="mega-item-title">Dark Mode</span><span class="mega-item-desc">Gradientes y glows</span></div></a>
+              <a href="PC-maximalismo.html" class="mega-item"><span class="mega-item-num">06</span><div><span class="mega-item-title">Maximalismo</span><span class="mega-item-desc">Colores bold</span></div></a>
+              <a href="PC-fluid-morph.html" class="mega-item"><span class="mega-item-num">07</span><div><span class="mega-item-title">Fluid Morph</span><span class="mega-item-desc">Formas fluidas</span></div></a>
+              <a href="PC-minimal-tech.html" class="mega-item"><span class="mega-item-num">08</span><div><span class="mega-item-title">Minimal Tech</span><span class="mega-item-desc">Grids y minimal</span></div></a>
+              <a href="PC-organic-elegant.html" class="mega-item"><span class="mega-item-num">09</span><div><span class="mega-item-title">Organic Elegant</span><span class="mega-item-desc">Suave y sofisticado</span></div></a>
+              <a href="PC-futuristic-cyber.html" class="mega-item active"><span class="mega-item-num">10</span><div><span class="mega-item-title">Futuristic Cyber</span><span class="mega-item-desc">Neon y tecnología</span></div></a>
+            </div>
+            <a href="../galeria-efectos.html" class="mega-menu-footer">→ Mi Galería de Efectos</a>
+          </div>
+        </div>
+        
+        <a href="#contact" class="nav-btn">Initialize</a>
+      </nav>
+    </header>
+
+    <!-- Section 1: Hero -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <h1>
+            <span class="line cyber">FUTURE</span>
+            <span class="line pink">CYBER</span>
+          </h1>
+          <p>Diseño cyberpunk con estética futurista. Neon, glitch effects y tecnología de siguiente nivel para marcas que lideran el mañana.</p>
+          <div class="hero-buttons">
+            <a href="#contact" class="btn btn-primary">Initialize</a>
+            <a href="#features" class="btn btn-secondary">Scan</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat"><span class="stat-num">200+</span><span class="stat-label">Projects</span></div>
+            <div class="stat"><span class="stat-num">99%</span><span class="stat-label">Success</span></div>
+            <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Online</span></div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-box">
+            <i class="hero-icon fas fa-atom"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Features -->
+    <section class="features" id="features">
+      <div class="section-header">
+        <h2 class="section-title"><span class="cyber">SYSTEM</span> FEATURES</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <i class="feature-icon fas fa-glitch"></i>
+          <h3 class="feature-title">GLITCH FX</h3>
+          <p class="feature-desc">Efectos de glitch y corrupcion visual que dan un toque futurista y único.</p>
+        </div>
+        <div class="feature-card">
+          <i class="feature-icon fas fa-broadcast-tower"></i>
+          <h3 class="feature-title">NEON GLOW</h3>
+          <p class="feature-desc">Efectos de luz neon con glows intensos que pulsan con energia.</p>
+        </div>
+        <div class="feature-card">
+          <i class="feature-icon fas fa-wave-square"></i>
+          <h3 class="feature-title">CYBER ANIM</h3>
+          <p class="feature-desc">Animaciones sintetizadas con ritmo digital y precision robotica.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: About -->
+    <section class="about" id="about">
+      <div class="about-image">
+        <img src="../../../../img/01.webp" alt="About">
+      </div>
+      <div class="about-content">
+        <h2>Welcome to <span>2049</span></h2>
+        <p>Somos la agencia de diseño del futuro. Creamos identidades visuales cyberpunk que posicionan marcas en la vanguardia de la tecnología.</p>
+        <p>Nuestro enfoque combina estética futurista con funcionalidad de siguiente generación.</p>
+        <ul class="about-list">
+          <li>Neural interface design</li>
+          <li>Quantum visuals</li>
+          <li>Cyber aesthetics</li>
+          <li>Holographic elements</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 4: Services -->
+    <section class="services" id="services">
+      <div class="section-header">
+        <h2 class="section-title"><span class="cyber">CYBER</span> SERVICES</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="services-grid">
+        <div class="service-card"><i class="service-icon fas fa-microchip"></i><h3 class="service-title">Cyber Identity</h3></div>
+        <div class="service-card"><i class="service-icon fas fa-robot"></i><h3 class="service-title">Tech Design</h3></div>
+        <div class="service-card"><i class="service-icon fas fa-vr-cardboard"></i><h3 class="service-title">VR/AR</h3></div>
+        <div class="service-card"><i class="service-icon fas fa-network-wired"></i><h3 class="service-title">UI Systems</h3></div>
+        <div class="service-card"><i class="service-icon fas fa-gamepad"></i><h3 class="service-title">Gamification</h3></div>
+        <div class="service-card"><i class="service-icon fas fa-satellite-dish"></i><h3 class="service-title">Interactive</h3></div>
+        <div class="service-card"><i class="service-icon fas fa-fingerprint"></i><h3 class="service-title">Biometric</h3></div>
+        <div class="service-card"><i class="service-icon fas fa-shield-alt"></i><h3 class="service-title">Cyber Sec</h3></div>
+      </div>
+    </section>
+
+    <!-- Section 5: Work -->
+    <section class="work" id="work">
+      <h2>SELECTED <span>PROJECTS</span></h2>
+      <div class="work-grid">
+        <div class="work-item"><img src="../../../../img/02.webp" alt="P1"><div class="work-overlay"><span class="work-category">Cyber</span><h3 class="work-title">Neon Corp</h3></div></div>
+        <div class="work-item"><img src="../../../../img/03.webp" alt="P2"><div class="work-overlay"><span class="work-category">Tech</span><h3 class="work-title">AI Startup</h3></div></div>
+        <div class="work-item"><img src="../../../../img/04.webp" alt="P3"><div class="work-overlay"><span class="work-category">Gaming</span><h3 class="work-title">VR Platform</h3></div></div>
+        <div class="work-item"><img src="../../../../img/05.webp" alt="P4"><div class="work-overlay"><span class="work-category">App</span><h3 class="work-title">Cyber App</h3></div></div>
+        <div class="work-item"><img src="../../../../img/hero.webp" alt="P5"><div class="work-overlay"><span class="work-category">Web</span><h3 class="work-title">Future Web</h3></div></div>
+        <div class="work-item"><img src="../../../../img/01.webp" alt="P6"><div class="work-overlay"><span class="work-category">Brand</span><h3 class="work-title">Neural</h3></div></div>
+      </div>
+    </section>
+
+    <!-- Section 6: Testimonials -->
+    <section class="testimonials" id="testimonials">
+      <h2>SYSTEM <span>LOGS</span></h2>
+      <div class="test-grid">
+        <div class="test-card"><p class="test-text">"El diseño cyber de Pau Cros posicionó nuestra startup como líder en innovación tecnológica."</p><div class="test-author"><strong>Neo Chen</strong><span>CEO, CyberTech</span></div></div>
+        <div class="test-card"><p class="test-text">"La estética futurista captó perfectamente la visión de nuestra empresa de IA."</p><div class="test-author"><strong>Alex Roy</strong><span>Founder, AI Labs</span></div></div>
+        <div class="test-card"><p class="test-text">"Efectos glitch y neon exactamente lo que necesitábamos para destacar en el mercado."</p><div class="test-author"><strong>Sam Cruz</strong><span>Director, VR Co</span></div></div>
+      </div>
+    </section>
+
+    <!-- Section 7: Contact -->
+    <section class="contact" id="contact">
+      <div class="contact-content">
+        <h2>INITIATE <span>CONTACT</span></h2>
+        <p>¿Listo para entrar al futuro? Inicializa comunicación.</p>
+        <form class="contact-form">
+          <div class="form-row">
+            <div class="form-group"><label>ID Name</label><input type="text" placeholder="Your ID" required></div>
+            <div class="form-group"><label>Comms Link</label><input type="email" placeholder="your@email.com" required></div>
+          </div>
+          <div class="form-group"><label>Mission Type</label>
+            <select><option value="">Select mission</option><option value="cyber">Cyber Identity</option><option value="tech">Tech Design</option><option value="vr">VR/AR</option></select>
+          </div>
+          <div class="form-group"><label>Transmission</label><textarea placeholder="Enter transmission..." rows="4"></textarea></div>
+          <button type="submit" class="form-submit">TRANSMIT</button>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <img src="../../../../img/logo.png" alt="Pau Cros" class="footer-logo">
+      <span class="footer-text">© 2049 PAU CROS // ALL RIGHTS RESERVED</span>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+      document.getElementById('navToggle').addEventListener('click', () => document.getElementById('mainNav').classList.toggle('active'));
+      gsap.from('.hero-content h1 .line', { y: 80, opacity: 0, duration: 1, stagger: 0.2, ease: 'power3.out' });
+      gsap.from('.hero p', { y: 30, opacity: 0, duration: 0.8, delay: 0.5 });
+      gsap.from('.hero-buttons', { y: 20, opacity: 0, duration: 0.8, delay: 0.8 });
+      gsap.from('.hero-stats', { y: 20, opacity: 0, duration: 0.8, delay: 1 });
+      gsap.from('.hero-box', { scale: 0.5, opacity: 0, duration: 1.2, delay: 0.3 });
+      gsap.from('.section-title', { y: -30, opacity: 0, duration: 0.8, scrollTrigger: { trigger: '.features', start: 'top 70%' } });
+      gsap.from('.feature-card', { y: 50, opacity: 0, duration: 0.7, stagger: 0.15, scrollTrigger: { trigger: '.features-grid', start: 'top 60%' } });
+      gsap.from('.about-image', { x: -60, opacity: 0, duration: 1, scrollTrigger: { trigger: '.about', start: 'top 60%' } });
+      gsap.from('.about-content', { x: 60, opacity: 0, duration: 1, scrollTrigger: { trigger: '.about', start: 'top 60%' } }, '-=0.8');
+      gsap.from('.service-card', { y: 40, opacity: 0, duration: 0.6, stagger: 0.08, scrollTrigger: { trigger: '.services-grid', start: 'top 60%' } });
+      gsap.from('.work h2', { y: -30, opacity: 0, duration: 0.8, scrollTrigger: { trigger: '.work', start: 'top 70%' } });
+      gsap.from('.work-item', { y: 60, opacity: 0, duration: 0.7, stagger: 0.12, scrollTrigger: { trigger: '.work-grid', start: 'top 60%' } });
+      gsap.from('.testimonials h2', { y: -30, opacity: 0, duration: 0.8, scrollTrigger: { trigger: '.testimonials', start: 'top 70%' } });
+      gsap.from('.test-card', { y: 40, opacity: 0, duration: 0.7, stagger: 0.15, scrollTrigger: { trigger: '.test-grid', start: 'top 60%' } });
+      gsap.from('.contact h2', { y: 40, opacity: 0, duration: 0.8, scrollTrigger: { trigger: '.contact', start: 'top 70%' } });
+      gsap.from('.contact-form', { y: 40, opacity: 0, duration: 0.8, delay: 0.3, scrollTrigger: { trigger: '.contact-form', start: 'top 60%' } });
+      gsap.from('footer', { y: 20, opacity: 0, duration: 0.6, scrollTrigger: { trigger: 'footer', start: 'top 90%' } });
+    </script>
+  </body>
+</html>

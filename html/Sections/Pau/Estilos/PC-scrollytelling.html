@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pau Cros | Scrollytelling</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      :root {
+        --bg: #faf9f7;
+        --bg-dark: #1a1a1a;
+        --text: #1a1a1a;
+        --text-light: #666;
+        --accent: #e85d04;
+        --accent-light: #f48c06;
+        --accent-dark: #d45d04;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+      /* Header */
+      header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        padding: 1.5rem 4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 100;
+        background: rgba(250, 249, 247, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+      }
+
+      .logo { display: flex; align-items: center; gap: 0.8rem; }
+      .logo img { height: 38px; }
+      .logo-text { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.3rem; letter-spacing: -0.5px; }
+
+      nav { display: flex; align-items: center; gap: 2.5rem; }
+      nav a { color: var(--text-light); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; transition: color 0.3s; }
+      nav a:hover { color: var(--accent); }
+      .nav-btn { padding: 0.6rem 1.5rem; background: var(--accent); color: white !important; border-radius: 30px; font-size: 0.75rem !important; }
+      .nav-btn:hover { background: var(--accent-dark); }
+
+      /* Mega Menu */
+      .mega-menu-wrapper { position: relative; }
+      .mega-menu-trigger { display: flex; align-items: center; gap: 0.5rem; color: var(--text) !important; cursor: pointer; }
+      .mega-menu-trigger i { font-size: 0.65rem; transition: transform 0.3s; }
+      .mega-menu-wrapper:hover .mega-menu-trigger i { transform: rotate(180deg); }
+      .mega-menu {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        width: 480px;
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      }
+      .mega-menu-wrapper:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(10px); }
+      .mega-menu-header { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--accent); letter-spacing: 2px; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+      .mega-menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .mega-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-radius: 10px; transition: all 0.3s; }
+      .mega-item:hover { background: #f5f5f5; }
+      .mega-item.active { background: rgba(232, 93, 4, 0.1); border: 1px solid var(--accent); }
+      .mega-item-num { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--accent); font-weight: 700; }
+      .mega-item-title { font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; display: block; color: var(--text); }
+      .mega-item-desc { font-size: 0.7rem; color: #999; }
+      .mega-menu-footer { display: block; margin-top: 1rem; padding: 1rem; background: var(--accent); color: white !important; text-align: center; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.8rem; text-decoration: none !important; }
+      .mega-menu-footer:hover { background: var(--accent-dark); }
+
+      .menu-toggle { display: none; }
+
+      /* Hero */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 8rem 2rem;
+        position: relative;
+      }
+
+      .hero-scroll-indicator {
+        position: absolute;
+        bottom: 3rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7rem;
+        color: var(--text-light);
+      }
+
+      .scroll-mouse {
+        width: 24px;
+        height: 40px;
+        border: 2px solid var(--text-light);
+        border-radius: 12px;
+        position: relative;
+      }
+
+      .scroll-mouse::after {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 8px;
+        background: var(--accent);
+        border-radius: 2px;
+        animation: scrollMouse 2s infinite;
+      }
+
+      @keyframes scrollMouse {
+        0%, 100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        50% { opacity: 0.5; transform: translateX(-50%) translateY(10px); }
+      }
+
+      .hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(3rem, 10vw, 7rem);
+        font-weight: 700;
+        line-height: 1.05;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero h1 span { color: var(--accent); font-style: italic; }
+
+      .hero p {
+        font-size: 1.15rem;
+        color: var(--text-light);
+        max-width: 500px;
+        margin-bottom: 2.5rem;
+        line-height: 1.7;
+      }
+
+      .hero-chapter {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7rem;
+        color: var(--accent);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+      }
+
+      /* Chapter 1 - Text Reveal */
+      .chapter-1 {
+        min-height: 100vh;
+        padding: 10rem 4rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6rem;
+        align-items: center;
+      }
+
+      .chapter-content { position: relative; }
+      .chapter-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7rem;
+        color: var(--accent);
+        letter-spacing: 2px;
+        margin-bottom: 1rem;
+      }
+
+      .chapter-title {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2rem, 4vw, 3.5rem);
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+      }
+
+      .chapter-text {
+        font-size: 1rem;
+        color: var(--text-light);
+        line-height: 1.8;
+      }
+
+      .chapter-image {
+        position: relative;
+        aspect-ratio: 4/5;
+        overflow: hidden;
+        border-radius: 8px;
+      }
+
+      .chapter-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .chapter-image::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 60%, rgba(232, 93, 4, 0.1) 100%);
+      }
+
+      /* Chapter 2 - Horizontal Scroll */
+      .chapter-2 {
+        padding: 8rem 0;
+        background: var(--bg-dark);
+        color: white;
+        overflow: hidden;
+      }
+
+      .horizontal-section {
+        display: flex;
+        gap: 4rem;
+        padding: 0 4rem;
+        width: max-content;
+      }
+
+      .horizontal-card {
+        width: 400px;
+        flex-shrink: 0;
+      }
+
+      .horizontal-card-img {
+        aspect-ratio: 16/10;
+        background: #2a2a2a;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+      }
+
+      .horizontal-card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .horizontal-card h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .horizontal-card p {
+        color: rgba(255,255,255,0.6);
+        font-size: 0.9rem;
+      }
+
+      /* Chapter 3 - Parallax */
+      .chapter-3 {
+        position: relative;
+        height: 120vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .parallax-bg {
+        position: absolute;
+        inset: 0;
+        background: url('../../../../img/hero.webp') center/cover no-repeat;
+        filter: grayscale(30%);
+      }
+
+      .parallax-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(26, 26, 26, 0.7);
+      }
+
+      .parallax-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        max-width: 700px;
+        padding: 4rem;
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.1);
+      }
+
+      .parallax-content h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        margin-bottom: 1.5rem;
+      }
+
+      .parallax-content p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        opacity: 0.9;
+      }
+
+      /* Stats Section */
+      .stats {
+        padding: 6rem 4rem;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3rem;
+        background: var(--accent);
+      }
+
+      .stat-item { text-align: center; }
+      .stat-number {
+        font-family: 'Playfair Display', serif;
+        font-size: 4rem;
+        font-weight: 700;
+        line-height: 1;
+      }
+      .stat-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-top: 0.5rem;
+        opacity: 0.8;
+      }
+
+      /* Chapter 4 - Process Timeline */
+      .chapter-4 {
+        padding: 10rem 4rem;
+      }
+
+      .timeline { position: relative; max-width: 800px; margin: 0 auto; }
+
+      .timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
+      }
+
+      .timeline-item {
+        display: flex;
+        justify-content: flex-end;
+        padding-right: calc(50% + 2rem);
+        position: relative;
+        margin-bottom: 4rem;
+      }
+
+      .timeline-item:nth-child(even) {
+        justify-content: flex-start;
+        padding-right: 0;
+        padding-left: calc(50% + 2rem);
+      }
+
+      .timeline-dot {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 20px;
+        background: var(--accent);
+        border-radius: 50%;
+        border: 4px solid var(--bg);
+      }
+
+      .timeline-content {
+        max-width: 400px;
+      }
+
+      .timeline-num {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--accent);
+        opacity: 0.3;
+        line-height: 1;
+      }
+
+      .timeline-content h4 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        margin: 0.5rem 0;
+      }
+
+      .timeline-content p {
+        color: var(--text-light);
+        line-height: 1.7;
+      }
+
+      /* Testimonials */
+      .testimonials {
+        padding: 10rem 4rem;
+        background: var(--bg-dark);
+        color: white;
+      }
+
+      .testimonials h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .test-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+      }
+
+      .test-card {
+        background: rgba(255,255,255,0.05);
+        padding: 2.5rem;
+        border-radius: 12px;
+        border-left: 3px solid var(--accent);
+      }
+
+      .test-text {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.1rem;
+        font-style: italic;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        opacity: 0.9;
+      }
+
+      .test-author {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.8rem;
+      }
+
+      .test-author strong { display: block; }
+      .test-author span { color: var(--accent); }
+
+      /* Form - Unique Clean Style */
+      .contact {
+        padding: 10rem 4rem;
+        text-align: center;
+      }
+
+      .contact h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        margin-bottom: 1rem;
+      }
+
+      .contact h2 span { color: var(--accent); }
+
+      .contact-subtitle {
+        color: var(--text-light);
+        margin-bottom: 4rem;
+        font-size: 1.1rem;
+      }
+
+      .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: left;
+      }
+
+      .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+
+      .form-group { margin-bottom: 1.5rem; }
+
+      .form-group label {
+        display: block;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7rem;
+        color: var(--text-light);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 0.6rem;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 1rem;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.95rem;
+        transition: all 0.3s;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(232, 93, 4, 0.1);
+      }
+
+      .form-submit {
+        width: 100%;
+        padding: 1.2rem;
+        background: var(--accent);
+        border: none;
+        color: white;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .form-submit:hover {
+        background: var(--accent-dark);
+        transform: translateY(-2px);
+      }
+
+      /* Footer */
+      footer {
+        padding: 2rem 4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid rgba(0,0,0,0.05);
+      }
+
+      .footer-logo { height: 24px; opacity: 0.6; }
+      .footer-text { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-light); }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        header { padding: 1rem 1.5rem; }
+        .menu-toggle { display: flex; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+        .menu-toggle span { width: 24px; height: 2px; background: var(--text); }
+        
+        nav {
+          display: none;
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 80%;
+          max-width: 300px;
+          height: 100vh;
+          background: var(--bg);
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 1.5rem;
+          transition: right 0.4s;
+          border-left: 1px solid rgba(0,0,0,0.1);
+          z-index: 101;
+        }
+        nav.active { right: 0; }
+        
+        .nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 99; }
+        .nav-overlay.active { display: block; }
+        
+        .chapter-1 { grid-template-columns: 1fr; gap: 3rem; padding: 6rem 1.5rem; }
+        .horizontal-section { padding: 0 1.5rem; }
+        .stats { grid-template-columns: repeat(2, 1fr); }
+        .timeline::before { display: none; }
+        .timeline-item, .timeline-item:nth-child(even) { padding: 0; flex-direction: column; }
+        .timeline-dot { display: none; }
+        .test-grid { grid-template-columns: 1fr; }
+        .form-row { grid-template-columns: 1fr; }
+        .hero, .chapter-4, .testimonials, .contact { padding: 5rem 1.5rem; }
+        footer { flex-direction: column; gap: 1rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <header>
+      <div class="logo">
+        <img src="../../../../img/logo.png" alt="Pau Cros">
+        <span class="logo-text">PAU CROS</span>
+      </div>
+      <button class="menu-toggle" id="navToggle"><span></span><span></span><span></span></button>
+      <nav id="mainNav">
+        <a href="#story">Story</a>
+        <a href="#process">Process</a>
+        <a href="#work">Work</a>
+        
+        <div class="mega-menu-wrapper">
+          <a href="#" class="mega-menu-trigger">ESTILOS <i class="fas fa-chevron-down"></i></a>
+          <div class="mega-menu">
+            <div class="mega-menu-header">NUESTROS ESTILOS</div>
+            <div class="mega-menu-grid">
+              <a href="PC-3d-inmersivo.html" class="mega-item"><span class="mega-item-num">01</span><div class="mega-item-content"><span class="mega-item-title">3D Inmersivo</span><span class="mega-item-desc">WebGL, partículas y efectos 3D</span></div></a>
+              <a href="PC-neo-brutalismo.html" class="mega-item"><span class="mega-item-num">02</span><div class="mega-item-content"><span class="mega-item-title">Neo-Brutalismo</span><span class="mega-item-desc">Bordes duros, colores neón</span></div></a>
+              <a href="PC-bold-typography.html" class="mega-item"><span class="mega-item-num">03</span><div class="mega-item-content"><span class="mega-item-title">Bold Typography</span><span class="mega-item-desc">Tipografía impactante</span></div></a>
+              <a href="PC-scrollytelling.html" class="mega-item active"><span class="mega-item-num">04</span><div class="mega-item-content"><span class="mega-item-title">Scrollytelling</span><span class="mega-item-desc">Narrativa scroll-driven</span></div></a>
+              <a href="PC-dark-mode.html" class="mega-item"><span class="mega-item-num">05</span><div class="mega-item-content"><span class="mega-item-title">Dark Mode</span><span class="mega-item-desc">Gradientes y glows</span></div></a>
+              <a href="PC-maximalismo.html" class="mega-item"><span class="mega-item-num">06</span><div class="mega-item-content"><span class="mega-item-title">Maximalismo</span><span class="mega-item-desc">Colores bold y patrones</span></div></a>
+              <a href="PC-fluid-morph.html" class="mega-item"><span class="mega-item-num">07</span><div class="mega-item-content"><span class="mega-item-title">Fluid Morph</span><span class="mega-item-desc">Formas fluidas y glassmorphism</span></div></a>
+              <a href="PC-minimal-tech.html" class="mega-item"><span class="mega-item-num">08</span><div class="mega-item-content"><span class="mega-item-title">Minimal Tech</span><span class="mega-item-desc">Grids y minimalismo</span></div></a>
+              <a href="PC-organic-elegant.html" class="mega-item"><span class="mega-item-num">09</span><div class="mega-item-content"><span class="mega-item-title">Organic Elegant</span><span class="mega-item-desc">Suave y sofisticado</span></div></a>
+              <a href="PC-futuristic-cyber.html" class="mega-item"><span class="mega-item-num">10</span><div class="mega-item-content"><span class="mega-item-title">Futuristic Cyber</span><span class="mega-item-desc">Neon y tecnología</span></div></a>
+            </div>
+            <a href="../galeria-efectos.html" class="mega-menu-footer">
+              <span>→ Mi Galería de Efectos</span>
+            </a>
+          </div>
+        </div>
+        
+        <a href="#contact" class="nav-btn">Start</a>
+      </nav>
+    </header>
+
+    <!-- Section 1: Hero -->
+    <section class="hero">
+      <span class="hero-chapter">CHAPTER 01</span>
+      <h1>Where Stories<br><span>Come Alive</span></h1>
+      <p>We don't just tell stories—we create immersive digital experiences that unfold as your users scroll, revealing narrative layers one by one.</p>
+      <div class="hero-scroll-indicator">
+        <div class="scroll-mouse"></div>
+        <span>SCROLL TO EXPLORE</span>
+      </div>
+    </section>
+
+    <!-- Section 2: Story Chapter 1 -->
+    <section class="chapter-1" id="story">
+      <div class="chapter-content">
+        <span class="chapter-label">02 / THE BEGINNING</span>
+        <h2 class="chapter-title">Every Brand Has<br>a Story to Tell</h2>
+        <p class="chapter-text">We believe that great marketing is about telling authentic stories. Stories that resonate, inspire, and convert. Our scrollytelling approach transforms static content into dynamic narratives that guide users through a journey of discovery.</p>
+      </div>
+      <div class="chapter-image">
+        <img src="../../../../img/01.webp" alt="Story">
+      </div>
+    </section>
+
+    <!-- Section 3: Horizontal Scroll -->
+    <section class="chapter-2">
+      <div class="horizontal-section" id="work">
+        <div class="horizontal-card">
+          <div class="horizontal-card-img">
+            <img src="../../../../img/02.webp" alt="Project 1">
+          </div>
+          <h3>Brand Evolution</h3>
+          <p>Transforming legacy brands into modern digital experiences.</p>
+        </div>
+        <div class="horizontal-card">
+          <div class="horizontal-card-img">
+            <img src="../../../../img/03.webp" alt="Project 2">
+          </div>
+          <h3>Product Launch</h3>
+          <p>Immersive reveals that capture attention from the first scroll.</p>
+        </div>
+        <div class="horizontal-card">
+          <div class="horizontal-card-img">
+            <img src="../../../../img/04.webp" alt="Project 3">
+          </div>
+          <h3>Campaign Story</h3>
+          <p>Narrative-driven campaigns that drive engagement and results.</p>
+        </div>
+        <div class="horizontal-card">
+          <div class="horizontal-card-img">
+            <img src="../../../../img/05.webp" alt="Project 4">
+          </div>
+          <h3>Visual Journey</h3>
+          <p>Art direction that tells your brand's unique story.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Parallax -->
+    <section class="chapter-3" id="parallax">
+      <div class="parallax-bg" data-speed="0.5"></div>
+      <div class="parallax-overlay"></div>
+      <div class="parallax-content">
+        <h2>The Art of<br>Sequential Discovery</h2>
+        <p>Scrollytelling creates anticipation. Each scroll reveals the next chapter, keeping users engaged and eager to explore more. It's not just content—it's a journey.</p>
+      </div>
+    </section>
+
+    <!-- Section 5: Stats -->
+    <section class="stats">
+      <div class="stat-item"><h3 class="stat-number">50+</h3><p class="stat-label">Projects Done</p></div>
+      <div class="stat-item"><h3 class="stat-number">98%</h3><p class="stat-label">Client Satisfaction</p></div>
+      <div class="stat-item"><h3 class="stat-number">5+</h3><p class="stat-label">Years Experience</p></div>
+      <div class="stat-item"><h3 class="stat-number">12</h3><p class="stat-label">Awards Won</p></div>
+    </section>
+
+    <!-- Section 6: Timeline Process -->
+    <section class="chapter-4" id="process">
+      <div class="chapter-content" style="text-align: center; margin-bottom: 4rem;">
+        <span class="chapter-label">03 / OUR PROCESS</span>
+        <h2 class="chapter-title">How We Tell<br>Your Story</h2>
+      </div>
+      
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-num">01</span>
+            <h4>Discovery</h4>
+            <p>We dive deep into your brand, understanding the core message and audience.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-num">02</span>
+            <h4>Strategy</h4>
+            <p>Mapping out the narrative arc and key scroll triggers for maximum impact.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-num">03</span>
+            <h4>Design</h4>
+            <p>Crafting visual chapters that unfold beautifully as users scroll through.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-num">04</span>
+            <h4>Launch</h4>
+            <p>Deploying with precision, ensuring every scroll transition feels effortless.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: Testimonials -->
+    <section class="testimonials">
+      <h2>Client Stories</h2>
+      <div class="test-grid">
+        <div class="test-card">
+          <p class="test-text">"Pau Cros transformed our online presence. The scrollytelling approach increased engagement by 300%."</p>
+          <div class="test-author"><strong>Carlos Ruiz</strong><span>CEO, Nexus Brand</span></div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"The storytelling approach connected with our audience in ways traditional marketing never could."</p>
+          <div class="test-author"><strong>Marta López</strong><span>Director, Urban Fashion</span></div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"They don't just build websites—they craft digital experiences that tell stories."</p>
+          <div class="test-author"><strong>David Chen</strong><span>Founder, Apex Tech</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 8: Contact Form -->
+    <section class="contact" id="contact">
+      <h2>Let's Tell<br><span>Your Story</span></h2>
+      <p class="contact-subtitle">Ready to create an immersive narrative for your brand?</p>
+      
+      <div class="form-container">
+        <form>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Name</label>
+              <input type="text" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" placeholder="your@email.com" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Company</label>
+              <input type="text" placeholder="Your company">
+            </div>
+            <div class="form-group">
+              <label>Budget</label>
+              <select>
+                <option value="">Select budget</option>
+                <option value="5k-10k">5K - 10K</option>
+                <option value="10k-25k">10K - 25K</option>
+                <option value="25k-50k">25K - 50K</option>
+                <option value="50k+">50K+</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea placeholder="Tell us about your story..."></textarea>
+          </div>
+          <button type="submit" class="form-submit">START YOUR STORY</button>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <img src="../../../../img/logo.png" alt="Pau Cros" class="footer-logo">
+      <span class="footer-text">© 2026 PAU CROS MARKETING</span>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Menu toggle
+      document.getElementById('navToggle').addEventListener('click', () => {
+        document.getElementById('mainNav').classList.toggle('active');
+        document.getElementById('navOverlay').classList.toggle('active');
+      });
+      document.getElementById('navOverlay').addEventListener('click', () => {
+        document.getElementById('mainNav').classList.remove('active');
+        document.getElementById('navOverlay').classList.remove('active');
+      });
+
+      // Hero - fade up
+      gsap.from('.hero h1', { y: 80, opacity: 0, duration: 1.2, ease: 'power3.out', delay: 0.3 });
+      gsap.from('.hero p', { y: 40, opacity: 0, duration: 1, delay: 0.8, ease: 'power3.out' });
+      gsap.from('.hero-chapter', { x: -30, opacity: 0, duration: 0.8, delay: 0.5, ease: 'power3.out' });
+
+      // Chapter 1 - slide in
+      gsap.from('.chapter-1 .chapter-content', {
+        x: -50, opacity: 0, duration: 1, scrollTrigger: { trigger: '.chapter-1', start: 'top 60%' }, ease: 'power3.out'
+      });
+      gsap.from('.chapter-1 .chapter-image', {
+        x: 50, opacity: 0, duration: 1, scrollTrigger: { trigger: '.chapter-1', start: 'top 60%' }, ease: 'power3.out'
+      }, '-=0.8');
+
+      // Horizontal scroll section
+      gsap.to('.horizontal-section', {
+        x: () => -(document.querySelector('.horizontal-section').scrollWidth - window.innerWidth + 200),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.chapter-2',
+          start: 'top top',
+          end: () => '+=' + document.querySelector('.horizontal-section').scrollWidth,
+          scrub: 1,
+          pin: true
+        }
+      });
+
+      // Parallax effect
+      gsap.to('.parallax-bg', {
+        y: '30%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.chapter-3',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true
+        }
+      });
+
+      // Stats - count up
+      gsap.from('.stat-number', {
+        textContent: 0,
+        duration: 2,
+        ease: 'power2.out',
+        snap: { textContent: 1 },
+        stagger: 0.2,
+        scrollTrigger: { trigger: '.stats', start: 'top 70%' }
+      });
+
+      // Timeline
+      gsap.from('.timeline-item', {
+        y: 60, opacity: 0, duration: 0.8, stagger: 0.2, scrollTrigger: { trigger: '.timeline', start: 'top 60%' }, ease: 'power3.out'
+      });
+
+      // Testimonials
+      gsap.from('.test-card', {
+        y: 50, opacity: 0, duration: 0.8, stagger: 0.2, scrollTrigger: { trigger: '.test-grid', start: 'top 70%' }, ease: 'power3.out'
+      });
+
+      // Contact
+      gsap.from('.contact h2', { y: 40, opacity: 0, duration: 0.8, scrollTrigger: { trigger: '.contact', start: 'top 70%' }, ease: 'power3.out' });
+      gsap.from('.form-container', { y: 40, opacity: 0, duration: 0.8, delay: 0.3, scrollTrigger: { trigger: '.contact', start: 'top 60%' }, ease: 'power3.out' });
+
+      // Footer
+      gsap.from('footer', { y: 20, opacity: 0, duration: 0.6, scrollTrigger: { trigger: 'footer', start: 'top 90%' } });
+    </script>
+  </body>
+</html>

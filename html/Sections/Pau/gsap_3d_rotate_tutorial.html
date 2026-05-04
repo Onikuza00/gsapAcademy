@@ -1,0 +1,1268 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GSAP 3D Rotate + SplitText - Tutorial Completo</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-base: #0a0a0a;
+        --text-main: #ffffff;
+        --glass-bg: rgba(255, 255, 255, 0.02);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --accent: #00ff88;
+        --accent-2: #ff007a;
+        --accent-3: #00d4ff;
+        --accent-4: #ffcc00;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--bg-base);
+        color: var(--text-main);
+        font-family: "Outfit", sans-serif;
+        overflow-x: hidden;
+      }
+
+      .container {
+        padding: 8rem 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5rem;
+      }
+
+      h1 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(2rem, 8vw, 5rem);
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        text-align: center;
+      }
+
+      h1 span {
+        color: var(--accent);
+      }
+
+      .section {
+        width: 100%;
+        max-width: 1200px;
+      }
+
+      .section-title {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.8rem;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--glass-border);
+        color: var(--accent-3);
+      }
+
+      .effect-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 2.5rem;
+      }
+
+      .demo-box {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 2.5rem;
+        min-height: 380px;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        transition: border-color 0.3s;
+      }
+
+      .demo-box:hover {
+        border-color: var(--accent);
+      }
+
+      .demo-box h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.3rem;
+        color: var(--accent-2);
+      }
+
+      .demo-text-wrapper {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        perspective: 1000px;
+        position: relative;
+        min-height: 140px;
+        overflow: visible;
+      }
+
+      .demo-text {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 3.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        line-height: 1.1;
+        text-align: center;
+        display: block;
+        position: relative;
+      }
+
+      .line {
+        display: block;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .line-inner {
+        display: block;
+        transform-origin: left center;
+        will-change: transform, opacity;
+      }
+
+      .mask-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--bg-base);
+        transform-origin: left;
+        z-index: 10;
+      }
+
+      .code-block {
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 12px;
+        padding: 1.2rem;
+        font-family: "Space Mono", monospace;
+        font-size: 0.85rem;
+        overflow-x: auto;
+        border: 1px solid var(--glass-border);
+      }
+
+      .code-block .comment {
+        color: #6a9955;
+      }
+
+      .code-block .property {
+        color: #9cdcfe;
+      }
+
+      .code-block .value {
+        color: #ce9178;
+      }
+
+      .code-block .string {
+        color: #ce9178;
+      }
+
+      .explanation {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.75);
+        margin-top: 0.5rem;
+      }
+
+      .explanation strong {
+        color: var(--accent-3);
+      }
+
+      .step-guide {
+        background: rgba(0, 255, 136, 0.1);
+        border-left: 3px solid var(--accent);
+        padding: 1rem;
+        border-radius: 0 8px 8px 0;
+        margin-top: 1rem;
+      }
+
+      .step-guide h4 {
+        color: var(--accent);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .step-guide ol {
+        margin-left: 1.2rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9rem;
+        line-height: 1.8;
+      }
+
+      .step-guide li {
+        margin-bottom: 0.3rem;
+      }
+
+      .btn-replay {
+        background: transparent;
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        padding: 10px 20px;
+        border-radius: 100px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: 0.3s;
+        width: fit-content;
+      }
+
+      .btn-replay:hover {
+        background: var(--accent);
+        color: var(--bg-base);
+      }
+
+      .variation-badge {
+        display: inline-block;
+        background: var(--accent);
+        color: var(--bg-base);
+        padding: 5px 14px;
+        border-radius: 100px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .code-line {
+        display: block;
+        padding: 2px 0;
+      }
+
+      .stagger-note {
+        background: rgba(255, 0, 122, 0.15);
+        border: 1px solid var(--accent-2);
+        padding: 0.8rem;
+        border-radius: 8px;
+        margin-top: 0.8rem;
+        font-size: 0.85rem;
+        color: var(--accent-2);
+      }
+
+      .stagger-note strong {
+        color: var(--accent-2);
+      }
+
+      .mask-note {
+        background: rgba(0, 212, 255, 0.15);
+        border: 1px solid var(--accent-3);
+        padding: 0.8rem;
+        border-radius: 8px;
+        margin-top: 0.8rem;
+        font-size: 0.85rem;
+        color: var(--accent-3);
+      }
+
+      .mask-note strong {
+        color: var(--accent-3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>GSAP <span>3D + SplitText</span> Tutorial</h1>
+
+      <!-- SECCIÓN 1: ROTATEX + STAGGER -->
+      <div class="section">
+        <h2 class="section-title">1. RotateX + Stagger (Cascada Vertical)</h2>
+        
+        <div class="effect-grid">
+          <!-- RotateX: -90deg + stagger -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 1</span>
+            <h3>RotateX: -90° + Stagger</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="rx1-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="rx1-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playRx1()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// PAS 1: Importar SplitText (després de GSAP)</span></span>
+              <span class="code-line"><span class="property">gsap.registerPlugin</span>(SplitText);</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="comment">// PAS 2: Crear SplitText - divideix en línies</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span>,  <span class="comment">// "lines", "chars" o "words"</span></span>
+              <span class="code-line">  <span class="property">linesClass</span>: <span class="string">"line"</span>   <span class="comment">// classe per estil</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="comment">// PAS 3: Animar amb stagger</span></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">1.8</span>,   <span class="comment">// temps per cada línia</span></span>
+              <span class="code-line">  <span class="property">rotateX</span>: <span class="value">-90</span>,    <span class="comment">// gira sobre eix X</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,     <span class="comment">// invisible</span></span>
+              <span class="code-line">  <span class="property">y</span>: <span class="value">30</span>,        <span class="comment">// desplaça cap avall</span></span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">0.2</span>,   <span class="comment">// 0.2s entre cada línia</span></span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.out"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>rotateX: -90</strong> + <strong>stagger: 0.2</strong>:
+              La primera línia comença, i 0.2s posteriori la segona.
+              L'efecte és una cascada vertical cap amunt!
+            </p>
+            <div class="stagger-note">
+              <strong>STAGGER:</strong> stagger: 0.2 significa que cada 
+              línia trona 0.2 segons después de l'anterior. 
+              Provar 0.1 (ràpid) o 0.3 (lent).
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>1. gsap.registerPlugin(SplitText)</li>
+                <li>2. new SplitText(".element", {type: "lines"})</li>
+                <li>3. gsap.from(text.lines, {stagger: 0.2, ...})</li>
+                <li>4. Canviar stagger per controlar ritme</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- RotateX: 90deg + stagger from end -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 2</span>
+            <h3>RotateX: 90° + Stagger End</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="rx2-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="rx2-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playRx2()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// STAGGER AVANÇAT: desde final</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">1.8</span>,</span>
+              <span class="code-line">  <span class="property">rotateX</span>: <span class="value">90</span>,</span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">{ from: "end", amount: 0.3 }</span></span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.out"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>stagger: {from: "end", amount: 0.3}</strong>:
+              La darrera línia comença PRIMERA i puja cap amunt.
+              L'amount: 0.3 és el temps total del stagger.
+            </p>
+            <div class="stagger-note">
+              <strong>FROM: "END":</strong> Canvia l'ordre - ara 
+              comença des de l'última línia cap a la primera.
+              Molt útil per a efectes inversos!
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>stagger: {from: "end", amount: 0.3}</li>
+                <li>"end" = des de última línia</li>
+                <li>"start" = des de primera</li>
+                <li>"center" = des del mig</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- RotateX: -180deg + stagger center -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 3</span>
+            <h3>RotateX: -180° + Center</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="rx3-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="rx3-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playRx3()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// STAGGER: desde center</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">2.0</span>,</span>
+              <span class="code-line">  <span class="property">rotateX</span>: <span class="value">-180</span>, <span class="comment">// voltereta</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">{ from: "center", amount: 0.4 }</span></span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.inOut"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>from: "center"</strong>: La línia del mig 
+              comença primer, i les demés van seguint cap a fora.
+              Ideal per textos de 2-3 línies!
+            </p>
+            <div class="stagger-note">
+              <strong>CENTER:</strong> from: "center" funciona millor
+              quan tens número senar de línies (1, 3, 5...).
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>from: "center" = des del mig</li>
+                <li>amount és temps total</li>
+                <li>Provar from: "random"</li>
+                <li>-180 = voltereta completa</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN 2: ROTATEY + STAGGER -->
+      <div class="section">
+        <h2 class="section-title">2. RotateY + Stagger (Cascada Lateral)</h2>
+        
+        <div class="effect-grid">
+          <!-- RotateY: -90deg -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 1</span>
+            <h3>RotateY: -90° + Stagger</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="ry1-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="ry1-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playRy1()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// RotateY + stagger bàsic</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">1.8</span>,</span>
+              <span class="code-line">  <span class="property">rotateY</span>: <span class="value">-90</span>, <span class="comment">// gira des d'esquerra</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">0.2</span>,</span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.out"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>rotateY: -90</strong> + stagger:
+              Cada línia票na des de l'esquerra seqüencialment.
+              Com升una cortina que s'obre lateralment!
+            </p>
+            <div class="stagger-note">
+              <strong>LATERAL:</strong> rotateY controla l'eix vertical,
+              permetent efectes laterals!
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>RotateY: -90 = des d'esquerra</li>
+                <li>RotateY: 90 = des de dreta</li>
+                <li>stagger: 0.2 = espai entre</li>
+                <li>Provar valors diferents</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- RotateY: 90deg + transformOrigin -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 2</span>
+            <h3>RotateY: 90° + Origin Right</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="ry2-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="ry2-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playRy2()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// transformOrigin: right center</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">1.8</span>,</span>
+              <span class="code-line">  <span class="property">rotateY</span>: <span class="value">90</span>,  <span class="comment">// des de dreta</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">transformOrigin</span>: <span class="string">"right center"</span>, <span class="comment">// pivot!</span></span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">0.2</span>,</span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.out"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>transformOrigin: "right center"</strong>:
+              Cada línia票na des del seu costat dret!
+              És com obrir un llibe cap a tu!
+            </p>
+            <div class="stagger-note">
+              <strong>PIVOT:</strong> transformOrigin estableix
+              el punt de gir. "right center" = des de dreta.
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>Afegir transformOrigin</li>
+                <li>"right center" = des de dreta</li>
+                <li>"left center" = des d'esquerra</li>
+                <li>Combinar amb stagger</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- RotateY: 180deg -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 3</span>
+            <h3>RotateY: 180° + Stagger</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="ry3-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="ry3-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playRy3()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// 180 graus + stagger</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">2.0</span>,</span>
+              <span class="code-line">  <span class="property">rotateY</span>: <span class="value">180</span>, <span class="comment">// mitja volta</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">0.3</span>,</span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.inOut"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>rotateY: 180</strong> + stagger:
+              Mitja volta completa! Amb stagger: 0.3,
+              cada línia semblaaparèixer del no-res!
+            </p>
+            <div class="stagger-note">
+              <strong>ESPERAR MES:</strong> stagger: 0.3 fa mes
+              espai entre línies - mes dramàtic.
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>180 = mitja volta</li>
+                <li>stagger: 0.3 = lent</li>
+                <li>stagger: 0.1 = ràpid</li>
+                <li>power2.inOut = suau</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN 3: ROTATEZ + STAGGER -->
+      <div class="section">
+        <h2 class="section-title">3. RotateZ + Stagger (Gir 2D)</h2>
+        
+        <div class="effect-grid">
+          <!-- RotateZ: 360deg -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 1</span>
+            <h3>RotateZ: 360° + Stagger</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="rz1-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="rz1-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playRz1()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// Gir 360 + stagger</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">2.0</span>,</span>
+              <span class="code-line">  <span class="property">rotateZ</span>: <span class="value">360</span>, <span class="comment">// gir complert</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">0.25</span>,</span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.out"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>rotateZ: 360</strong> + stagger:
+              Cada línia票na una volta completa seqüencialment.
+              Com升unes busques de rellotge successives!
+            </p>
+            <div class="stagger-note">
+              <strong>2D:</strong> rotateZ és el mateix que rotation.
+              Gira en el pla pla (sense profunditat).
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>rotateZ: 360 = volta sencera</li>
+                <li>rotateZ: 90 = quart de gir</li>
+                <li>rotateZ: -360 = gir invers</li>
+                <li>Combinar amb stagger</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- RotateZ: -360deg -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 2</span>
+            <h3>RotateZ: -360° + Stagger</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="rz2-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="rz2-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playRz2()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// Gir antihorari</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">2.0</span>,</span>
+              <span class="code-line">  <span class="property">rotateZ</span>: <span class="value">-360</span>, <span class="comment">// antihorari</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">0.25</span>,</span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.out"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>rotateZ: -360</strong> + stagger:
+              Gir en sentit antihorari! El signe negatiu
+              inverteix la dirección!
+            </p>
+            <div class="stagger-note">
+              <strong>INVERS:</strong> El signe determina
+              la dirección del gir.
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>Afegir - abans de 360</li>
+                <li>Gira al revés</li>
+                <li>Útil per contrast</li>
+                <li>Provar combinacions</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- RotateZ: 90 + back.out -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 3</span>
+            <h3>RotateZ: 90° + Elastic</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="rz3-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="rz3-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playRz3()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// back.out(1.7) - elàstic!</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">1.8</span>,</span>
+              <span class="code-line">  <span class="property">rotateZ</span>: <span class="value">90</span>,  <span class="comment">// 90 graus</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">0.15</span>,</span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"back.out(1.7)"</span> <span class="comment">// Elàstic!</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>back.out(1.7)</strong> + stagger:
+              Efecte elàstic! Cada línia票na una mica
+              mes enllà i torna. Molt divertit!
+            </p>
+            <div class="stagger-note">
+              <strong>BACK.OUT:</strong> El nombre (1.7)
+              és la intensitat del rebot.
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>back.out(1.7) = elàstic</li>
+                <li>1.0 = little, 2.0 = molt</li>
+                <li>Combinar amb stagger</li>
+                <li>Útil per a botons</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN 4: COMBINACIONS + STAGGER -->
+      <div class="section">
+        <h2 class="section-title">4. Combinacions X/Y/Z + Stagger</h2>
+        
+        <div class="effect-grid">
+          <!-- X + Y combinat -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 1</span>
+            <h3>RotateX + Y (Diagonal)</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="combo1-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="combo1-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playCombo1()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// Combinar rotateX + rotateY</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">2.0</span>,</span>
+              <span class="code-line">  <span class="property">rotateX</span>: <span class="value">-90</span>,  <span class="comment">// eix X</span></span>
+              <span class="code-line">  <span class="property">rotateY</span>: <span class="value">-90</span>,  <span class="comment">// eix Y</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">0.2</span>,</span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.out"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>rotateX + rotateY</strong> + stagger:
+              Efecte 3D complex! Cada línia票na
+              simultàniament en ambdós eixos!
+            </p>
+            <div class="stagger-note">
+              <strong>3D:</strong> Combinar X i Y crea
+              profunditat visual!
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>Definir rotateX i rotateY</li>
+                <li>Cada un actua junts</li>
+                <li>stagger funciona igual</li>
+                <li>Provar valors diferents</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- 3D complet -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 2</span>
+            <h3>RotateX + Y + Z (3D Total)</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="combo2-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="combo2-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playCombo2()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// X + Y + Z junts!</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">2.5</span>,</span>
+              <span class="code-line">  <span class="property">rotateX</span>: <span class="value">-180</span>, <span class="comment">// X</span></span>
+              <span class="code-line">  <span class="property">rotateY</span>: <span class="value">180</span>,  <span class="comment">// Y</span></span>
+              <span class="code-line">  <span class="property">rotateZ</span>: <span class="value">360</span>, <span class="comment">// Z</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">0.3</span>,</span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.inOut"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>X + Y + Z</strong> + stagger:
+              Els tres eixos! Una animació 3D completa
+              amb cada línia seqüencialment!
+            </p>
+            <div class="stagger-note">
+              <strong>COMPLET:</strong> Amb mes durada
+              es veu mes el moviment!
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>Afegir rotateX, rotateY, rotateZ</li>
+                <li>Mes durada = mes visible</li>
+                <li>stagger fa cascada</li>
+                <li> Útil per a èmfasi</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- Stagger pur -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 3</span>
+            <h3>Només Stagger (Cascada)</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="combo3-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="combo3-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playCombo3()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// stagger PUR (sense rotate)</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">1.2</span>,</span>
+              <span class="code-line">  <span class="property">y</span>: <span class="value">50</span>,      <span class="comment">// desplaça</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">0.2</span>,  <span class="comment">// només stagger</span></span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.out"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>stagger</strong> sense rotate:
+              Cascada simple! Útil per a llistes,
+              menus, o textos que apareixen!
+            </p>
+            <div class="stagger-note">
+              <strong>SIMPLE:</strong> stagger funciona
+              amb qualssevol propietat!
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>stagger: 0.2</li>
+                <li>Provar y: 30, 50, 80</li>
+                <li>Provar x: per lateral</li>
+                <li>Provar scale</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN 5: TRANSFORM ORIGIN + STAGGER -->
+      <div class="section">
+        <h2 class="section-title">5. Transform Origin + Stagger</h2>
+        
+        <div class="effect-grid">
+          <!-- top center -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 1</span>
+            <h3>Origin: top center</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="origin1-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="origin1-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playOrigin1()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// Pivot des de dalt</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">1.8</span>,</span>
+              <span class="code-line">  <span class="property">rotateX</span>: <span class="value">-90</span>,</span>
+              <span class="code-line">  <span class="property">transformOrigin</span>: <span class="string">"top center"</span>, <span class="comment">// Pivot!</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">0.2</span>,</span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.out"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>transformOrigin: "top center"</strong>:
+              Cada línia票na des de dalt! Sembla
+              que caigui del sostre!
+            </p>
+            <div class="stagger-note">
+              <strong>PIVOT:</strong> El punt de gir
+              estableix des on票na.
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>"top center" = des de dalt</li>
+                <li>"bottom center" = des de baix</li>
+                <li>"left center" = d'esquerra</li>
+                <li>"right center" = de dreta</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- bottom center -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 2</span>
+            <h3>Origin: bottom center</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="origin2-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="origin2-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playOrigin2()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// Pivot des de baix</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">1.8</span>,</span>
+              <span class="code-line">  <span class="property">rotateX</span>: <span class="value">90</span>,</span>
+              <span class="code-line">  <span class="property">transformOrigin</span>: <span class="string">"bottom center"</span>, <span class="comment">// Sota</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">0.2</span>,</span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.out"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>transformOrigin: "bottom center"</strong>:
+              Gira des del terra! Cada línia票na
+              des de baix cap amunt!
+            </p>
+            <div class="stagger-note">
+              <strong>PUJADA:</strong> Ideal per a
+              efectes que pugen!
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>"bottom center" = pivot a baix</li>
+                <li>rotateX: 90 (+) = cap amunt</li>
+                <li>Ideal per a cards</li>
+                <li>Combinar amb stagger</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- left center -->
+          <div class="demo-box">
+            <span class="variation-badge">Variación 3</span>
+            <h3>Origin: left center</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="origin3-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="origin3-line2"><span class="line-inner">Animation</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playOrigin3()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="comment">// Pivot des d'esquerra</span></span>
+              <span class="code-line"><span class="property">const</span> text = <span class="property">new</span> SplitText(<span class="string">".mi-texto"</span>, {</span>
+              <span class="code-line">  <span class="property">type</span>: <span class="string">"lines"</span></span>
+              <span class="code-line">});</span>
+              <span class="code-line"></span>
+              <span class="code-line"><span class="property">gsap.from</span>(text.lines, {</span>
+              <span class="code-line">  <span class="property">duration</span>: <span class="value">1.8</span>,</span>
+              <span class="code-line">  <span class="property">rotateY</span>: <span class="value">90</span>,</span>
+              <span class="code-line">  <span class="property">transformOrigin</span>: <span class="string">"left center"</span>, <span class="comment">// Esquerra</span></span>
+              <span class="code-line">  <span class="property">opacity</span>: <span class="value">0</span>,</span>
+              <span class="code-line">  <span class="property">stagger</span>: <span class="value">0.2</span>,</span>
+              <span class="code-line">  <span class="property">ease</span>: <span class="string">"power2.out"</span></span>
+              <span class="code-line">});</span>
+            </div>
+            <p class="explanation">
+              <strong>transformOrigin: "left center"</strong>:
+              Gira des de l'esquerra! Com升una
+              porta que s'obre lateralment!
+            </p>
+            <div class="stagger-note">
+              <strong>LATERAL:</strong> Ideal per a
+              menús o carrousels!
+            </div>
+            <div class="step-guide">
+              <h4>Com fer-ho pas a pas:</h4>
+              <ol>
+                <li>"left center" = pivot a esquerda</li>
+                <li>rotateY + stagger</li>
+                <li>Útil per a menús</li>
+                <li>Provar "right center"</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN 6: EASES + STAGGER -->
+      <div class="section">
+        <h2 class="section-title">6. Eases + Stagger</h2>
+        
+        <div class="effect-grid">
+          <!-- power2.out -->
+          <div class="demo-box">
+            <span class="variation-badge">Easing 1</span>
+            <h3>power2.out</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="ease1-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="ease1-line2"><span class="line-inner">Power!</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playEase1()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="property">ease</span>: <span class="string">"power2.out"</span></span>
+              <span class="code-line"><span class="property">stagger</span>: <span class="value">0.2</span></span>
+            </div>
+            <p class="explanation">
+              <strong>power2.out</strong>: Ràpid al inici, suau al final.
+              Amb stagger, cada línia segueix el seu propi ritme.
+            </p>
+          </div>
+
+          <!-- back.out -->
+          <div class="demo-box">
+            <span class="variation-badge">Easing 2</span>
+            <h3>back.out(1.7)</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="ease2-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="ease2-line2"><span class="line-inner">Power!</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playEase2()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="property">ease</span>: <span class="string">"back.out(1.7)"</span></span>
+              <span class="code-line"><span class="property">stagger</span>: <span class="value">0.15</span></span>
+            </div>
+            <p class="explanation">
+              <strong>back.out(1.7)</strong>: Efecte rebot!
+              Amb stagger, semblen ones elàstiques!
+            </p>
+            <div class="mask-note">
+              <strong>ELÀSTIC:</strong> El nombre 1.7
+              és la intensitat. 1.0-2.0.
+            </div>
+          </div>
+
+          <!-- elastic.out -->
+          <div class="demo-box">
+            <span class="variation-badge">Easing 3</span>
+            <h3>elastic.out(1, 0.3)</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="ease3-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="ease3-line2"><span class="line-inner">Power!</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playEase3()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="property">ease</span>: <span class="string">"elastic.out(1, 0.3)"</span></span>
+              <span class="code-line"><span class="property">stagger</span>: <span class="value">0.2</span></span>
+            </div>
+            <p class="explanation">
+              <strong>elastic.out</strong>: Múltiples rebots!
+              Amb stagger, semblen rebots en cadena!
+            </p>
+            <div class="mask-note">
+              <strong>REBOTS:</strong> Primer nombre:
+              amplitud. Segon: velocitat.
+            </div>
+          </div>
+
+          <!-- expo.out -->
+          <div class="demo-box">
+            <span class="variation-badge">Easing 4</span>
+            <h3>expo.out</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="ease4-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="ease4-line2"><span class="line-inner">Power!</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playEase4()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="property">ease</span>: <span class="string">"expo.out"</span></span>
+              <span class="code-line"><span class="property">stagger</span>: <span class="value">0.2</span></span>
+            </div>
+            <p class="explanation">
+              <strong>expo.out</strong>: Extraordinàriament ràpid!
+              Molt dramatic amb stagger!
+            </p>
+            <div class="mask-note">
+              <strong>DRAMÀTIC:</strong> Molt ràpid -
+              calça bé!
+            </div>
+          </div>
+
+          <!-- circ.out -->
+          <div class="demo-box">
+            <span class="variation-badge">Easing 5</span>
+            <h3>circ.out</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="ease5-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="ease5-line2"><span class="line-inner">Power!</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playEase5()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="property">ease</span>: <span class="string">"circ.out"</span></span>
+              <span class="code-line"><span class="property">stagger</span>: <span class="value">0.2</span></span>
+            </div>
+            <p class="explanation">
+              <strong>circ.out</strong>: Moviment circular!
+              Sembra ones d'aigua successives!
+            </p>
+            <div class="mask-note">
+              <strong>CIRCULAR:</strong> Suau,
+              segueix corba.
+            </div>
+          </div>
+
+          <!-- bounce.out -->
+          <div class="demo-box">
+            <span class="variation-badge">Easing 6</span>
+            <h3>bounce.out</h3>
+            <div class="demo-text-wrapper">
+              <div class="demo-text">
+                <span class="line" id="ease6-line1"><span class="line-inner">GSAP</span></span>
+                <span class="line" id="ease6-line2"><span class="line-inner">Power!</span></span>
+              </div>
+            </div>
+            <button class="btn-replay" onclick="playEase6()">Replay</button>
+            <div class="code-block">
+              <span class="code-line"><span class="property">ease</span>: <span class="string">"bounce.out"</span></span>
+              <span class="code-line"><span class="property">stagger</span>: <span class="value">0.15</span></span>
+            </div>
+            <p class="explanation">
+              <strong>bounce.out</strong>: Efecte pilota!
+              Cada línia票na, rebota i последователност!
+            </p>
+            <div class="mask-note">
+              <strong>GRAVETAT:</strong> Simula pilota
+              que bota!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
+    <script>
+      gsap.registerPlugin(SplitText);
+
+      function initDemo(selSelector, config) {
+        const lines = document.querySelectorAll(selSelector);
+        gsap.set(lines, { clearProps: "all" });
+        gsap.from(lines, config);
+      }
+
+      // ROTATEX
+      function playRx1() { 
+        initDemo("#rx1-line1 .line-inner, #rx1-line2 .line-inner", { 
+          duration: 1.8, rotateX: -90, opacity: 0, y: 30, stagger: 0.2, ease: "power2.out" 
+        }); 
+      }
+      function playRx2() { 
+        initDemo("#rx2-line1 .line-inner, #rx2-line2 .line-inner", { 
+          duration: 1.8, rotateX: 90, opacity: 0, stagger: { from: "end", amount: 0.3 }, ease: "power2.out" 
+        }); 
+      }
+      function playRx3() { 
+        initDemo("#rx3-line1 .line-inner, #rx3-line2 .line-inner", { 
+          duration: 2.0, rotateX: -180, opacity: 0, stagger: { from: "center", amount: 0.4 }, ease: "power2.inOut" 
+        }); 
+      }
+
+      // ROTATEY
+      function playRy1() { 
+        initDemo("#ry1-line1 .line-inner, #ry1-line2 .line-inner", { 
+          duration: 1.8, rotateY: -90, opacity: 0, stagger: 0.2, ease: "power2.out" 
+        }); 
+      }
+      function playRy2() { 
+        initDemo("#ry2-line1 .line-inner, #ry2-line2 .line-inner", { 
+          duration: 1.8, rotateY: 90, opacity: 0, transformOrigin: "right center", stagger: 0.2, ease: "power2.out" 
+        }); 
+      }
+      function playRy3() { 
+        initDemo("#ry3-line1 .line-inner, #ry3-line2 .line-inner", { 
+          duration: 2.0, rotateY: 180, opacity: 0, stagger: 0.3, ease: "power2.inOut" 
+        }); 
+      }
+
+      // ROTATEZ
+      function playRz1() { 
+        initDemo("#rz1-line1 .line-inner, #rz1-line2 .line-inner", { 
+          duration: 2.0, rotateZ: 360, opacity: 0, stagger: 0.25, ease: "power2.out" 
+        }); 
+      }
+      function playRz2() { 
+        initDemo("#rz2-line1 .line-inner, #rz2-line2 .line-inner", { 
+          duration: 2.0, rotateZ: -360, opacity: 0, stagger: 0.25, ease: "power2.out" 
+        }); 
+      }
+      function playRz3() { 
+        initDemo("#rz3-line1 .line-inner, #rz3-line2 .line-inner", { 
+          duration: 1.8, rotateZ: 90, opacity: 0, stagger: 0.15, ease: "back.out(1.7)" 
+        }); 
+      }
+
+      // COMBINACIONES
+      function playCombo1() { 
+        initDemo("#combo1-line1 .line-inner, #combo1-line2 .line-inner", { 
+          duration: 2.0, rotateX: -90, rotateY: -90, opacity: 0, stagger: 0.2, ease: "power2.out" 
+        }); 
+      }
+      function playCombo2() { 
+        initDemo("#combo2-line1 .line-inner, #combo2-line2 .line-inner", { 
+          duration: 2.5, rotateX: -180, rotateY: 180, rotateZ: 360, opacity: 0, stagger: 0.3, ease: "power2.inOut" 
+        }); 
+      }
+      function playCombo3() { 
+        initDemo("#combo3-line1 .line-inner, #combo3-line2 .line-inner", { 
+          duration: 1.2, y: 50, opacity: 0, stagger: 0.2, ease: "power2.out" 
+        }); 
+      }
+
+      // TRANSFORM ORIGIN
+      function playOrigin1() { 
+        initDemo("#origin1-line1 .line-inner, #origin1-line2 .line-inner", { 
+          duration: 1.8, rotateX: -90, transformOrigin: "top center", opacity: 0, stagger: 0.2, ease: "power2.out" 
+        }); 
+      }
+      function playOrigin2() { 
+        initDemo("#origin2-line1 .line-inner, #origin2-line2 .line-inner", { 
+          duration: 1.8, rotateX: 90, transformOrigin: "bottom center", opacity: 0, stagger: 0.2, ease: "power2.out" 
+        }); 
+      }
+      function playOrigin3() { 
+        initDemo("#origin3-line1 .line-inner, #origin3-line2 .line-inner", { 
+          duration: 1.8, rotateY: 90, transformOrigin: "left center", opacity: 0, stagger: 0.2, ease: "power2.out" 
+        }); 
+      }
+
+      // EASES
+      function playEase1() { initDemo("#ease1-line1 .line-inner, #ease1-line2 .line-inner", { duration: 1.8, y: 50, opacity: 0, stagger: 0.2, ease: "power2.out" }); }
+      function playEase2() { initDemo("#ease2-line1 .line-inner, #ease2-line2 .line-inner", { duration: 1.8, y: 50, opacity: 0, stagger: 0.15, ease: "back.out(1.7)" }); }
+      function playEase3() { initDemo("#ease3-line1 .line-inner, #ease3-line2 .line-inner", { duration: 2.0, y: 50, opacity: 0, stagger: 0.2, ease: "elastic.out(1, 0.3)" }); }
+      function playEase4() { initDemo("#ease4-line1 .line-inner, #ease4-line2 .line-inner", { duration: 1.8, y: 50, opacity: 0, stagger: 0.2, ease: "expo.out" }); }
+      function playEase5() { initDemo("#ease5-line1 .line-inner, #ease5-line2 .line-inner", { duration: 1.8, y: 50, opacity: 0, stagger: 0.2, ease: "circ.out" }); }
+      function playEase6() { initDemo("#ease6-line1 .line-inner, #ease6-line2 .line-inner", { duration: 1.8, y: 100, opacity: 0, stagger: 0.15, ease: "bounce.out" }); }
+
+      window.addEventListener("load", () => {
+        playRx1(); playRx2(); playRx3();
+        playRy1(); playRy2(); playRy3();
+        playRz1(); playRz2(); playRz3();
+        playCombo1(); playCombo2(); playCombo3();
+        playOrigin1(); playOrigin2(); playOrigin3();
+        playEase1(); playEase2(); playEase3(); playEase4(); playEase5(); playEase6();
+      });
+    </script>
+  </body>
+</html>

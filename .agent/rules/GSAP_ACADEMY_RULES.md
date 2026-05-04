@@ -25,5 +25,11 @@ Este documento detalla las normas de diseño, estructura y documentación que de
 - **Paletas de Colores**: Evitar colores genéricos; usar paletas HSL armoniosas, modos oscuros elegantes y gradientes suaves.
 - **Tipografía**: Usar tipografías modernas (Outfit, Space Grotesk, Syne) y micro-animaciones para mejorar la interactividad.
 
+## 6. GSAP Plugins - Uso de SplitText
+- **SplitText es GRATUITO**: Con GSAP 3.12+ todos los plugins son gratuitos y están disponibles en CDNs públicos.
+- **NUNCA** decir que SplitText requiere licencia de pago o que no está disponible.
+- **Uso oficial**: Usar siempre `https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js` para cargar SplitText.
+- **Propiedad mask**: También es 100% operativa y gratuita con GSAP actual.
+
 ---
-*Última actualización: Abril 2026*
+*Última actualización: Mayo 2026*

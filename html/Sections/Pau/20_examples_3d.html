@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>20 Text 3D Animations - GSAP Tutorial</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+      font-family: 'Segoe UI', sans-serif;
+      background: #0a0e27;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    
+    .section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+      position: relative;
+    }
+    
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      perspective: 1200px;
+    }
+    
+    .section-number {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2rem;
+      font-weight: 700;
+      opacity: 0.3;
+    }
+    
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 1rem;
+      perspective: 1200px;
+    }
+    
+    .line {
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      margin: 0.15em 0;
+    }
+    
+    .line span {
+      display: block;
+      transform-style: preserve-3d;
+    }
+    
+    .code-block {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(102, 126, 234, 0.3);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      line-height: 1.6;
+      color: #aaa;
+    }
+    
+    .description {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #aaa;
+      max-width: 700px;
+      margin-bottom: 1.5rem;
+    }
+    
+    button {
+      padding: 10px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+    
+    .highlight {
+      background: rgba(102, 126, 234, 0.2);
+      color: #667eea;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    
+    .section-1 { background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), transparent); }
+    .section-2 { background: linear-gradient(135deg, rgba(118, 75, 162, 0.05), transparent); }
+    .section-3 { background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), transparent); }
+    .section-4 { background: linear-gradient(135deg, rgba(118, 75, 162, 0.05), transparent); }
+    .section-5 { background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), transparent); }
+    .section-6 { background: linear-gradient(135deg, rgba(118, 75, 162, 0.05), transparent); }
+    .section-7 { background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), transparent); }
+    .section-8 { background: linear-gradient(135deg, rgba(118, 75, 162, 0.05), transparent); }
+    .section-9 { background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), transparent); }
+    .section-10 { background: linear-gradient(135deg, rgba(118, 75, 162, 0.05), transparent); }
+    .section-11 { background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), transparent); }
+    .section-12 { background: linear-gradient(135deg, rgba(118, 75, 162, 0.05), transparent); }
+    .section-13 { background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), transparent); }
+    .section-14 { background: linear-gradient(135deg, rgba(118, 75, 162, 0.05), transparent); }
+    .section-15 { background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), transparent); }
+    .section-16 { background: linear-gradient(135deg, rgba(118, 75, 162, 0.05), transparent); }
+    .section-17 { background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), transparent); }
+    .section-18 { background: linear-gradient(135deg, rgba(118, 75, 162, 0.05), transparent); }
+    .section-19 { background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), transparent); }
+    .section-20 { background: linear-gradient(135deg, rgba(118, 75, 162, 0.05), transparent); }
+  </style>
+</head>
+<body>
+
+  <!-- 1. ROTATEX - Desplegarse hacia arriba -->
+  <section class="section section-1">
+    <div class="section-number">01</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>RotateX</span></div>
+        <div class="line"><span>Hacia arriba</span></div>
+      </h1>
+      <p class="description">El texto gira sobre el eje X como si se abriera una puerta horizontal desde abajo.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateX: -90,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Giro -90° sobre eje X<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('Gira 90° negativos sobre X. -90 = desde abajo. +90 = desde arriba')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 2. ROTATEY - Desplegarse de los lados -->
+  <section class="section section-2">
+    <div class="section-number">02</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>RotateY</span></div>
+        <div class="line"><span>De los lados</span></div>
+      </h1>
+      <p class="description">El texto gira sobre el eje Y como si se abriera una puerta lateral.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateY: -90,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Giro -90° sobre eje Y<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('Gira 90° negativos sobre Y. -90 = desde derecha. +90 = desde izquierda')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 3. ROTATEZ - Desplegarse con giro -->
+  <section class="section section-3">
+    <div class="section-number">03</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>RotateZ</span></div>
+        <div class="line"><span>Giro en 2D</span></div>
+      </h1>
+      <p class="description">El texto gira sobre el eje Z (el plano). Es el giro más común, como girar un papel.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateZ: -180,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Giro -180° sobre eje Z<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('Gira sobre el plano (2D). Valores: -180 a 180 grados')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 4. COMBINADO - RotateX + RotateY -->
+  <section class="section section-4">
+    <div class="section-number">04</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>RotateX</span></div>
+        <div class="line"><span>+ RotateY</span></div>
+      </h1>
+      <p class="description">Combinación de dos ejes simultáneamente. El texto se despliega en ángulo diagonal.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateX: -90,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Eje X<br/>
+&nbsp;&nbsp;rotateY: 45,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Eje Y<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('Mueve 2 ejes al mismo tiempo. Efecto 3D más complejo')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 5. TRIPLE EJE - RotateX + RotateY + RotateZ -->
+  <section class="section section-5">
+    <div class="section-number">05</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>RotateX</span></div>
+        <div class="line"><span>+ Y + Z</span></div>
+      </h1>
+      <p class="description">Los tres ejes girando simultáneamente. Efecto caótico y complejo.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateX: -90,<br/>
+&nbsp;&nbsp;rotateY: 45,<br/>
+&nbsp;&nbsp;rotateZ: 30,<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('3 ejes rotando. Más dinámico y moderno')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 6. CON STAGGER - Líneas consecutivas -->
+  <section class="section section-6">
+    <div class="section-number">06</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>Con Stagger</span></div>
+        <div class="line"><span>Línea por línea</span></div>
+      </h1>
+      <p class="description">Cada línea se anima con delay entre ellas. <span class="highlight">stagger: 0.15</span> = 0.15s entre líneas.</p>
+      <div class="code-block">
+gsap.from(lines, {<br/>
+&nbsp;&nbsp;rotateX: -90,<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;stagger: 0.15,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Delay de 0.15s entre líneas<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('stagger: 0.15 = 150ms entre animaciones. Crea ritmo visual')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 7. TRANSFORMORIGIN - Punto de giro arriba -->
+  <section class="section section-7">
+    <div class="section-number">07</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>Transform</span></div>
+        <div class="line"><span>Origin: Top</span></div>
+      </h1>
+      <p class="description">El <span class="highlight">transformOrigin</span> define el punto de giro. 'top center' = se gira desde arriba.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateX: -90,<br/>
+&nbsp;&nbsp;transformOrigin: 'top center',&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Gira desde arriba<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('Opciones: top, bottom, center, left, right. Combina 2: top center, bottom left, etc.')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 8. TRANSFORMORIGIN - Punto de giro abajo -->
+  <section class="section section-8">
+    <div class="section-number">08</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>Transform</span></div>
+        <div class="line"><span>Origin: Bottom</span></div>
+      </h1>
+      <p class="description">Si el origen está abajo, la animación se ve diferente: la línea gira desde su base.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateX: -90,<br/>
+&nbsp;&nbsp;transformOrigin: 'bottom center',&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Gira desde abajo<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('Mismo giro pero diferente punto de origen. Cambia cómo se ve')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 9. TRANSFORMORIGIN - Punto de giro lateral -->
+  <section class="section section-9">
+    <div class="section-number">09</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>Transform</span></div>
+        <div class="line"><span>Origin: Left</span></div>
+      </h1>
+      <p class="description">El origen en el lado izquierdo. Perfecto para <span class="highlight">rotateY</span> porque gira desde la izquierda.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateY: -90,<br/>
+&nbsp;&nbsp;transformOrigin: 'center left',&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Gira desde la izquierda<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('RotateY + left = efecto puerta que se abre hacia la derecha')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 10. TRANSFORMORIGIN - Punto de giro personalizado -->
+  <section class="section section-10">
+    <div class="section-number">10</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>Transform</span></div>
+        <div class="line"><span>Origin: 50% 50%</span></div>
+      </h1>
+      <p class="description">Usando porcentajes. '50% 50%' = centro exacto. Puedes usar '25% 75%', etc.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateX: -90,<br/>
+&nbsp;&nbsp;rotateY: 45,<br/>
+&nbsp;&nbsp;transformOrigin: '50% 50%',&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Centro exacto<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('0% = inicio, 50% = centro, 100% = final. X Y pueden ser diferentes')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 11. SCALE + ROTATE - Escala mientras gira -->
+  <section class="section section-11">
+    <div class="section-number">11</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>Scale</span></div>
+        <div class="line"><span>+ Rotate</span></div>
+      </h1>
+      <p class="description">Combina escala y rotación. El texto se hace pequeño mientras gira.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateX: -90,<br/>
+&nbsp;&nbsp;scale: 0.5,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 0.5 = 50% del tamaño<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('scale: 0 a 1. 0 = invisible, 1 = normal, 2 = el doble')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 12. TRANSLATEX/Y/Z - Movimiento espacial -->
+  <section class="section section-12">
+    <div class="section-number">12</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>Translate</span></div>
+        <div class="line"><span>X, Y, Z</span></div>
+      </h1>
+      <p class="description">Mueve el texto en el espacio 3D mientras gira. Z lo acerca/aleja de la pantalla.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateX: -90,<br/>
+&nbsp;&nbsp;x: -100,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// -100px a la izquierda<br/>
+&nbsp;&nbsp;y: 100,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 100px hacia abajo<br/>
+&nbsp;&nbsp;z: 200,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 200px hacia adelante<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('x/y = píxeles. z = profundidad (necesita perspective en el padre)')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 13. DURATION - Control de velocidad -->
+  <section class="section section-13">
+    <div class="section-number">13</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>Duration</span></div>
+        <div class="line"><span>Velocidad</span></div>
+      </h1>
+      <p class="description">La <span class="highlight">duration</span> controla cuánto tarda la animación en segundos.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateX: -90,<br/>
+&nbsp;&nbsp;duration: 0.5,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 0.5 segundos (rápido)<br/>
+&nbsp;&nbsp;// duration: 2,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 2 segundos (lento)<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('Valores comunes: 0.3 (rápido), 0.8 (normal), 1.5 (lento)')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 14. EASE - Tipos de animación -->
+  <section class="section section-14">
+    <div class="section-number">14</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>Ease</span></div>
+        <div class="line"><span>Suavidad</span></div>
+      </h1>
+      <p class="description">El <span class="highlight">ease</span> define cómo acelera/desacelera. 'power2.out' = rápido al inicio, lento al final.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateX: -90,<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;ease: 'power2.out'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Otros: power1, power3, back, elastic, bounce<br/>
+});
+      </div>
+      <button onclick="alert('Comunes: power2.out, back.out, elastic.out, bounce.out. Cambia el feeling')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 15. SKEW - Inclinación -->
+  <section class="section section-15">
+    <div class="section-number">15</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>Skew</span></div>
+        <div class="line"><span>Inclinación</span></div>
+      </h1>
+      <p class="description">Inclina el texto como si fuera un paralelogramo. SkewX inclina horizontal, SkewY vertical.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateX: -90,<br/>
+&nbsp;&nbsp;skewX: 45,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Inclina 45° horizontalmente<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('skewX/skewY = ángulo en grados. Distorsiona la forma')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 16. DELAY - Retraso en el inicio -->
+  <section class="section section-16">
+    <div class="section-number">16</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>Delay</span></div>
+        <div class="line"><span>Retraso</span></div>
+      </h1>
+      <p class="description">El <span class="highlight">delay</span> espera antes de empezar la animación. Perfecta para secuencias.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateX: -90,<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;delay: 0.5,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Espera 0.5s antes de empezar<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('delay: X segundos. Útil para crear secuencias ordenadas')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 17. SCROLLTRIGGER - Animar al scroll -->
+  <section class="section section-17">
+    <div class="section-number">17</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>ScrollTrigger</span></div>
+        <div class="line"><span>Animar al scroll</span></div>
+      </h1>
+      <p class="description">Dispara la animación cuando el elemento entra en la pantalla al hacer scroll.</p>
+      <div class="code-block">
+gsap.from(line, {<br/>
+&nbsp;&nbsp;rotateX: -90,<br/>
+&nbsp;&nbsp;opacity: 0,<br/>
+&nbsp;&nbsp;duration: 1,<br/>
+&nbsp;&nbsp;scrollTrigger: {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;trigger: line,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Elemento que dispara<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;start: 'top center'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Cuándo empieza<br/>
+&nbsp;&nbsp;},<br/>
+&nbsp;&nbsp;ease: 'power2.out'<br/>
+});
+      </div>
+      <button onclick="alert('start: top center = cuando la parte superior entra al centro de la pantalla')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 18. ATRIBUTOS PERSONALIZADOS - gsap.to() vs gsap.from() -->
+  <section class="section section-18">
+    <div class="section-number">18</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>gsap.from()</span></div>
+        <div class="line"><span>vs gsap.to()</span></div>
+      </h1>
+      <p class="description"><span class="highlight">gsap.from()</span> = anima DESDE estos valores. <span class="highlight">gsap.to()</span> = anima HACIA estos valores.</p>
+      <div class="code-block">
+// from() = comienza rotado, termina normal<br/>
+gsap.from(line, { rotateX: -90, duration: 1 });<br/>
+<br/>
+// to() = comienza normal, termina rotado<br/>
+gsap.to(line, { rotateX: -90, duration: 1 });
+      </div>
+      <button onclick="alert('from() = efecto de entrada. to() = efecto de salida')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 19. TIMELINE - Secuencia de animaciones -->
+  <section class="section section-19">
+    <div class="section-number">19</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>Timeline</span></div>
+        <div class="line"><span>Secuencias</span></div>
+      </h1>
+      <p class="description">Crea una secuencia de animaciones que ocurren una después de otra o simultáneamente.</p>
+      <div class="code-block">
+const tl = gsap.timeline();<br/>
+<br/>
+tl.from(line1, { rotateX: -90, duration: 1 }, 0);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Tiempo 0<br/>
+tl.from(line2, { rotateX: -90, duration: 1 }, 0.2);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Tiempo 0.2<br/>
+tl.from(line3, { rotateX: -90, duration: 1 }, 0.4);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Tiempo 0.4
+      </div>
+      <button onclick="alert('Timeline controla cuándo ocurre cada animación. Perfecto para sincronizar')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <!-- 20. PERSPECTIVA Y TRANSFORM-STYLE - Configuración 3D -->
+  <section class="section section-20">
+    <div class="section-number">20</div>
+    <div class="container">
+      <h1>
+        <div class="line"><span>Perspective &</span></div>
+        <div class="line"><span>Transform-style</span></div>
+      </h1>
+      <p class="description">El CSS de soporte: <span class="highlight">perspective</span> en el padre y <span class="highlight">transform-style: preserve-3d</span> en elementos.</p>
+      <div class="code-block">
+CSS:<br/>
+.container {<br/>
+&nbsp;&nbsp;perspective: 1200px;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Distancia al plano 3D<br/>
+}<br/>
+<br/>
+.line {<br/>
+&nbsp;&nbsp;transform-style: preserve-3d;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Mantiene transformaciones 3D<br/>
+}
+      </div>
+      <button onclick="alert('perspective: más bajo = más distorsión 3D. preserve-3d = necesario para rotaciones 3D')">Ver parámetros</button>
+    </div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Animar todas las líneas con ScrollTrigger
+    const allLines = document.querySelectorAll('.line span');
+    
+    allLines.forEach((line, index) => {
+      const section = line.closest('.section');
+      let animation = {};
+      
+      // Diferentes animaciones según la sección
+      if (section.classList.contains('section-1')) {
+        animation = { rotateX: -90 };
+      } else if (section.classList.contains('section-2')) {
+        animation = { rotateY: -90 };
+      } else if (section.classList.contains('section-3')) {
+        animation = { rotateZ: -180 };
+      } else if (section.classList.contains('section-4')) {
+        animation = { rotateX: -90, rotateY: 45 };
+      } else if (section.classList.contains('section-5')) {
+        animation = { rotateX: -90, rotateY: 45, rotateZ: 30 };
+      } else if (section.classList.contains('section-7')) {
+        animation = { rotateX: -90, transformOrigin: 'top center' };
+      } else if (section.classList.contains('section-8')) {
+        animation = { rotateX: -90, transformOrigin: 'bottom center' };
+      } else if (section.classList.contains('section-9')) {
+        animation = { rotateY: -90, transformOrigin: 'center left' };
+      } else if (section.classList.contains('section-10')) {
+        animation = { rotateX: -90, rotateY: 45, transformOrigin: '50% 50%' };
+      } else if (section.classList.contains('section-11')) {
+        animation = { rotateX: -90, scale: 0.5 };
+      } else if (section.classList.contains('section-12')) {
+        animation = { rotateX: -90, x: -100, y: 100, z: 200 };
+      } else if (section.classList.contains('section-13')) {
+        animation = { rotateX: -90 };
+      } else if (section.classList.contains('section-14')) {
+        animation = { rotateX: -90 };
+      } else if (section.classList.contains('section-15')) {
+        animation = { rotateX: -90, skewX: 45 };
+      } else if (section.classList.contains('section-16')) {
+        animation = { rotateX: -90 };
+      } else if (section.classList.contains('section-18')) {
+        animation = { rotateX: -90 };
+      } else if (section.classList.contains('section-19')) {
+        animation = { rotateX: -90 };
+      } else if (section.classList.contains('section-20')) {
+        animation = { rotateX: -90, rotateY: 45 };
+      } else {
+        animation = { rotateX: -90, rotateY: index % 2 === 0 ? 45 : -45 };
+      }
+      
+      gsap.from(line, {
+        ...animation,
+        opacity: 0,
+        duration: section.classList.contains('section-13') ? 0.5 : 1,
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top center',
+          toggleActions: 'play none none none'
+        },
+        ease: section.classList.contains('section-14') ? 'back.out' : 'power2.out'
+      });
+    });
+
+    ScrollTrigger.refresh();
+  </script>
+</body>
+</html>

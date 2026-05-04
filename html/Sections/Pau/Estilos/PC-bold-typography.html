@@ -1,0 +1,1144 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pau Cros | Bold Typography</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      :root {
+        --bg: #f8f6f3;
+        --bg-dark: #0d0d0d;
+        --white: #ffffff;
+        --black: #0d0d0d;
+        --accent: #e63946;
+        --accent-dark: #1d3557;
+        --text: #1a1a1a;
+        --text-light: #666666;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* Header */
+      header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        padding: 1.5rem 4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 100;
+        background: rgba(248, 246, 243, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      }
+
+      .logo { display: flex; align-items: center; gap: 1rem; }
+      .logo img { height: 40px; }
+      .logo-text {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.8rem;
+        letter-spacing: 2px;
+        color: var(--black);
+      }
+
+      nav { display: flex; align-items: center; gap: 3rem; }
+      nav a {
+        color: var(--text-light);
+        text-decoration: none;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: color 0.3s;
+      }
+      nav a:hover { color: var(--accent); }
+
+      .nav-btn {
+        padding: 0.7rem 1.8rem;
+        background: var(--black);
+        color: var(--white) !important;
+        font-family: 'Bebas Neue', sans-serif !important;
+        letter-spacing: 2px;
+        transition: all 0.3s;
+      }
+
+      .nav-btn:hover { background: var(--accent); }
+
+      .menu-toggle { display: none; }
+
+      /* Mega Menu */
+      .mega-menu-wrapper { position: relative; }
+      .mega-menu-trigger { display: flex; align-items: center; gap: 0.5rem; color: var(--text) !important; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+      .mega-menu-trigger i { font-size: 0.6rem; transition: transform 0.3s; }
+      .mega-menu-wrapper:hover .mega-menu-trigger i { transform: rotate(180deg); }
+      .mega-menu {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        width: 520px;
+        background: var(--white);
+        border: 2px solid var(--black);
+        border-radius: 0;
+        padding: 1.5rem;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        box-shadow: 15px 15px 0 var(--accent);
+      }
+      .mega-menu-wrapper:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(10px); }
+      .mega-menu-header { font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; color: var(--accent); letter-spacing: 3px; margin-bottom: 1rem; border-bottom: 2px solid var(--black); padding-bottom: 0.5rem; }
+      .mega-menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .mega-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border: 2px solid var(--text-light); border-radius: 0; transition: all 0.3s; }
+      .mega-item:hover { border-color: var(--accent); background: rgba(230, 57, 70, 0.05); }
+      .mega-item.active { border-color: var(--accent); background: rgba(230, 57, 70, 0.1); }
+      .mega-item-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--accent); line-height: 1; }
+      .mega-item-title { font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 700; display: block; color: var(--black); }
+      .mega-item-desc { font-size: 0.7rem; color: var(--text-light); }
+      .mega-menu-footer { display: block; margin-top: 1rem; padding: 1rem; background: var(--black); color: var(--white) !important; text-align: center; font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; letter-spacing: 2px; text-decoration: none !important; transition: all 0.3s; }
+      .mega-menu-footer:hover { background: var(--accent); }
+
+      /* Hero - Huge Typography */
+      .hero {
+        min-height: 100vh;
+        padding: 10rem 4rem 5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-line {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(4rem, 14vw, 12rem);
+        font-weight: 900;
+        line-height: 0.85;
+        text-transform: uppercase;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-line:nth-child(1) { color: transparent; -webkit-text-stroke: 2px var(--text); }
+      .hero-line:nth-child(2) { color: var(--accent); margin-left: 10%; }
+      .hero-line:nth-child(3) { color: var(--black); }
+
+      .hero-sub {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.9rem;
+        color: var(--text-light);
+        margin-top: 2rem;
+        max-width: 500px;
+        margin-left: 10%;
+      }
+
+      .hero-cta {
+        display: inline-block;
+        margin-top: 3rem;
+        margin-left: 10%;
+        padding: 1.2rem 3rem;
+        background: var(--accent);
+        color: var(--white);
+        text-decoration: none;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.2rem;
+        letter-spacing: 3px;
+        transition: all 0.4s;
+      }
+
+      .hero-cta:hover {
+        background: var(--black);
+        transform: translateX(20px);
+      }
+
+      /* Image Banner */
+      .image-banner {
+        width: 100%;
+        height: 50vh;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .image-banner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(100%);
+        transition: all 0.8s;
+      }
+
+      .image-banner:hover img {
+        filter: grayscale(0%);
+        transform: scale(1.05);
+      }
+
+      /* Section - Story */
+      .story {
+        padding: 10rem 4rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6rem;
+        align-items: center;
+      }
+
+      .story h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 2rem;
+      }
+
+      .story h2 span { color: var(--accent); }
+
+      .story p {
+        font-size: 1.1rem;
+        line-height: 1.9;
+        color: var(--text-light);
+        margin-bottom: 1.5rem;
+      }
+
+      .story-image {
+        position: relative;
+      }
+
+      .story-image img {
+        width: 100%;
+        border-radius: 8px;
+      }
+
+      .story-image::after {
+        content: '';
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        width: 100%;
+        height: 100%;
+        border: 4px solid var(--accent);
+        border-radius: 8px;
+        z-index: -1;
+      }
+
+      /* Services - Minimal */
+      .services {
+        padding: 8rem 4rem;
+        background: var(--black);
+        color: var(--white);
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 5rem;
+      }
+
+      .section-title {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 5rem;
+        letter-spacing: 4px;
+        line-height: 1;
+      }
+
+      .section-title span { color: var(--accent); }
+
+      .section-line {
+        width: 200px;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+      }
+
+      .service-item {
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .service-num {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7rem;
+        color: var(--accent);
+        margin-bottom: 1rem;
+      }
+
+      .service-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      .service-desc {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.7;
+      }
+
+      /* Numbers Section */
+      .numbers {
+        padding: 8rem 4rem;
+        text-align: center;
+      }
+
+      .numbers-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4rem;
+      }
+
+      .number-item h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 6rem;
+        font-weight: 900;
+        color: var(--accent);
+        line-height: 1;
+      }
+
+      .number-item p {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--text-light);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-top: 0.5rem;
+      }
+
+      /* Work Gallery */
+      .work {
+        padding: 8rem 4rem;
+        background: var(--bg-dark);
+        color: var(--white);
+      }
+
+      .work h2 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 5rem;
+        letter-spacing: 4px;
+        margin-bottom: 4rem;
+      }
+
+      .work-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+
+      .work-item {
+        position: relative;
+        aspect-ratio: 4/3;
+        overflow: hidden;
+      }
+
+      .work-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s;
+      }
+
+      .work-item:hover img { transform: scale(1.1); }
+
+      .work-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, transparent 50%);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 2rem;
+        opacity: 0;
+        transition: opacity 0.4s;
+      }
+
+      .work-item:hover .work-overlay { opacity: 1; }
+
+      .work-category {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7rem;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .work-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-top: 0.5rem;
+      }
+
+      /* Process */
+      .process {
+        padding: 8rem 4rem;
+      }
+
+      .process h2 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 4rem;
+        letter-spacing: 4px;
+        margin-bottom: 4rem;
+      }
+
+      .process-list { list-style: none; }
+
+      .process-item {
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap: 2rem;
+        padding: 3rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .process-num {
+        font-family: 'Playfair Display', serif;
+        font-size: 4rem;
+        font-weight: 900;
+        color: var(--accent);
+        opacity: 0.3;
+      }
+
+      .process-content h4 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .process-content p {
+        color: var(--text-light);
+        line-height: 1.7;
+      }
+
+      /* Testimonials */
+      .testimonials {
+        padding: 8rem 4rem;
+        background: var(--accent);
+        color: var(--white);
+      }
+
+      .testimonials h2 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 4rem;
+        letter-spacing: 4px;
+        margin-bottom: 4rem;
+      }
+
+      .test-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+      }
+
+      .test-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 3rem;
+        backdrop-filter: blur(10px);
+      }
+
+      .test-text {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.2rem;
+        font-style: italic;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+      }
+
+      .test-author {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.8rem;
+      }
+
+      .test-author strong { display: block; }
+      .test-author span { opacity: 0.7; }
+
+      /* Contact */
+      /* UNIQUE FORM: Editorial Magazine Style */
+      .contact {
+        padding: 10rem 4rem;
+        text-align: center;
+        background: var(--white);
+        position: relative;
+      }
+
+      .contact::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150px;
+        height: 3px;
+        background: var(--black);
+      }
+
+      .contact h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(3rem, 8vw, 5rem);
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+        letter-spacing: -2px;
+      }
+
+      .contact h2 span { 
+        color: var(--accent);
+        font-style: italic;
+      }
+
+      .contact-subtitle {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.1rem;
+        color: var(--text-light);
+        margin-bottom: 4rem;
+        font-weight: 300;
+      }
+
+      .contact-form {
+        max-width: 550px;
+        margin: 0 auto;
+        text-align: left;
+      }
+
+      .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+
+      .form-group { text-align: left; position: relative; }
+
+      .form-group label {
+        display: inline-block;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.65rem;
+        color: var(--black);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 0.8rem;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 5px;
+      }
+
+      .form-group label::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--accent);
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 0.8rem 0;
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+        color: var(--text);
+        font-family: 'Playfair Display', serif;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        border-radius: 0;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        outline: none;
+        border-bottom-color: var(--accent);
+        background: rgba(230, 57, 70, 0.03);
+      }
+
+      .form-group input::placeholder,
+      .form-group textarea::placeholder {
+        color: var(--text-light);
+        font-style: italic;
+        font-family: 'Playfair Display', serif;
+      }
+
+      .form-group select {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+      }
+
+      .form-group textarea { 
+        min-height: 120px; 
+        resize: vertical; 
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .form-submit {
+        display: block;
+        width: 100%;
+        padding: 1.5rem;
+        background: var(--black);
+        border: none;
+        color: var(--white);
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.1rem;
+        letter-spacing: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .form-submit::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--accent);
+        transition: left 0.4s;
+        z-index: -1;
+      }
+
+      .form-submit:hover {
+        background: var(--accent);
+      }
+
+      .form-submit:hover::before {
+        left: 0;
+      }
+
+      /* Footer */
+      footer {
+        padding: 3rem 4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--black);
+        color: var(--white);
+      }
+
+      .footer-logo { height: 25px; opacity: 0.7; filter: invert(1); }
+      .footer-text { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); }
+
+      /* Responsive */
+      @media (max-width: 1100px) {
+        .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+        .test-grid { grid-template-columns: 1fr; }
+      }
+
+      @media (max-width: 900px) {
+        header { padding: 1rem 1.5rem; }
+        .menu-toggle { display: flex; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+        .menu-toggle span { width: 25px; height: 3px; background: var(--black); }
+        
+        nav {
+          display: none;
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 80%;
+          max-width: 320px;
+          height: 100vh;
+          background: var(--bg);
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 1.5rem;
+          transition: right 0.4s;
+          z-index: 101;
+        }
+        
+        nav.active { display: flex; right: 0; }
+        
+        .nav-overlay {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 99;
+        }
+        
+        .nav-overlay.active { display: block; }
+        
+        .hero, .story, .services, .numbers, .work, .process, .testimonials, .contact { padding: 5rem 1.5rem; }
+        .hero-line { font-size: clamp(2.5rem, 15vw, 5rem); }
+        .hero-line:nth-child(2) { margin-left: 5%; }
+        .hero-sub, .hero-cta { margin-left: 5%; }
+        .story { grid-template-columns: 1fr; gap: 3rem; }
+        .services-grid { grid-template-columns: 1fr; }
+        .work-grid { grid-template-columns: 1fr; }
+        .process-item { grid-template-columns: 60px 1fr; gap: 1rem; }
+        .form-row { grid-template-columns: 1fr; }
+        footer { flex-direction: column; gap: 1rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <header>
+      <div class="logo">
+        <img src="../../../../img/logo.png" alt="Pau Cros">
+        <span class="logo-text">PAU CROS</span>
+      </div>
+      <button class="menu-toggle" id="navToggle"><span></span><span></span><span></span></button>
+      <nav id="mainNav">
+        <a href="#story">Story</a>
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#process">Process</a>
+        
+        <div class="mega-menu-wrapper">
+          <a href="#" class="mega-menu-trigger">ESTILOS <i class="fas fa-chevron-down"></i></a>
+          <div class="mega-menu">
+            <div class="mega-menu-header">NUESTROS ESTILOS</div>
+            <div class="mega-menu-grid">
+              <a href="PC-3d-inmersivo.html" class="mega-item"><span class="mega-item-num">01</span><div class="mega-item-content"><span class="mega-item-title">3D Inmersivo</span><span class="mega-item-desc">WebGL, partículas y efectos 3D</span></div></a>
+              <a href="PC-neo-brutalismo.html" class="mega-item"><span class="mega-item-num">02</span><div class="mega-item-content"><span class="mega-item-title">Neo-Brutalismo</span><span class="mega-item-desc">Bordes duros, colores neón</span></div></a>
+              <a href="PC-bold-typography.html" class="mega-item active"><span class="mega-item-num">03</span><div class="mega-item-content"><span class="mega-item-title">Bold Typography</span><span class="mega-item-desc">Tipografía impactante</span></div></a>
+              <a href="PC-scrollytelling.html" class="mega-item"><span class="mega-item-num">04</span><div class="mega-item-content"><span class="mega-item-title">Scrollytelling</span><span class="mega-item-desc">Narrativa scroll-driven</span></div></a>
+              <a href="PC-dark-mode.html" class="mega-item"><span class="mega-item-num">05</span><div class="mega-item-content"><span class="mega-item-title">Dark Mode</span><span class="mega-item-desc">Gradientes y glows</span></div></a>
+              <a href="PC-maximalismo.html" class="mega-item"><span class="mega-item-num">06</span><div class="mega-item-content"><span class="mega-item-title">Maximalismo</span><span class="mega-item-desc">Colores bold y patrones</span></div></a>
+              <a href="PC-fluid-morph.html" class="mega-item"><span class="mega-item-num">07</span><div class="mega-item-content"><span class="mega-item-title">Fluid Morph</span><span class="mega-item-desc">Formas fluidas y glassmorphism</span></div></a>
+              <a href="PC-minimal-tech.html" class="mega-item"><span class="mega-item-num">08</span><div class="mega-item-content"><span class="mega-item-title">Minimal Tech</span><span class="mega-item-desc">Grids y minimalismo</span></div></a>
+              <a href="PC-organic-elegant.html" class="mega-item"><span class="mega-item-num">09</span><div class="mega-item-content"><span class="mega-item-title">Organic Elegant</span><span class="mega-item-desc">Suave y sofisticado</span></div></a>
+              <a href="PC-futuristic-cyber.html" class="mega-item"><span class="mega-item-num">10</span><div class="mega-item-content"><span class="mega-item-title">Futuristic Cyber</span><span class="mega-item-desc">Neon y tecnología</span></div></a>
+            </div>
+            <a href="../galeria-efectos.html" class="mega-menu-footer">
+              <span>→ Mi Galería de Efectos</span>
+            </a>
+          </div>
+        </div>
+        
+        <a href="#contact" class="nav-btn">Start</a>
+      </nav>
+    </header>
+
+    <!-- Section 1: Hero - Big Typography -->
+    <section class="hero">
+      <div class="hero-line">We Create</div>
+      <div class="hero-line">Digital</div>
+      <div class="hero-line">Experiences</div>
+      <p class="hero-sub">Transformamos marcas a través de diseño estratégico y experiencias digitales que generan impacto real.</p>
+      <a href="#contact" class="hero-cta">Start Project →</a>
+    </section>
+
+    <!-- Section 2: Image Banner -->
+    <div class="image-banner">
+      <img src="../../../../img/hero.webp" alt="Hero Image">
+    </div>
+
+    <!-- Section 3: Story -->
+    <section class="story" id="story">
+      <div class="story-text">
+        <h2>We Tell <span>Stories</span> That Convert</h2>
+        <p>Somos una agencia de marketing digital especializada en crear experiencias web inmersivas. Combinamos creatividad estratégica con tecnología de vanguardia.</p>
+        <p>Cada proyecto es una oportunidad de contar una historia única que conecte con tu audiencia y genere resultados medibles.</p>
+      </div>
+      <div class="story-image">
+        <img src="../../../../img/01.webp" alt="Our Story">
+      </div>
+    </section>
+
+    <!-- Section 4: Services -->
+    <section class="services" id="services">
+      <div class="section-header">
+        <h2 class="section-title">OUR <span>SERVICES</span></h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="services-grid">
+        <div class="service-item">
+          <span class="service-num">01</span>
+          <h3 class="service-title">Branding</h3>
+          <p class="service-desc">Identidades de marca que conectan emocionalmente y se diferencian en el mercado.</p>
+        </div>
+        <div class="service-item">
+          <span class="service-num">02</span>
+          <h3 class="service-title">Web Design</h3>
+          <p class="service-desc">Experiencias web immersivas con diseño centrado en conversión.</p>
+        </div>
+        <div class="service-item">
+          <span class="service-num">03</span>
+          <h3 class="service-title">Marketing</h3>
+          <p class="service-desc">Estrategias digitales basadas en datos que generan resultados reales.</p>
+        </div>
+        <div class="service-item">
+          <span class="service-num">04</span>
+          <h3 class="service-title">Motion</h3>
+          <p class="service-desc">Animaciones y contenido visual que captura la atención y comunica tu mensaje.</p>
+        </div>
+        <div class="service-item">
+          <span class="service-num">05</span>
+          <h3 class="service-title">Development</h3>
+          <p class="service-desc">Desarrollo frontend con tecnologías modernas y animaciones de alto impacto.</p>
+        </div>
+        <div class="service-item">
+          <span class="service-num">06</span>
+          <h3 class="service-title">Analytics</h3>
+          <p class="service-desc">Métricas y análisis para optimizar continuamente tus resultados.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Numbers -->
+    <section class="numbers">
+      <div class="numbers-grid">
+        <div class="number-item"><h3>50+</h3><p>Projects Done</p></div>
+        <div class="number-item"><h3>98%</h3><p>Client Satisfaction</p></div>
+        <div class="number-item"><h3>5+</h3><p>Years Experience</p></div>
+        <div class="number-item"><h3>12</h3><p>Awards Won</p></div>
+      </div>
+    </section>
+
+    <!-- Section 6: Work -->
+    <section class="work" id="work">
+      <h2>SELECTED WORK</h2>
+      <div class="work-grid">
+        <div class="work-item">
+          <img src="../../../../img/02.webp" alt="Project 1">
+          <div class="work-overlay">
+            <span class="work-category">Branding</span>
+            <h3 class="work-title">Nexus Brand</h3>
+          </div>
+        </div>
+        <div class="work-item">
+          <img src="../../../../img/03.webp" alt="Project 2">
+          <div class="work-overlay">
+            <span class="work-category">Web Design</span>
+            <h3 class="work-title">Apex Tech</h3>
+          </div>
+        </div>
+        <div class="work-item">
+          <img src="../../../../img/04.webp" alt="Project 3">
+          <div class="work-overlay">
+            <span class="work-category">Marketing</span>
+            <h3 class="work-title">Urban Fashion</h3>
+          </div>
+        </div>
+        <div class="work-item">
+          <img src="../../../../img/05.webp" alt="Project 4">
+          <div class="work-overlay">
+            <span class="work-category">Development</span>
+            <h3 class="work-title">Solar Energy</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: Process -->
+    <section class="process" id="process">
+      <h2>OUR PROCESS</h2>
+      <ul class="process-list">
+        <li class="process-item">
+          <span class="process-num">01</span>
+          <div class="process-content">
+            <h4>Discovery</h4>
+            <p>Analizamos tu marca, audiencia y objetivos para crear una estrategia personalizada.</p>
+          </div>
+        </li>
+        <li class="process-item">
+          <span class="process-num">02</span>
+          <div class="process-content">
+            <h4>Strategy</h4>
+            <p>Definimos la hoja de ruta digital con milestones y KPIs claros.</p>
+          </div>
+        </li>
+        <li class="process-item">
+          <span class="process-num">03</span>
+          <div class="process-content">
+            <h4>Design</h4>
+            <p>Creamos prototipos y diseños que capturan la esencia de tu marca.</p>
+          </div>
+        </li>
+        <li class="process-item">
+          <span class="process-num">04</span>
+          <div class="process-content">
+            <h4>Launch</h4>
+            <p>Desplegamos, medimos resultados y optimizamos continuamente.</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Section 8: Testimonials -->
+    <section class="testimonials" id="testimonials">
+      <h2>CLIENT STORIES</h2>
+      <div class="test-grid">
+        <div class="test-card">
+          <p class="test-text">"Pau Cros transformó completamente nuestra presencia digital. El resultado superó todas las expectativas."</p>
+          <div class="test-author"><strong>Carlos Ruiz</strong><span>CEO, Nexus Brand</span></div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"Profesionalidad y creatividad sin límites. Nuestro ecommerce incrementó ventas en un 200%."</p>
+          <div class="test-author"><strong>Marta López</strong><span>Directora, Urban Fashion</span></div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"El equipo entiende perfectamente cómo traducir visión de marca en experiencias memorables."</p>
+          <div class="test-author"><strong>David Chen</strong><span>Founder, Apex Tech</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 9: Contact Form -->
+    <section class="contact" id="contact">
+      <h2>Let's Create<br><span>Together</span></h2>
+      <p class="contact-subtitle">Tell us about your project and let's build something amazing.</p>
+      
+      <form class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="your@email.com" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Company</label>
+            <input type="text" placeholder="Your company">
+          </div>
+          <div class="form-group">
+            <label>Budget</label>
+            <select>
+              <option value="">Select budget</option>
+              <option value="5k-10k">5K - 10K</option>
+              <option value="10k-25k">10K - 25K</option>
+              <option value="25k-50k">25K - 50K</option>
+              <option value="50k+">50K+</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Tell us about your project..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">SEND MESSAGE</button>
+      </form>
+    </section>
+
+    <footer>
+      <img src="../../../../img/logo.png" alt="Pau Cros" class="footer-logo">
+      <span class="footer-text">© 2026 PAU CROS MARKETING</span>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Menu toggle
+      document.getElementById('navToggle').addEventListener('click', () => {
+        document.getElementById('mainNav').classList.toggle('active');
+        document.getElementById('navOverlay').classList.toggle('active');
+      });
+      document.getElementById('navOverlay').addEventListener('click', () => {
+        document.getElementById('mainNav').classList.remove('active');
+        document.getElementById('navOverlay').classList.remove('active');
+      });
+
+      // Bold Typography - Split text animation
+      const heroLines = document.querySelectorAll('.hero-line');
+      heroLines.forEach((line, i) => {
+        const chars = line.textContent.split('');
+        line.innerHTML = chars.map(c => `<span class="char">${c}</span>`).join('');
+      });
+
+      const chars = document.querySelectorAll('.hero-line .char');
+      
+      gsap.from(chars, {
+        y: 100,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.02,
+        ease: 'power4.out',
+        delay: 0.2
+      });
+
+      gsap.from('.hero-sub', {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        delay: 1.5,
+        ease: 'power3.out'
+      });
+
+      gsap.from('.hero-cta', {
+        x: -50,
+        opacity: 0,
+        duration: 0.8,
+        delay: 1.8,
+        ease: 'power3.out'
+      });
+
+      // Image banner
+      gsap.from('.image-banner', {
+        scaleY: 0,
+        transformOrigin: 'top',
+        duration: 1.2,
+        ease: 'power4.out',
+        scrollTrigger: { trigger: '.image-banner', start: 'top 80%' }
+      });
+
+      // Story
+      gsap.from('.story h2', {
+        x: -50,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.story', start: 'top 70%' }
+      });
+
+      gsap.from('.story p', {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.story', start: 'top 60%' }
+      });
+
+      gsap.from('.story-image', {
+        scale: 0.8,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.story', start: 'top 60%' }
+      });
+
+      // Services
+      gsap.from('.section-title', {
+        x: -50,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.services', start: 'top 70%' }
+      });
+
+      gsap.from('.service-item', {
+        y: 60,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.services-grid', start: 'top 60%' }
+      });
+
+      // Numbers - counter animation
+      gsap.from('.number-item h3', {
+        textContent: 0,
+        duration: 2,
+        ease: 'power2.out',
+        snap: { textContent: 1 },
+        stagger: 0.2,
+        scrollTrigger: { trigger: '.numbers', start: 'top 70%' }
+      });
+
+      gsap.from('.number-item', {
+        y: 40,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        scrollTrigger: { trigger: '.numbers', start: 'top 70%' }
+      });
+
+      // Work
+      gsap.from('.work h2', {
+        x: -80,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.work', start: 'top 70%' }
+      });
+
+      gsap.from('.work-item', {
+        y: 80,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.work-grid', start: 'top 60%' }
+      });
+
+      // Process
+      gsap.from('.process h2', {
+        y: -30,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.process', start: 'top 70%' }
+      });
+
+      gsap.from('.process-item', {
+        x: -50,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.15,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.process-list', start: 'top 60%' }
+      });
+
+      // Testimonials
+      gsap.from('.testimonials h2', {
+        y: -30,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.testimonials', start: 'top 70%' }
+      });
+
+      gsap.from('.test-card', {
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.test-grid', start: 'top 60%' }
+      });
+
+      // Contact
+      gsap.from('.contact h2', {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.contact', start: 'top 70%' }
+      });
+
+      gsap.from('.contact-form .form-group', {
+        y: 30,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.contact-form', start: 'top 60%' }
+      });
+
+      // Footer
+      gsap.from('footer', {
+        y: 20,
+        opacity: 0,
+        duration: 0.6,
+        scrollTrigger: { trigger: 'footer', start: 'top 90%' }
+      });
+    </script>
+  </body>
+</html>

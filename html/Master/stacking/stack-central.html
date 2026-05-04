@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="cat">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrada y Salida de Stack de cartas con Lenis y Gsap</title>
+    <script src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" type="module"></script>
+<script src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" nomodule></script>
+
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+
+        :root {
+            --base-100: #fff;
+            --base-200: #fbfff2;
+            --base-300: #e7ebdf;
+            --base-400: #fd4400;
+            --base-500: #e7ebdf;
+            --base-600: #2668fd;
+            --base-700: #fdcb40;
+            --base-800: #0f0f0f;
+        }
+
+        /* ----- ESTILS HEADER I FOOTER (ALTURA REDUÏDA A LA MEITAT) ----- */
+        .header {
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(7, 7, 7, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .header h3 { font-family: "Space Grotesk", sans-serif; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 15px; }
+        .header a { color: #fff; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.2); padding: 6px 16px; border-radius: 100px; font-weight: 700; font-size: 0.75rem; transition: 0.3s; }
+        .header a:hover { color: #000; }
+        .highlight { color: #00f2ff; background-color: transparent; }
+
+        .footer-academy {
+            width: 100%;
+            padding: 1rem 2rem 2rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            background-color: var(--base-800);
+        }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; max-width: 800px; text-align: center; }
+        .footer-logo { width: 80px; height: auto; opacity: 1; margin-bottom: 0.5rem; }
+        .footer-info { display: flex; flex-direction: column; gap: 0.5rem; }
+        .declaration { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 0.75rem; letter-spacing: 3px; color: #00a34c; text-transform: uppercase; }
+        .copyright { font-family: "Outfit", sans-serif; font-size: 0.85rem; color: rgba(0, 0, 0, 0.3); font-weight: 300; }
+        /* ----- FI ESTILS HEADER I FOOTER ----- */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        h1, h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            text-transform: uppercase;
+            font-weight: 900;
+            line-height: 0.85; 
+        }
+
+        h1{
+            font-size: clamp(3rem, 5vw, 7rem);
+        }
+
+        h3{
+            font-size: clamp(2rem, 3vw, 5rem);
+        }
+
+        p{
+            font-size: 1.125rem;
+            font-weight: 450;
+            line-height: 1.1;
+        }
+
+        span{
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: .5rem;
+            border-radius:0.25rem;
+            background-color: var(--base-100);
+            color: var(--base-800);
+        }
+
+        section {
+            height: 100svh;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero {
+            background-color: var(--base-200);
+            color: var(--base-800);
+        }
+
+        .hero-content {
+            position: absolute;
+            width: 100%;
+            height: 100svh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            will-change: transform;
+        }
+
+        .hero-content h1 {
+            width: 60%;
+            text-align: center;
+        }
+        
+        /* Container de las cartas con efectos 3d de volteo */
+        .sticky-cards{
+            height: 100svh;
+            width: 100%;
+            position: absolute;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 25%;
+            min-width: 400px;
+            padding: 4rem 2rem;
+            aspect-ratio: 4/4;
+            background-color: var(--base-400);
+            color: var(--base-100);
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            will-change: transform;
+        }
+
+        .card-front .icon {
+            width: 4rem;
+            height: 4rem;
+            border: 0.125rem solid var(--base-100);
+            border-radius: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Esencial para efecto de volteo */
+        .card-front {
+            transform: translate(-50%, 50%) rotateY(0deg);
+            backface-visibility: hidden;
+        }
+
+        .card-back .icon {
+            width: 5rem;
+            height: 5rem;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: var(--base-100);
+            color: var(--base-400);
+        }
+
+        .card#card-1 {
+            background-color: var(--base-400);
+            color: var(--base-100);
+        }
+
+        .card#card-2 {
+            background-color: var(--base-500);
+            color: var(--base-800);
+        }
+
+        .card#card-3 {
+            background-color: var(--base-600);
+            color: var(--base-100);
+        }
+
+        .card#card-4 {
+            background-color: var(--base-700);
+            color: var(--base-800);
+        }
+
+        .card-back {
+            transform: translate(-50%, 50%) rotateY(180deg);
+            backface-visibility: hidden;
+        }
+
+        .about {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--base-300);
+            color: var(--base-800);
+        }
+
+        .about h3 {
+            width: 60%;
+            text-align: center;
+        }
+
+        @media (max-width: 1000px) {
+            .hero-content h1,
+            .about h3 {
+                width: 85%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navegació Superior -->
+    <header class="header">
+        <h3>GSAP <span class="highlight">CodeGrid Mastery</span></h3>
+        <div class="nav-links">
+            <a href="../advanced_index.html">Advanced Hub</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Haz scroll y observa como caen las targetas</h1>
+        </div> 
+        <!-- Container de las cartas  -->
+    <div class="sticky-cards">
+        <!-- Card frontal  -->
+        <div class="card card-front">
+            <h3>Primer frame</h3>
+            <span>Hacemos scroll</span>
+            <p>Apareceran las cartas una detras de otra</p>
+            <div class="icon"><ion-icon name="caret-down"></ion-icon></div>
+        </div>
+        <!-- Card traseres -->
+        <div class="card card-back" id="card-1">
+            <h3>Segundo frame</h3>
+            <span>Iniciando GSAP</span>
+            <p>Configuramos el Timeline para controlar la secuencia de entrada.</p>
+            <div class="icon"><ion-icon name="flash-outline"></ion-icon></div>
+        </div>
+        <div class="card card-back" id="card-2">
+            <h3>Tercer frame</h3>
+            <span>ScrollTrigger</span>
+            <p>Vinculamos la animación al scroll del usuario con suavidad.</p>
+            <div class="icon"><ion-icon name="layers-outline"></ion-icon></div>
+        </div>
+        <div class="card card-back" id="card-3">
+            <h3>Cuarto frame</h3>
+            <span>Efecto Stack</span>
+            <p>Las cartas se apilan con variaciones de escala y rotación.</p>
+            <div class="icon"><ion-icon name="copy-outline"></ion-icon></div>
+        </div>
+        <div class="card card-back" id="card-4">
+            <h3>Quinto frame</h3>
+            <span>Resultado Final</span>
+            <p>Un stack perfecto estilo CodeGrid con acabado AWARDS.</p>
+            <div class="icon"><ion-icon name="checkmark-done-outline"></ion-icon></div>
+        </div>
+    </div>
+    </section>
+    <section class="about">
+        <h3>Efecte de Stacking Central: Una transició on les targetes s'apilen dinàmicament mitjançant scroll, utilitzant GSAP i ScrollTrigger per a un control precís del moviment i l'escala.</h3>
+    </section>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="footer-academy">
+        <div class="footer-content">
+            <img src="../../../img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
+            <div class="footer-info">
+                <p class="declaration">UNA DECLARACIÓN DE INTENCIONES SOBRE LA EXCELENCIA EN ANIMACIÓN WEB</p>
+                <p class="copyright">© 2026 PAU CROSAS BATISTA — GSAP MASTER ACADEMY</p>
+            </div>
+        </div>
+    </footer>
+        <!-- LIBRERÍAS EXTERNAS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/SplitText.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script>
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Inicialització de Lenis (Scroll Suau)
+        const lenis = new Lenis();
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+
+        // Selecció d'elements per a l'animació
+        const stickyCards = document.querySelectorAll(".card");
+        const frontStickyCard = document.querySelector(".card-front");
+        const backStickyCards = document.querySelectorAll(".card-back");
+        const heroHeadline = document.querySelector(".hero-content");
+        const stickyCardCount = backStickyCards.length;
+
+        // Constants de control de l'animació (en svh)
+        const CARDS_ENTER_END = 100; // 100svh per a l'entrada
+        const CARD_FLIP_TRIGGER = 200; // 200svh per al gir de les cartes
+        const CARD_DISMISS_START = 300; // 300svh per a l'inici de la sortida
+        const CARD_DISMISS_DURATION = 100; // 100svh per a la duració de la sortida
+
+        // Càlcul del scroll total necessari
+        const TOTAL_SCROLL_SVH = CARD_DISMISS_START + stickyCardCount * CARD_DISMISS_DURATION;
+
+        // Funcions auxiliars de conversió
+        const svhToProgress = (svh) => svh / TOTAL_SCROLL_SVH;
+        const totalScroll = window.innerHeight * (TOTAL_SCROLL_SVH / 100);
+
+        // Angles de rotació per a l'efecte orgànic
+        const cardFlipTiltAngles = [-10, -20, -5, 10];
+        const cardDismissTiltAngles = [-50, -60, -45, 50];
+
+        // Generació dels rangs de sortida per a cada carta
+        const cardDismissRanges = Array.from({ length: stickyCardCount }, (_, i) => {
+            const dismissOrder = stickyCardCount - 1 - i;
+            return [
+                svhToProgress(CARD_DISMISS_START + dismissOrder * CARD_DISMISS_DURATION),
+                svhToProgress(
+                    CARD_DISMISS_START + (dismissOrder + 1) * CARD_DISMISS_DURATION,
+                ),
+            ];
+        });
+
+        // Estats inicials 3D
+        gsap.set(frontStickyCard, { rotationY: 0 });
+        gsap.set(backStickyCards, { rotationY: -180 });
+
+        let isFlipped = false;
+
+        // Funció per revelar les cartes del darrere amb efecte elàstic
+        const revealBackCards = () => {
+            gsap.to(frontStickyCard, {
+                rotationY: 180,
+                duration: 1,
+                ease: "elastic.out(1, 0.5)",
+            });
+            backStickyCards.forEach((card, i) => {
+                gsap.to(card, {
+                    rotationY: 0,
+                    rotationZ: cardFlipTiltAngles[i],
+                    duration: 1,
+                    ease: "elastic.out(1, 0.5)",
+                });
+            });
+        };
+
+        // Funció per tornar a amagar les cartes si es fa scroll cap amunt
+        const concealBackCards = () => {
+            gsap.to(frontStickyCard, {
+                rotationY: 0,
+                duration: 1,
+                ease: "elastic.out(1, 0.5)",
+            });
+            backStickyCards.forEach((card) => {
+                gsap.to(card, {
+                    rotationY: -180,
+                    rotationZ: 0,
+                    duration: 1,
+                    ease: "elastic.out(1, 0.5)",
+                });
+            });
+        };
+
+        // Creació del ScrollTrigger principal
+        ScrollTrigger.create({
+            trigger: ".hero",
+            start: "top top",
+            end: `+=${totalScroll}px`,
+            pin: true,
+            pinSpacing: true,
+            scrub: true,
+            onUpdate: ({ progress }) => {
+                // 1. Animació d'entrada i posicionament
+                const enterProgress = gsap.utils.clamp(
+                    // clamp(min, max, value) -> Limita el valor entre min i max
+                    // Fixa el valor pq mai surti del rang [0,1]
+                    0,
+                    1,
+                    gsap.utils.mapRange(0, svhToProgress(CARDS_ENTER_END), 0, 1, progress),
+                );
+
+                //Animació d'entrada i posicionament
+                gsap.set(stickyCards, {
+                    y: `${gsap.utils.mapRange(0, 1, 50, -50, enterProgress)}%`,
+                });
+
+                //Animació d'entrada i posicionament del títol
+                gsap.set(heroHeadline, {
+                    y: `${gsap.utils.mapRange(0, 1, 0, -100, enterProgress)}%`,
+                });
+
+                // Lògica per disparar el gir de les cartes
+                if (progress > svhToProgress(CARD_FLIP_TRIGGER) && !isFlipped) {
+                    revealBackCards();
+                    isFlipped = true;
+                } else if (progress <= svhToProgress(CARD_FLIP_TRIGGER) && isFlipped) {
+                    concealBackCards();
+                    isFlipped = false;
+                }
+
+                // Lògica de sortida (dismiss) de les cartes posteriors
+                backStickyCards.forEach((card, i) => {
+                    const [dismissStart, dismissEnd] = cardDismissRanges[i];
+                    const dismissProgress = gsap.utils.clamp(
+                        0,
+                        1,
+                        gsap.utils.mapRange(dismissStart, dismissEnd, 0, 1, progress),
+                    );
+                    gsap.set(card, {
+                        y: `${gsap.utils.mapRange(0, 1, -50, -250, dismissProgress)}%`,
+                        rotation: gsap.utils.mapRange(
+                            0,
+                            1,
+                            cardFlipTiltAngles[i],
+                            cardDismissTiltAngles[i],
+                            dismissProgress,
+                        ),
+                    });
+                });
+            },
+        });
+    </script>
+</body>
+</html>
