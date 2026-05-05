@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>01 - Ventana de avion - GSAP Academy</title>
+    <!-- Importación de fuentes premium -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../css/script.css">
+  </head>
+  <body>
+    <!-- Navegación Superior -->
+    <header class="header">
+      <h3>GSAP <span class="highlight">Typography Mastery</span></h3>
+      <div class="nav-links">
+        <a href="../advanced_index.html">Advanced Hub</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- Generamos 10 Secciones de Texto (Estructura de Academy) -->
+      
+      <!-- Sección 01 -->
+      <section class="section">
+        <div class="panel code">
+          <h2>01 <span class="highlight"> - Fade de Opacidad</span></h2>
+          <p>La clave de este efecto es con el SplitText, coger las <b>chars</b> con el <b>SplitText</b> y con el método <b>from</b> establecemos el  <b>ScrollTrigger</b> que inicie en el contenedor del texto y que parte con una opacidad baja. </p><pre><code>
+          <span class="fn">const <span class="str">efecto </span>= new </span>SplitText(<span class="str">"#efecto1"</span>, { type: "chars" });
+          <span class="str">gsap.</span><span class="fn">from</span>(<span class="str">efecto</span>, {
+            scrollTrigger: {
+              trigger: <span class="str">"#demo1"</span>,
+              start: "top 20%",
+              end: "bottom 80%",
+              scrub: <span class="key">1</span> <span class="com"></span>
+            },
+            opacity: 0.2,
+            stagger: 0.2,
+          });</code></pre>
+        </div>
+        <div class="panel demo" id="demo1">
+          <div class="demo-visual"><p id="efecto1">Ejemplo de SplitText con fade, el texto que enciende a medida que hacemos scroll. Se establece con el from partiendo de unaa baja opacidad, un efecto muy elegante y efectivo.</p></div>
+          <button class="btn-restart">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- Sección 02 -->
+     <section class="section">
+        <div class="panel code">
+          <h2>01 <span class="highlight"> - Efecto con altura</span></h2>
+          <p>La clave de este efecto es con el SplitText, coger las <b>chars</b> con el <b>SplitText</b> y con el método <b>from</b> establecemos el  <b>ScrollTrigger</b> que inicie en el contenedor del texto y que parte con una opacidad baja. </p><pre><code>
+          <span class="fn">const <span class="str">efecto </span>= new </span>SplitText(<span class="str">"#efecto1"</span>, { type: "chars" });
+          <span class="str">gsap.</span><span class="fn">from</span>(<span class="str">efecto</span>, {
+            scrollTrigger: {
+              trigger: <span class="str">"#demo1"</span>,
+              start: "top 20%",
+              end: "bottom 80%",
+              scrub: <span class="key">1</span> <span class="com"></span>
+            },
+            opacity: 0.2,
+            stagger: 0.2,
+          });</code></pre>
+        </div>
+        <div class="panel demo" id="demo2">
+          <div class="demo-visual"><p id="efecto2" style = 'font-size:2.5rem;'>Ejemplo con yPercent.</p></div>
+          <button class="btn-restart">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- Sección 03 -->
+      <section class="section">
+        <div class="panel code">
+          <h2>03. <span class="highlight">01 - Ventana de avion</span></h2>
+          <p>Animación de caracteres independientes (Chars). Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+          <pre><code><span class="fn">gsap</span>.from(chars, {
+  opacity: 0,
+  scale: 0,
+  stagger: 0.05,
+  ease: <span class="str">"back.out"</span>
+});</code></pre>
+        </div>
+        <div class="panel demo">
+          <div class="demo-visual"></div>
+          <button class="btn-restart">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- Sección 04 -->
+      <section class="section">
+        <div class="panel code">
+          <h2>04. <span class="highlight">01 - Ventana de avion</span></h2>
+          <p>Efecto de desenfoque progresivo (Blur Focus). Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
+          <pre><code><span class="fn">gsap</span>.to(<span class="str">".chars"</span>, {
+  filter: <span class="str">"blur(0px)"</span>,
+  opacity: 1,
+  stagger: 0.1
+});</code></pre>
+        </div>
+        <div class="panel demo">
+          <div class="demo-visual"></div>
+          <button class="btn-restart">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- Sección 05 -->
+      <section class="section">
+        <div class="panel code">
+          <h2>05. <span class="highlight">01 - Ventana de avion</span></h2>
+          <p>Simulación de escritura terminal. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+          <pre><code><span class="fn">gsap</span>.to(<span class="str">".target"</span>, {
+  text: <span class="str">"Hello World"</span>,
+  duration: 2
+});</code></pre>
+        </div>
+        <div class="panel demo">
+          <div class="demo-visual"></div>
+          <button class="btn-restart">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- Sección 06 -->
+      <section class="section">
+        <div class="panel code">
+          <h2>06. <span class="highlight">01 - Ventana de avion</span></h2>
+          <p>Efecto Scramble dinámico. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
+          <pre><code><span class="fn">gsap</span>.to(<span class="str">".text"</span>, {
+  scrambleText: {
+    text: <span class="str">"GSAP RULES"</span>,
+    chars: <span class="str">"01#x"</span>
+  }
+});</code></pre>
+        </div>
+        <div class="panel demo">
+          <div class="demo-visual"></div>
+          <button class="btn-restart">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- Sección 07 -->
+      <section class="section">
+        <div class="panel code">
+          <h2>07. <span class="highlight">01 - Ventana de avion</span></h2>
+          <p>Interacción por proximidad (Mouse Tracker). Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.</p>
+          <pre><code>window.addEventListener(<span class="str">"mousemove"</span>, (e) => {
+  <span class="fn">gsap</span>.to(<span class="str">".element"</span>, {
+    x: e.clientX,
+    y: e.clientY
+  });
+});</code></pre>
+        </div>
+        <div class="panel demo">
+          <div class="demo-visual"></div>
+          <button class="btn-restart">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- Sección 08 -->
+      <section class="section">
+        <div class="panel code">
+          <h2>08. <span class="highlight">01 - Ventana de avion</span></h2>
+          <p>Efecto de inversión cromática. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil.</p>
+          <pre><code><span class="fn">gsap</span>.to(<span class="str">".overlay"</span>, {
+  clipPath: <span class="str">"inset(0 0 0 0)"</span>,
+  duration: 1
+});</code></pre>
+        </div>
+        <div class="panel demo">
+          <div class="demo-visual"></div>
+          <button class="btn-restart">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- Sección 09 -->
+      <section class="section">
+        <div class="panel code">
+          <h2>09. <span class="highlight">01 - Ventana de avion</span></h2>
+          <p>Animación de profundidad (Z-Space). At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis.</p>
+          <pre><code><span class="fn">gsap</span>.to(<span class="str">".title"</span>, {
+  z: 1000,
+  opacity: 0,
+  ease: <span class="str">"none"</span>
+});</code></pre>
+        </div>
+        <div class="panel demo">
+          <div class="demo-visual"></div>
+          <button class="btn-restart">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- Sección 10 -->
+      <section class="section">
+        <div class="panel code">
+          <h2>10. <span class="highlight">01 - Ventana de avion</span></h2>
+          <p>Finalización de módulo y transiciones. Et harum quidem rerum facilis est et expedita distinctio.</p>
+          <pre><code><span class="fn">gsap</span>.timeline()
+  .to(<span class="str">".end"</span>, { scale: 1.5 })
+  .set(<span class="str">"body"</span>, { overflow: <span class="str">"auto"</span> });</code></pre>
+        </div>
+        <div class="panel demo">
+          <div class="demo-visual"></div>
+          <button class="btn-restart">Reiniciar</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer Institucional -->
+    <footer class="footer-academy">
+      <div class="footer-content">
+        <img src="../../../img/logo.png" alt="CodeGrid Logo" class="footer-logo" />
+        <div class="footer-info">
+          <p class="declaration">UNA DECLARACIÓN DE INTENCIONES SOBRE LA EXCELENCIA EN ANIMACIÓN WEB</p>
+          <p class="copyright">© 2026 PAU CROSAS BATISTA — GSAP MASTER ACADEMY</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Librerías GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="../../../js/script.js"></script>
+   
+    </script>
+  </body>
+</html>
