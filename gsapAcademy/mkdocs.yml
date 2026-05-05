@@ -1,0 +1,43 @@
+site_name: My Docs
+site_url: https://localhost:8000
+site_author: Pau Crosas Batista
+site_description: Documentació de Gsap Academy
+copyright: Copyright &copy; 2026 Pau Crosas Batista
+
+nav:
+  - Home: index.md
+  - Text:
+      - Text basic: text-basic.md
+      - Text avançat: text-advanced.md
+      - Text scroll trigger: text-scroll-trigger.md
+  - Parallax: basic-animations.md
+  - ScrollTrigger:
+      - Scroll trigger: scroll-trigger.md
+      - Scroll trigger avançat: scroll-trigger-advanced.md
+      - Scroll trigger amb text: scroll-trigger-text.md
+      - Scroll trigger amb imatges: scroll-trigger-images.md
+      - Scroll trigger amb video: scroll-trigger-video.md
+      - Scroll trigger amb audio: scroll-trigger-audio.md
+      - Scroll trigger amb animacions: scroll-trigger-animations.md
+  - morphSVG: advanced-animations.md
+  - Animacions amb scroll:
+      - Scroll trigger: scroll-trigger.md
+      - Scroll trigger avançat: scroll-trigger-advanced.md
+      - Scroll trigger amb text: scroll-trigger-text.md
+      - Scroll trigger amb imatges: scroll-trigger-images.md
+      - Scroll trigger amb video: scroll-trigger-video.md
+      - Scroll trigger amb audio: scroll-trigger-audio.md
+      - Scroll trigger amb animacions: scroll-trigger-animations.md
+  - Efectes: effects.md
+  - Reels: reels.md
+  - Assets: assets.md
+
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - def_list
+  - md_in_html
+toc:
+  permalink: true
