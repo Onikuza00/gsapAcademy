@@ -38,20 +38,25 @@ function flashLabel(container) {
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
 // Efecto 01: Máscara Horizontal
-let split01;
+let split01, tl01;
 function initEffect01(mode = 'bottom') {
   const container = document.querySelector('.effect-demo-01');
   flashLabel(container);
   
-  console.log(`Iniciando Efecto 01 en modo: ${mode}...`);
   const target = document.getElementById('demo-01');
   if (!target) return;
 
+  // 1. Limpieza absoluta
+  if (tl01) tl01.kill();
   if (split01) split01.revert();
+  gsap.killTweensOf(target);
+  gsap.set(target, { clearProps: "all" });
+  
+  console.log(`Iniciando Efecto 01 en modo: ${mode}...`);
   
   // Configuraciones según el modo
   let config = {
-    duration: 1,
+    duration: 0.6,
     opacity: 0,
     ease: "power2.out",
     stagger: 0.1
@@ -65,7 +70,6 @@ function initEffect01(mode = 'bottom') {
     case 'bottom':
       config.yPercent = 100;
       config.clipPath = 'inset(0 0 100% 0)'; // Empieza oculto abajo
-      config.ease = "back.out(1.7)";
       break;
     case 'left':
       config.xPercent = -100;
@@ -92,27 +96,32 @@ function initEffect01(mode = 'bottom') {
   setTimeout(() => {
     try {
       split01 = new SplitText("#demo-01", { type: "chars, lines" });
-      
-      // Aseguramos que el contenedor tenga overflow hidden para el recorte
       gsap.set("#demo-01-container", { overflow: "hidden" });
       
-      gsap.from(split01.chars, config);
+      tl01 = gsap.timeline();
+      tl01.from(split01.chars, config);
     } catch (e) {
       console.error("Error en Efecto 01:", e);
     }
-  }, 200);
+  }, 20);
 }
 
 // Efecto 02: Levantado 3D
-let split02;
+let split02, tl02;
 function initEffect02(mode = 'left') {
   const container = document.querySelector('.effect-demo-02');
   flashLabel(container);
-  console.log(`Iniciando Efecto 02 en modo: ${mode}...`);
+  
   const target = document.getElementById('demo-02');
   if (!target) return;
 
+  // Limpieza absoluta
+  if (tl02) tl02.kill();
   if (split02) split02.revert();
+  gsap.killTweensOf(target);
+  gsap.set(target, { clearProps: "all" });
+
+  console.log(`Iniciando Efecto 02 en modo: ${mode}...`);
 
   let startX = "0%", startY = "0%", staggerFrom = "start";
 
@@ -128,18 +137,27 @@ function initEffect02(mode = 'left') {
   setTimeout(() => {
     try {
       split02 = new SplitText("#demo-02", { type: "chars" });
-      const lt = gsap.timeline();
+      tl02 = gsap.timeline();
       
-      gsap.set(split02.chars, { opacity: 0, x: startX, y: startY, rotate: 10 });
+      gsap.set(split02.chars, { 
+        opacity: 0, 
+        x: startX, 
+        y: startY, 
+        rotate: 30, 
+        skewX: 40,
+        scale: 2
+      });
       
-      lt.to(split02.chars, {
-        duration: 1.2,
+      tl02.to(split02.chars, {
+        duration: 1.5,
         x: "0%",
         y: "0%",
         rotate: 0,
+        skewX: 0,
+        scale: 1,
         opacity: 1,
-        ease: "elastic.out(1, 0.5)",
-        stagger: { each: 0.05, from: staggerFrom }
+        ease: "elastic.out(1, 0.4)",
+        stagger: { each: 0.1, from: staggerFrom }
       });
     } catch (e) {
       console.error("Error en Efecto 02:", e);
@@ -147,95 +165,136 @@ function initEffect02(mode = 'left') {
   }, 200);
 }
 
-// Efecto 03: Despliegue 3D (Eje X)
-function initEffect03() {
+// Efecto 03: Despliegue 3D
+let tl03;
+function initEffect03(mode = 'alternate') {
   const container = document.querySelector('.effect-demo-03');
   flashLabel(container);
-  console.log("Iniciando Efecto 03...");
+  
   const target = document.getElementById('demo-03');
   if (!target) return;
 
-  // En esta réplica exacta usamos la estructura HTML manual de .line span
-  const lines = target.querySelectorAll('.line span');
-  const paragraph = document.querySelector('#demo-03-container p');
-  const button = document.querySelector('#demo-03-container button');
+  // Limpieza absoluta
+  if (tl03) tl03.kill();
+  gsap.killTweensOf(target);
+  const spans = target.querySelectorAll('.line span');
+  gsap.set(spans, { clearProps: "all" });
 
-  // Limpiamos solo transformaciones y opacidad para no perder el tamaño de fuente
-  gsap.set([lines, paragraph, button], { clearProps: "transform,opacity" });
+  console.log(`Iniciando Efecto 03 en modo: ${mode}...`);
+  
+  let rotX = 0, rotY = 0, origin = "center center", staggerFrom = "start";
+  let isAlternating = false;
 
-  const tl = gsap.timeline({
-    onComplete: () => console.log("Réplica 03 completada")
+  switch(mode) {
+    case 'alternate': 
+      isAlternating = true; 
+      break;
+    case 'top': 
+      rotX = -90; 
+      origin = "top center"; 
+      break;
+    case 'bottom': 
+      rotX = 90; 
+      origin = "bottom center"; 
+      break;
+    case 'left': 
+      rotY = -90; 
+      origin = "left center"; 
+      staggerFrom = "start";
+      break;
+    case 'right': 
+      rotY = 90; 
+      origin = "right center"; 
+      staggerFrom = "end";
+      break;
+    case 'center': 
+      rotX = -90; 
+      origin = "center center"; 
+      staggerFrom = "center"; 
+      break;
+    case 'edges': 
+      rotX = 90; 
+      origin = "center center"; 
+      staggerFrom = "edges"; 
+      break;
+  }
+
+  // Preparación de estado inicial
+  if (isAlternating) {
+    // Alternamos por LÍNEA, no por span, para que "con Gsap" gire unido
+    const lines = target.querySelectorAll('.line');
+    lines.forEach((line, i) => {
+      const lineSpans = line.querySelectorAll('span');
+      gsap.set(lineSpans, { 
+        opacity: 0, 
+        rotationY: i % 2 === 0 ? -90 : 90, 
+        transformOrigin: i % 2 === 0 ? "left center" : "right center" 
+      });
+    });
+  } else {
+    gsap.set(spans, { 
+    opacity: 0, 
+    rotationX: rotX,
+    rotationY: rotY,
+    transformOrigin: origin
   });
+  }
+  
+  tl03 = gsap.timeline();
 
-  lines.forEach((line, i) => {
-    tl.from(line, {
-      duration: 1,
-      rotateY: i % 2 === 0 ? -90 : 90,
-      opacity: 0,
-      transformOrigin: 'center center',
-      transformStyle: 'preserve-3d',
-      ease: 'power2.out'
-    }, i * 0.15);
+  tl03.to(spans, {
+    duration: 1.4,
+    opacity: 1,
+    rotationX: 0,
+    rotationY: 0,
+    ease: "power3.out",
+    stagger: { each: 0.15, from: staggerFrom }
   });
-
-  tl.from(paragraph, {
-    duration: 0.8,
-    opacity: 0,
-    y: 30,
-    ease: 'power2.out'
-  }, 0.5);
-
-  tl.from(button, {
-    duration: 0.6,
-    opacity: 0,
-    y: 20,
-    ease: 'power2.out'
-  }, 0.7);
 }
 
-// Efecto 04: Despliegue Lateral (Eje Y)
-function initEffect04() {
+// Efecto 04: Revelado Atmosférico (Blur & Scale)
+let tl04;
+function initEffect04(mode = 'bottom') {
   const container = document.querySelector('.effect-demo-04');
   flashLabel(container);
-  console.log("Iniciando Efecto 04...");
+  
   const target = document.getElementById('demo-04');
   if (!target) return;
 
-  const lines = target.querySelectorAll('.line span');
-  const paragraph = document.querySelector('#demo-04-container p');
-  const button = document.querySelector('#demo-04-container button');
+  // Limpieza absoluta
+  if (tl04) tl04.kill();
+  gsap.killTweensOf(target);
+  const spans = target.querySelectorAll('.line span');
+  gsap.set(spans, { clearProps: "all" });
 
-  gsap.set([lines, paragraph, button], { clearProps: "transform,opacity" });
+  console.log(`Iniciando Efecto 04 en modo: ${mode}...`);
 
-  const tl = gsap.timeline({
-    onComplete: () => console.log("Réplica 04 completada")
-  });
+  let rotX = 0, rotY = 0, staggerFrom = "start";
 
-  lines.forEach((line, i) => {
-    tl.from(line, {
-      duration: 1.2,
-      rotateX: -90,
-      rotateY: i % 2 === 0 ? 45 : -45,
-      opacity: 0,
-      transformOrigin: 'center center',
-      transformStyle: 'preserve-3d',
-      ease: 'power2.out'
-    }, i * 0.15);
-  });
+  switch(mode) {
+    case 'top': rotX = -90; rotY = 15; break;
+    case 'bottom': rotX = 90; rotY = -15; break;
+    case 'left': rotY = -90; rotX = 15; staggerFrom = "start"; break;
+    case 'right': rotY = 90; rotX = -15; staggerFrom = "end"; break;
+    case 'center': rotX = -90; rotY = 45; staggerFrom = "center"; break;
+    case 'edges': rotX = 90; rotY = -45; staggerFrom = "edges"; break;
+  }
 
-  tl.from(paragraph, {
-    duration: 0.8,
+  tl04 = gsap.timeline();
+
+  tl04.from(spans, {
+    duration: 1.2,
     opacity: 0,
-    y: 30,
-    ease: 'power2.out'
-  }, 0.5);
-
-  tl.from(button, {
-    duration: 0.6,
-    opacity: 0,
-    y: 20,
-    ease: 'power2.out'
-  }, 0.7);
+    rotationX: rotX,
+    rotationY: (i) => i % 2 === 0 ? rotY : -rotY, // El toque original de alternancia
+    transformOrigin: "center center",
+    transformStyle: "preserve-3d",
+    ease: "power2.out",
+    stagger: {
+      each: 0.12,
+      from: staggerFrom
+    }
+  });
 }
 
 // Función genérica para reiniciar demos placeholder

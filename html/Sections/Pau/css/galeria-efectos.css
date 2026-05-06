@@ -387,23 +387,32 @@ main { padding-top: 80px; }
 .text-3d .line {
   perspective: 1200px;
   transform-style: preserve-3d;
-  display: block;
-  margin: -0.8em 0;
-  margin-top:0.2rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0.1rem 0;
 }
 
 .text-3d .line span {
-  display: block;
+  display: inline-block;
   transform-style: preserve-3d;
   transform-origin: center center;
   will-change: transform, opacity;
 }
 
 .text-3d .line span.text-big {
-  font-size: 8rem !important;
+  font-size: 6rem !important;
   color: var(--accent);
-  margin: 1px 0;
+  margin: 0;
   letter-spacing: -2px;
+  line-height: 1;
+}
+
+.text-3d .line span.text-mid {
+  font-size: clamp(2.5rem, 3vw, 4rem) !important;
+  color: var(--text-base);
+  line-height: 1.2;
 }
 
 .effect-demo-label {

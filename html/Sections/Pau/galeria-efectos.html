@@ -144,7 +144,7 @@ gsap.from(split.chars, {
             </div>
           </div>
           <p class="effect-description">
-            Control total mediante estados iniciales y tiempos absolutos. Configuramos el punto de partida con <code>gsap.set</code> y disparamos dos animaciones paralelas en el segundo <code>0.45</code> de la línea de tiempo para un despliegue elástico de alta precisión.
+            Levantado elástico con rastro visual exagerado. Combinamos deformación de inclinación (skew), escalado masivo y rotación para crear una "estela" cinética sin necesidad de filtros de desenfoque, manteniendo la nitidez y el impacto.
           </p>
 
           <div class="effect-demo effect-demo-02">
@@ -173,26 +173,25 @@ gsap.from(split.chars, {
               <button class="copy-btn" onclick="copyCode(this)">
                 <i class="fas fa-copy"></i> Copiar
               </button>
-              <pre><code>// 1. Definimos el estado inicial
-gsap.set(split.chars, { opacity: 0, x: "750%" });
+              <pre><code>// 1. Estado inicial exagerado (La "estela")
+gsap.set(split.chars, { 
+  opacity: 0, 
+  scale: 2, 
+  skewX: 40, 
+  rotate: 30,
+  x: mode === 'left' ? "-200%" : "0%" // Dinámico
+});
 
-const lt = gsap.timeline();
-
-// 2. Fase de Movimiento (Inicio absoluto: 0.45)
-lt.to(split.chars, {
+// 2. Animación elástica de recuperación
+gsap.to(split.chars, {
   duration: 1.5,
-  x: "0%",
-  ease: "elastic.out(1, 0.25)",
-  stagger: 0.1,
-}, 0.45)
-
-// 3. Fase de Opacidad (Inicio absoluto: 0.45)
-.to(split.chars, {
-  duration: 0.75,
-  opacity: 1,
-  ease: "power2.out",
-  stagger: 0.01,
-}, 0.45);</code></pre>
+  x: "0%", scale: 1, skewX: 0, rotate: 0, opacity: 1,
+  ease: "elastic.out(1, 0.4)",
+  stagger: { 
+    each: 0.1, 
+    from: "start" // Dinámico: "center", "end", etc.
+  }
+});</code></pre>
             </div>
           </details>
 
@@ -200,42 +199,47 @@ lt.to(split.chars, {
             <summary><i class="fas fa-list-ol"></i> Pasos del Efecto</summary>
             <div class="effect-steps-content">
               <ol>
-                <li><strong>Estado Inicial (Pre-flight)</strong>: Usamos <code>gsap.set</code> para colocar los caracteres en su posición de salida (750% de distancia) y hacerlos invisibles antes de que empiece la línea de tiempo.</li>
-                <li><strong>Timing Absoluto</strong>: En lugar de usar etiquetas relativas, fijamos el inicio de ambas fases en el segundo <code>0.45</code>. Esto garantiza que el efecto siempre empiece con el mismo retraso controlado.</li>
-                <li><strong>Desacoplamiento de Staggers</strong>: El movimiento usa un <code>stagger: 0.1</code> (más lento) y la opacidad un <code>stagger: 0.01</code> (casi instantáneo). Esta diferencia es la que crea ese "feeling" de que la letra se materializa mientras vuela.</li>
-                <li><strong>Curva Elástica</strong>: La configuración <code>elastic.out(1, 0.25)</code> genera una vibración rápida y seca, muy agresiva y tecnológica.</li>
+                  <li><strong>Deformación de Estela</strong>: Usamos <code>skewX: 40</code> y <code>scale: 2</code> en el estado inicial para crear una deformación visual que simula velocidad y rastro sin usar blur.</li>
+                  <li><strong>Trayectoria Dinámica</strong>: Al pulsar cada dirección, variamos el <code>startX/Y</code>. Esto permite que el texto "vuele" desde cualquier ángulo hacia su posición final.</li>
+                  <li><strong>Rebote Elástico</strong>: El uso de <code>elastic.out(1, 0.4)</code> es lo que da ese efecto de "asentamiento" vibrante. El segundo parámetro (0.4) controla la frecuencia del rebote.</li>
+                  <li><strong>Timing Serial</strong>: Un <code>stagger</code> más lento (<code>each: 0.1</code>) acentúa la sensación de que cada letra es independiente y arrastra su propio rastro visual.</li>
               </ol>
             </div>
           </details>
         </article>
-
+<!-- EFECTO 03 -->
         <article class="effect-card" id="efecto-03">
           <div class="effect-header">
-            <h2 class="effect-title"><span class="effect-number">[03]</span> Despliegue 3D Alterno (Eje Y)</h2>
+            <h2 class="effect-title"><span class="effect-number">[03]</span> Despliegue Cinemático 3D (Ejes X/Y)</h2>
             <div class="effect-plugins">
               <span class="plugin-tag gsap">GSAP</span>
               <span class="plugin-tag gsap">SplitText</span>
             </div>
           </div>
           <p class="effect-description">
-            Revelado 3D mediante rotación lateral alternada sobre el eje Y. Cada línea se despliega en una dirección opuesta, seguido de un revelado suave del contenido secundario (párrafos y botones) para una composición narrativa completa.
+            Laboratorio interactivo de transformaciones 3D. Este efecto permite experimentar con el eje X (Persiana) y el eje Y (Lateral) mediante el uso de puntos de anclaje (transformOrigin) dinámicos y patrones de escalonado (stagger) complejos, logrando siete variantes de despliegue profesional.
           </p>
 
           <div class="effect-demo effect-demo-03">
             <span class="effect-demo-label">Live Demo</span>
             <div id="demo-03-container" class="demo-container-3d">
               <h2 id="demo-03" class="text-3d">
-                <div class="line"><span>Efecto Lateral con</span></div>
-                <div class="line"><span class="text-big">Gsap</span></div>
-                <div class="line"><span>Academy v3</span></div>
+                <div class="line"><span>Efectos sin </span></div>
+                <div class="line"><span class="text-big">Límites</span></div>
+                <div class="line"><span class="text-mid">Gsap Academy v3</span></div>
               </h2>
-              <button class="gsap-academy-link">Ver efecto</button>
             </div>
           </div>
           <div class="demo-actions">
-            <button class="demo-restart" onclick="initEffect03()">
-              <i class="fas fa-rotate-right"></i> Reiniciar Efecto
-            </button>
+            <div class="direction-controls">
+              <button class="dir-btn" onclick="initEffect03('alternate')"><i class="fas fa-arrows-alt-h"></i> Alterno</button>
+              <button class="dir-btn" onclick="initEffect03('top')"><i class="fas fa-arrow-down"></i> Persiana</button>
+              <button class="dir-btn" onclick="initEffect03('bottom')"><i class="fas fa-arrow-up"></i> Inferior</button>
+              <button class="dir-btn" onclick="initEffect03('left')"><i class="fas fa-arrow-right"></i> Izquierda</button>
+              <button class="dir-btn" onclick="initEffect03('right')"><i class="fas fa-arrow-left"></i> Derecha</button>
+              <button class="dir-btn" onclick="initEffect03('center')"><i class="fas fa-arrows-left-right-to-line"></i> Centro</button>
+              <button class="dir-btn" onclick="initEffect03('edges')"><i class="fas fa-arrows-left-right"></i> Bordes</button>
+            </div>
           </div>
 
           <details class="effect-code">
@@ -247,21 +251,22 @@ lt.to(split.chars, {
               <button class="copy-btn" onclick="copyCode(this)">
                 <i class="fas fa-copy"></i> Copiar
               </button>
-              <pre><code>// 1. Estructura de Perspectiva Triple (CSS)
-// .text-3d { perspective: 1200px; }
-// .line { perspective: 1200px; }
+              <pre><code>// 1. Configuración de Ejes y Anclajes
+// Persiana: rotateX: -90 | transformOrigin: "top center"
+// Lateral:  rotateY: -90 | transformOrigin: "left center"
+// Alterno:  rotateY alternado por línea | origin alternado
 
-// 2. Animación RotateY
-lines.forEach((line, i) => {
-  gsap.from(line, {
-    duration: 1,
-    rotateY: i % 2 === 0 ? -90 : 90,
-    opacity: 0,
-    transformOrigin: "center center",
-    transformStyle: "preserve-3d",
-    ease: "power2.out",
-    delay: i * 0.15
-  });
+// 2. Lógica de Re-Activación
+tl.to(spans, {
+  duration: 1.4,
+  opacity: 1,
+  rotationX: 0,
+  rotationY: 0,
+  ease: "power3.out",
+  stagger: { 
+    each: 0.15, 
+    from: "center" // u "edges", "end", etc.
+  }
 });</code></pre>
             </div>
           </details>
@@ -270,9 +275,10 @@ lines.forEach((line, i) => {
             <summary><i class="fas fa-list-ol"></i> Pasos del Efecto</summary>
             <div class="effect-steps-content">
               <ol>
-                <li><strong>Perspectiva Anidada</strong>: Para un efecto 3D realista, aplicamos <code>perspective: 1200px</code> tanto al contenedor padre como a cada <code>.line</code> individual. Esto evita deformaciones extrañas en bloques grandes.</li>
-                <li><strong>Preserve-3D</strong>: Obligatorio en todos los niveles (h2, div, span) para que el navegador no aplane la escena antes de renderizarla.</li>
-                <li><strong>Jerarquía de Contraste</strong>: Combinamos textos pequeños en mayúsculas con una palabra central masiva para guiar el foco visual durante el giro.</li>
+                <li><strong>Puntos de Anclaje (Origin)</strong>: La clave de la variante está en el <code>transformOrigin</code>. Para una "persiana", el anclaje es <code>top center</code>; para una "puerta lateral", es <code>left center</code>. Sin esto, el texto rotaría sobre su propio centro, perdiendo el efecto de "despliegue".</li>
+                <li><strong>Ejes de Rotación</strong>: Usamos <code>rotateX</code> para movimientos verticales (arriba/abajo) y <code>rotateY</code> para movimientos horizontales (izquierda/derecha).</li>
+                <li><strong>Patrones de Stagger</strong>: Las variantes "Centro" y "Bordes" no cambian la rotación, sino el orden de activación de los spans mediante <code>stagger: { from: "center" }</code>.</li>
+                <li><strong>Preserve-3D y Perspectiva</strong>: Para que el 3D sea real, el contenedor debe tener <code>perspective</code> y los elementos hijos <code>transform-style: preserve-3d</code>, permitiendo que las letras "salgan" de la pantalla.</li>
               </ol>
             </div>
           </details>
@@ -281,30 +287,34 @@ lines.forEach((line, i) => {
         <!-- EFECTO 04 -->
         <article class="effect-card" id="efecto-04">
           <div class="effect-header">
-            <h2 class="effect-title"><span class="effect-number">[04]</span> Despliegue 3D Combinado (X + Y)</h2>
+            <h2 class="effect-title"><span class="effect-number">[04]</span> Abanico 3D: Rotación Dual (Ejes X/Y)</h2>
             <div class="effect-plugins">
               <span class="plugin-tag gsap">GSAP</span>
             </div>
           </div>
           <p class="effect-description">
-            Efecto complejo que combina rotaciones sobre los ejes X e Y simultáneamente. Esta doble transformación genera una sensación de apertura en abanico con gran profundidad, ideal para revelados de sección dinámicos.
+            Efecto de alta complejidad que combina rotaciones simultáneas sobre los ejes X e Y. Esta doble transformación genera una apertura en abanico con gran profundidad espacial, permitiendo un revelado dinámico y sofisticado.
           </p>
 
           <div class="effect-demo effect-demo-04">
             <span class="effect-demo-label">Live Demo</span>
             <div id="demo-04-container" class="demo-container-3d">
               <h2 id="demo-04" class="text-3d">
-                <div class="line"><span>Combinación de</span></div>
-                <div class="line"><span class="text-big">Gsap</span></div>
-                <div class="line"><span>y Ejes 3D</span></div>
+                <div class="line"><span>Efectos sin </span></div>
+                <div class="line"><span class="text-big">Límites</span></div>
+                <div class="line"><span class="text-mid">Gsap Academy v3</span></div>
               </h2>
-              <button class="gsap-academy-link">Explorar</button>
             </div>
           </div>
           <div class="demo-actions">
-            <button class="demo-restart" onclick="initEffect04()">
-              <i class="fas fa-rotate-right"></i> Reiniciar Efecto
-            </button>
+            <div class="direction-controls">
+              <button class="dir-btn" onclick="initEffect04('top')"><i class="fas fa-arrow-down"></i> Superior</button>
+              <button class="dir-btn" onclick="initEffect04('bottom')"><i class="fas fa-arrow-up"></i> Inferior</button>
+              <button class="dir-btn" onclick="initEffect04('left')"><i class="fas fa-arrow-right"></i> Izquierda</button>
+              <button class="dir-btn" onclick="initEffect04('right')"><i class="fas fa-arrow-left"></i> Derecha</button>
+              <button class="dir-btn" onclick="initEffect04('center')"><i class="fas fa-arrows-left-right-to-line"></i> Centro</button>
+              <button class="dir-btn" onclick="initEffect04('edges')"><i class="fas fa-arrows-left-right"></i> Bordes</button>
+            </div>
           </div>
 
           <details class="effect-code">
@@ -317,17 +327,15 @@ lines.forEach((line, i) => {
                 <i class="fas fa-copy"></i> Copiar
               </button>
               <pre><code>// 1. Doble Rotación (X + Y)
-lines.forEach((line, i) => {
-  gsap.from(line, {
-    duration: 1.2,
-    rotateX: -90,
-    rotateY: i % 2 === 0 ? 45 : -45,
-    opacity: 0,
-    transformOrigin: "center center",
-    transformStyle: "preserve-3d",
-    ease: "power2.out",
-    delay: i * 0.15
-  });
+tl04.from(spans, {
+  duration: 1.2,
+  opacity: 0,
+  rotationX: rotX, // Dinámico (switch mode)
+  rotationY: (i) => i % 2 === 0 ? 15 : -15, // Alternancia
+  transformOrigin: "center center",
+  transformStyle: "preserve-3d",
+  ease: "power2.out",
+  stagger: { each: 0.12, from: staggerFrom }
 });</code></pre>
             </div>
           </details>
@@ -336,9 +344,10 @@ lines.forEach((line, i) => {
             <summary><i class="fas fa-list-ol"></i> Pasos del Efecto</summary>
             <div class="effect-steps-content">
               <ol>
-                <li><strong>Dualidad de Ejes</strong>: Al combinar <code>rotateX</code> y <code>rotateY</code>, el elemento realiza una trayectoria curva que añade mucha naturalidad al movimiento.</li>
-                <li><strong>Timing Desfasado</strong>: El uso de <code>delay</code> basado en el índice asegura que la cascada sea rítmica, permitiendo que el ojo siga la formación de la estructura completa.</li>
-                <li><strong>Fidelidad 3D</strong>: Al igual que el efecto anterior, requiere una configuración de perspectiva rigurosa en todos los niveles del DOM para no perder el volumen.</li>
+                <li><strong>Doble Eje Dinámico</strong>: A diferencia del Efecto 03, aquí animamos <code>rotationX</code> y <code>rotationY</code> al mismo tiempo. Esto crea una trayectoria curva mucho más natural y orgánica.</li>
+                <li><strong>Alternancia de Espejo</strong>: Usamos una función en <code>rotationY</code> para que las palabras pares e impares giren en direcciones opuestas. Esto es lo que genera el efecto visual de "abanico" o apertura.</li>
+                <li><strong>Perspectiva y Profundidad</strong>: Al tener rotaciones en ambos ejes, la propiedad <code>transform-style: preserve-3d</code> se vuelve crítica para evitar que el texto se vea plano durante el movimiento.</li>
+                <li><strong>Control de Variantes</strong>: Cada una de las 7 direcciones se consigue manipulando tres parámetros: el <strong>Eje Dominante</strong> (X o Y), el <strong>Anclaje (Origin)</strong> para determinar la "bisagra" del giro, y el <strong>Punto de Inicio (Stagger)</strong> para crear patrones simétricos desde el centro o los bordes.</li>
               </ol>
             </div>
           </details>
