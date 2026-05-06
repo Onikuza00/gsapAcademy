@@ -415,6 +415,171 @@ main { padding-top: 80px; }
   line-height: 1.2;
 }
 
+/* EFECTO 05: LIQUID */
+.effect-demo-05 {
+  min-height: 250px;
+  background: var(--bg-surface);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.text-liquid {
+  filter: url(#liquid-filter);
+  text-align: center;
+}
+
+.text-liquid .line {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.text-liquid .line span {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+.text-liquid span.text-big {
+  font-size: 6rem !important;
+  color: var(--accent);
+}
+
+.text-liquid span.text-mid {
+  font-size: clamp(2rem, 2.5vw, 3rem) !important;
+  color: var(--text-base);
+}
+
+.text-rgb span.text-mid { font-size: clamp(2rem, 2.5vw, 3rem) !important; }
+
+/* EFECTO 06: SHUTTER SLICES */
+.effect-demo-06 {
+  min-height: 250px;
+  background: var(--bg-surface);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.demo-container-shutter {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shutter-source {
+  visibility: hidden;
+  position: absolute;
+  text-align: center;
+}
+
+.shutter-slices-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shutter-slice {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  will-change: transform, opacity;
+}
+
+.shutter-slice .line {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.shutter-slice span.text-big { font-size: 6rem !important; color: var(--accent); }
+.shutter-slice span.text-mid { font-size: clamp(2rem, 2.5vw, 3rem) !important; }
+
+/* EFECTO 07: MOTION ECHO */
+.effect-demo-07 {
+  min-height: 250px;
+  background: var(--bg-surface);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.demo-container-echo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.echo-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-echo {
+  position: absolute;
+  text-align: center;
+  margin: 0;
+  width: 100%;
+}
+
+.text-echo.main {
+  z-index: 10;
+}
+.text-echo.main span.text-big { 
+  color: transparent !important; 
+  -webkit-text-stroke: 1px var(--accent); 
+}
+.text-echo.main span.text-mid { 
+  color: transparent !important; 
+  -webkit-text-stroke: 1px var(--text-muted); 
+}
+
+.text-echo.ghost {
+  z-index: 5;
+  pointer-events: none;
+  filter: blur(1px);
+}
+
+.text-echo.ghost span {
+  color: #00FF41 !important; 
+  opacity: 0.8;
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.3);
+}
+
+.text-echo .line {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.text-echo span.text-big { font-size: 6rem !important; color: var(--accent); }
+.text-echo span.text-mid { font-size: clamp(2rem, 2.5vw, 3rem) !important; }
+
+/* Especial para modo Glow */
+.text-echo.glow-effect {
+  filter: drop-shadow(0 0 8px var(--accent));
+  color: var(--accent) !important;
+}
+
 .effect-demo-label {
   position: absolute;
   top: 0.5rem;

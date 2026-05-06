@@ -356,38 +356,77 @@ tl04.from(spans, {
         <!-- EFECTO 05 -->
         <article class="effect-card" id="efecto-05">
           <div class="effect-header">
-            <h2 class="effect-title"><span class="effect-number">[05]</span> Tu Effecto</h2>
+            <h2 class="effect-title"><span class="effect-number">[05]</span> Revelado de Distorsión Líquida</h2>
             <div class="effect-plugins">
               <span class="plugin-tag gsap">GSAP</span>
+              <span class="plugin-tag special">SVG Filters</span>
             </div>
           </div>
           <p class="effect-description">
-            Tu descripción va aquí.
+            Inspirado en las tendencias de diseño orgánico de agencias como Active Theory. El texto se materializa a partir de una distorsión fluida mediante filtros de turbulencia SVG, creando una transición hipnótica y vanguardista.
           </p>
 
-          <div class="effect-demo">
+          <div class="effect-demo effect-demo-05">
             <span class="effect-demo-label">Live Demo</span>
-            <div class="demo-box" id="demo-05">Gsap Academy</div>
+            <div id="demo-05-container" class="demo-container-liquid">
+              <h2 id="demo-05" class="text-liquid">
+                <div class="line"><span>Materia</span></div>
+                <div class="line"><span class="text-big">Orgánica</span></div>
+                <div class="line"><span class="text-mid">Liquid GSAP</span></div>
+              </h2>
+            </div>
+          </div>
+          <div class="demo-actions">
+            <div class="direction-controls">
+              <button class="dir-btn" onclick="initEffect05('liquid')"><i class="fas fa-droplet"></i> Líquido</button>
+              <button class="dir-btn" onclick="initEffect05('glitch')"><i class="fas fa-bolt"></i> Glitch</button>
+              <button class="dir-btn" onclick="initEffect05('smoke')"><i class="fas fa-smog"></i> Humo</button>
+              <button class="dir-btn" onclick="initEffect05('magnetic')"><i class="fas fa-magnet"></i> Magnético</button>
+              <button class="dir-btn" onclick="initEffect05('waves')"><i class="fas fa-water"></i> Ondas</button>
+              <button class="dir-btn" onclick="initEffect05('crystal')"><i class="fas fa-gem"></i> Cristal</button>
+              <button class="dir-btn" onclick="initEffect05('zoom')"><i class="fas fa-expand-arrows-alt"></i> Zoom</button>
+            </div>
           </div>
 
           <details class="effect-code">
-            <summary style="padding: 0.6rem 1rem; background: rgba(255,255,255,0.02); cursor: pointer; font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--text-muted); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+            <summary class="code-summary">
               <span>VER CÓDIGO</span>
-              <i class="fas fa-chevron-down" style="font-size: 0.6rem;"></i>
+              <i class="fas fa-chevron-down"></i>
             </summary>
-            <div style="padding: 1rem; border-top: 1px solid var(--glass-border);">
+            <div class="code-content">
               <button class="copy-btn" onclick="copyCode(this)">
                 <i class="fas fa-copy"></i> Copiar
               </button>
-              <pre><code>// Tu código aquí</code></pre>
+              <pre><code>// 1. Animación de Filtro SVG
+gsap.to("#liquid-filter feDisplacementMap", {
+  attr: { scale: 0 },
+  duration: 1.5,
+  ease: "power2.out"
+});
+
+// 2. Animación de Turbulencia
+gsap.to("#liquid-filter feTurbulence", {
+  attr: { baseFrequency: 0 },
+  duration: 1.2
+});</code></pre>
             </div>
           </details>
 
           <details class="effect-steps">
-            <summary><i class="fas fa-list-ol"></i> Pasos</summary>
+            <summary><i class="fas fa-list-ol"></i> Masterclass: Filtros SVG Orgánicos</summary>
             <div class="effect-steps-content">
               <ol>
-                <li>Tu paso 1</li>
+                <li><strong>El Generador (feTurbulence)</strong>: Crea el "ruido fractal" que sirve de mapa. <code>baseFrequency</code> controla la escala de ese ruido: valores bajos crean nubes/humo, valores altos crean grano/cristal.</li>
+                <li><strong>El Motor (feDisplacementMap)</strong>: Mueve los píxeles del texto basándose en el ruido anterior. La propiedad <code>scale</code> define la fuerza de ese empuje: a mayor escala, más se fragmenta el texto.</li>
+                <li><strong>Lógica de las 7 Variantes</strong>:
+                  <ul>
+                    <li><strong>Líquido/Humo</strong>: Frecuencias bajas (0.01-0.05) para ondas orgánicas y suaves.</li>
+                    <li><strong>Glitch/Cristal</strong>: Frecuencias altas (0.1-0.6) para texturas digitales y granuladas.</li>
+                    <li><strong>Ondas</strong>: Frecuencia asimétrica (0 en X, 0.3 en Y) para forzar el movimiento en un solo eje.</li>
+                    <li><strong>Zoom/Magnético</strong>: Escalas masivas (>200) para un impacto inicial explosivo.</li>
+                  </ul>
+                </li>
+                <li><strong>Interpolación Atómica</strong>: GSAP anima estos atributos nativos del SVG hacia cero, permitiendo que la "materia" desordenada recupere su forma original (el texto nítido) de forma fluida.</li>
               </ol>
             </div>
           </details>
@@ -396,43 +435,80 @@ tl04.from(spans, {
         <!-- EFECTO 06 -->
         <article class="effect-card" id="efecto-06">
           <div class="effect-header">
-            <h2 class="effect-title"><span class="effect-number">[06]</span> Tu Effecto</h2>
+            <h2 class="effect-title"><span class="effect-number">[06]</span> Persianas Cinéticas (Shutter Slices)</h2>
             <div class="effect-plugins">
               <span class="plugin-tag gsap">GSAP</span>
+              <span class="plugin-tag special">Clip-Path</span>
             </div>
           </div>
           <p class="effect-description">
-            Tu descripción va aquí.
+            Una técnica arquitectónica que divide el texto en láminas horizontales. Al animar cada sección con un desfase y dirección distintos, logramos un efecto de "escaneado" o construcción por capas, ideal para marcas que buscan transmitir precisión y minimalismo.
           </p>
 
-          <div class="effect-demo">
+          <div class="effect-demo effect-demo-06">
             <span class="effect-demo-label">Live Demo</span>
-            <div class="demo-box" id="demo-06">Gsap Academy</div>
+            <div id="demo-06-container" class="demo-container-shutter">
+              <!-- El contenido se generará dinámicamente en JS para flexibilidad -->
+              <div id="shutter-target" class="shutter-source">
+                <div class="line"><span>Tipografía</span></div>
+                <div class="line"><span class="text-big">KINETIC</span></div>
+                <div class="line"><span class="text-mid">Shutter GSAP</span></div>
+              </div>
+              <div class="shutter-slices-container"></div>
+            </div>
           </div>
           <div class="demo-actions">
-            <button class="demo-restart" onclick="restartDemo('demo-06')">
-              <i class="fas fa-rotate-right"></i> Reiniciar
-            </button>
+            <div class="direction-controls">
+              <button class="dir-btn" onclick="initEffect06('scanner')"><i class="fas fa-barcode"></i> Scanner</button>
+              <button class="dir-btn" onclick="initEffect06('alternate')"><i class="fas fa-arrows-alt-h"></i> Alternado</button>
+              <button class="dir-btn" onclick="initEffect06('reveal')"><i class="fas fa-expand-alt"></i> Explosión</button>
+              <button class="dir-btn" onclick="initEffect06('vertical')"><i class="fas fa-columns"></i> Vertical</button>
+              <button class="dir-btn" onclick="initEffect06('flip')"><i class="fas fa-sync-alt"></i> Flip 3D</button>
+              <button class="dir-btn" onclick="initEffect06('chaos')"><i class="fas fa-random"></i> Caos</button>
+            </div>
           </div>
 
           <details class="effect-code">
-            <summary style="padding: 0.6rem 1rem; background: rgba(255,255,255,0.02); cursor: pointer; font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--text-muted); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+            <summary class="code-summary">
               <span>VER CÓDIGO</span>
-              <i class="fas fa-chevron-down" style="font-size: 0.6rem;"></i>
+              <i class="fas fa-chevron-down"></i>
             </summary>
-            <div style="padding: 1rem; border-top: 1px solid var(--glass-border);">
+            <div class="code-content">
               <button class="copy-btn" onclick="copyCode(this)">
                 <i class="fas fa-copy"></i> Copiar
               </button>
-              <pre><code>// Tu código aquí</code></pre>
+              <pre><code>// 1. Fragmentación de Láminas
+// Dividimos el texto en 8 insets mediante clip-path
+gsap.from(".shutter-slice", {
+  x: (i) => i % 2 === 0 ? -100 : 100,
+  opacity: 0,
+  duration: 1.2,
+  stagger: 0.1,
+  ease: "power4.out"
+});</code></pre>
             </div>
           </details>
 
           <details class="effect-steps">
-            <summary><i class="fas fa-list-ol"></i> Pasos</summary>
+            <summary><i class="fas fa-list-ol"></i> Masterclass: Arquitectura de Láminas (Shutter)</summary>
             <div class="effect-steps-content">
               <ol>
-                <li>Tu paso 1</li>
+                <li><strong>Fragmentación Matemática</strong>: Usamos <code>clip-path: inset(top right bottom left)</code> para "recortar" el texto. Calculamos dinámicamente los porcentajes en JS para que cada una de las 10 láminas sea una franja perfecta.</li>
+                <li><strong>Propiedades de Control</strong>:
+                  <ul>
+                    <li><code>stagger</code>: Es el alma del efecto; crea la sensación de "barrido" o "cascada".</li>
+                    <li><code>perspective</code>: Necesaria para el modo <strong>Flip</strong>; da profundidad al eje Z para que las láminas roten en el espacio.</li>
+                    <li><code>transformOrigin</code>: Define dónde se "ancla" la lámina al rotar (ej: "top center").</li>
+                  </ul>
+                </li>
+                <li><strong>Configuración de Variantes</strong>:
+                  <ul>
+                    <li><strong>Scanner/Alternate</strong>: Manipulan el eje <code>x</code> con lógica condicional <code>i % 2</code>.</li>
+                    <li><strong>Vertical</strong>: Cambia los parámetros del <code>inset</code> para cortar en el eje X en lugar del Y.</li>
+                    <li><strong>Flip 3D</strong>: Usa <code>rotationX</code> para un efecto cinético mecánico.</li>
+                    <li><strong>Caos</strong>: Implementa <code>gsap.utils.random()</code> para desvincular las láminas de un patrón fijo.</li>
+                  </ul>
+                </li>
               </ol>
             </div>
           </details>
@@ -441,43 +517,80 @@ tl04.from(spans, {
         <!-- EFECTO 07 -->
         <article class="effect-card" id="efecto-07">
           <div class="effect-header">
-            <h2 class="effect-title"><span class="effect-number">[07]</span> Tu Effecto</h2>
+            <h2 class="effect-title"><span class="effect-number">[07]</span> Rastro Cinético (Motion Echo)</h2>
             <div class="effect-plugins">
               <span class="plugin-tag gsap">GSAP</span>
+              <span class="plugin-tag special">Layer Ghosting</span>
             </div>
           </div>
           <p class="effect-description">
-            Tu descripción va aquí.
+            Inspirado en la fluidez del motion graphics. El texto se desplaza dejando un rastro de capas traslúcidas que lo persiguen, fusionándose finalmente en una tipografía sólida y nítida. Una demostración de inercia y elegancia visual.
           </p>
 
-          <div class="effect-demo">
+          <div class="effect-demo effect-demo-07">
             <span class="effect-demo-label">Live Demo</span>
-            <div class="demo-box" id="demo-07">Gsap Academy</div>
+            <div id="demo-07-container" class="demo-container-echo">
+              <div class="echo-wrapper">
+                <!-- El texto principal -->
+                <h2 id="demo-07" class="text-echo main">
+                  <div class="line"><span>Rastro</span></div>
+                  <div class="line"><span class="text-big">CINÉTICO</span></div>
+                  <div class="line"><span class="text-mid">Echo Motion</span></div>
+                </h2>
+                <!-- Las capas de eco se generarán en JS para limpieza -->
+              </div>
+            </div>
           </div>
           <div class="demo-actions">
-            <button class="demo-restart" onclick="restartDemo('demo-07')">
-              <i class="fas fa-rotate-right"></i> Reiniciar
-            </button>
+            <div class="direction-controls">
+              <button class="dir-btn" onclick="initEffect07('trail')"><i class="fas fa-wind"></i> Estela</button>
+              <button class="dir-btn" onclick="initEffect07('zoom')"><i class="fas fa-expand-arrows-alt"></i> Zoom</button>
+              <button class="dir-btn" onclick="initEffect07('glitch')"><i class="fas fa-bolt"></i> Glitch</button>
+              <button class="dir-btn" onclick="initEffect07('glow')"><i class="fas fa-lightbulb"></i> Neón</button>
+              <button class="dir-btn" onclick="initEffect07('vertical')"><i class="fas fa-arrows-alt-v"></i> Vertical</button>
+              <button class="dir-btn" onclick="initEffect07('vortex')"><i class="fas fa-sync"></i> Vortex</button>
+              <button class="dir-btn" onclick="initEffect07('wave')"><i class="fas fa-water"></i> Wave</button>
+            </div>
           </div>
 
           <details class="effect-code">
-            <summary style="padding: 0.6rem 1rem; background: rgba(255,255,255,0.02); cursor: pointer; font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--text-muted); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+            <summary class="code-summary">
               <span>VER CÓDIGO</span>
-              <i class="fas fa-chevron-down" style="font-size: 0.6rem;"></i>
+              <i class="fas fa-chevron-down"></i>
             </summary>
-            <div style="padding: 1rem; border-top: 1px solid var(--glass-border);">
+            <div class="code-content">
               <button class="copy-btn" onclick="copyCode(this)">
                 <i class="fas fa-copy"></i> Copiar
               </button>
-              <pre><code>// Tu código aquí</code></pre>
+              <pre><code>// 1. Animación del Texto Principal
+gsap.from(".text-echo.main", { x: -50, opacity: 0, duration: 1 });
+
+// 2. Animación de los Rastros (Ecos)
+// Cada eco tiene un delay incremental y menos opacidad
+gsap.from(".text-echo.ghost", {
+  x: -50,
+  opacity: 0,
+  stagger: 0.05,
+  duration: 1,
+  ease: "power2.out"
+});</code></pre>
             </div>
           </details>
 
           <details class="effect-steps">
-            <summary><i class="fas fa-list-ol"></i> Pasos</summary>
+            <summary><i class="fas fa-list-ol"></i> Masterclass: Persistencia y Rastro Cinético</summary>
             <div class="effect-steps-content">
               <ol>
-                <li>Tu paso 1</li>
+                <li><strong>Técnica de Ghosting</strong>: Clonamos el texto original en 3 capas ("fantasmas") que se sitúan detrás de la principal. Es el método más eficiente para crear rastros de movimiento sin recurrir a Canvas.</li>
+                <li><strong>Tipografía Hollow (Contorno)</strong>: El texto principal usa <code>-webkit-text-stroke</code> para ser transparente. Esto permite que los ecos sólidos sean visibles a través de las letras, creando una sensación de profundidad técnica.</li>
+                <li><strong>Estética Digital (Matrix)</strong>: Aplicamos un verde ácido <code>#00FF41</code> con un desenfoque de <code>1px</code>. El secreto está en el <code>text-shadow</code>, que emula el resplandor de los antiguos monitores de fósforo.</li>
+                <li><strong>Coreografía de Variantes</strong>:
+                  <ul>
+                    <li><strong>Estela/Vertical</strong>: Desfase lineal en los ejes X e Y.</li>
+                    <li><strong>Zoom/Vortex</strong>: Manipulación de escala y rotación con <code>back.out</code>.</li>
+                    <li><strong>Wave</strong>: Uso de <code>skewX</code> para simular inercia elástica.</li>
+                  </ul>
+                </li>
               </ol>
             </div>
           </details>
@@ -637,5 +750,14 @@ tl04.from(spans, {
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
     <script src="js/galeria-efectos.js"></script>
+    <!-- Filtros SVG Globales -->
+    <svg style="display: none;">
+      <defs>
+        <filter id="liquid-filter">
+          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="turbulence" />
+          <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="0" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </defs>
+    </svg>
   </body>
 </html>
