@@ -70,9 +70,14 @@
             </div>
           </div>
           <div class="demo-actions">
-            <button class="demo-restart" onclick="initEffect01()">
-              <i class="fas fa-rotate-right"></i> Reiniciar Efecto
-            </button>
+            <div class="direction-controls">
+              <button class="dir-btn" onclick="initEffect01('top')"><i class="fas fa-arrow-down"></i> Arriba</button>
+              <button class="dir-btn" onclick="initEffect01('bottom')"><i class="fas fa-arrow-up"></i> Abajo</button>
+              <button class="dir-btn" onclick="initEffect01('left')"><i class="fas fa-arrow-right"></i> Izquierda</button>
+              <button class="dir-btn" onclick="initEffect01('right')"><i class="fas fa-arrow-left"></i> Derecha</button>
+              <button class="dir-btn" onclick="initEffect01('center')"><i class="fas fa-arrows-left-right-to-line"></i> Centro</button>
+              <button class="dir-btn" onclick="initEffect01('edges')"><i class="fas fa-arrows-left-right"></i> Bordes</button>
+            </div>
           </div>
 
           <details class="effect-code">
@@ -93,12 +98,18 @@ const split = new SplitText("#demo-01", {
   mask: "lines" 
 });
 
-// 3. Animamos los caracteres desde el fondo de la máscara
+// 3. Animación dinámica según la dirección
 gsap.from(split.chars, {
-  yPercent: 100,
-  stagger: 0.1,
   duration: 1,
-  ease: "back.out(1.7)"
+  opacity: 0,
+  // Cambiamos estas propiedades según el botón:
+  yPercent: mode === 'top' ? -100 : 100, // Dirección vertical
+  xPercent: mode === 'left' ? -100 : 0,  // Dirección horizontal
+  clipPath: 'inset(100% 0 0 0)',         // El recorte (masking)
+  stagger: { 
+    each: 0.1, 
+    from: "center" // "start", "end", "center" o "edges"
+  }
 });</code></pre>
             </div>
           </details>
@@ -107,10 +118,17 @@ gsap.from(split.chars, {
             <summary><i class="fas fa-list-ol"></i> Pasos del Efecto</summary>
             <div class="effect-steps-content">
               <ol>
-                <li><strong>Entorno 3D</strong>: Preparamos el contenedor con <code>perspective: 800px</code> y <code>transform-style: preserve-3d</code>. Esto es crucial para que el navegador gestione correctamente el espacio de renderizado.</li>
-                <li><strong>División y Máscara</strong>: Usamos <code>type: "chars, lines"</code> y <code>mask: "lines"</code>. Esto crea una máscara invisible por cada línea, permitiendo que los caracteres "nazcan" desde el borde inferior de cada renglón.</li>
-                <li><strong>Posicionamiento Inicial</strong>: Con GSAP, movemos los caracteres un <code>100%</code> en el eje Y, dejándolos ocultos bajo su respectiva máscara de línea.</li>
-                <li><strong>Ejecución</strong>: Aplicamos un <code>stagger</code> de 0.1s para un efecto fluido y un <code>ease: back</code> para ese toque elástico característico de los diseños de alto nivel.</li>
+                  <li><strong>Máscara Dinámica (clip-path)</strong>: La clave del recorte está en la propiedad <code>clipPath: 'inset(...)'</code>. Al variar el porcentaje del inset, definimos desde dónde empieza a "asomar" el texto.</li>
+                  <li><strong>Dirección (xPercent / yPercent)</strong>: Modificando estas propiedades en el estado inicial (<code>from</code>), controlamos si el texto cae, sube o entra lateralmente mientras se descubre.</li>
+                  <li><strong>Patrones de Escalado (stagger)</strong>: Aquí es donde ocurre la magia. Usamos el objeto <code>stagger</code> con la propiedad <code>from</code> para decidir el orden de aparición:
+                    <ul>
+                      <li><code>"start"</code>: De izquierda a derecha.</li>
+                      <li><code>"end"</code>: De derecha a izquierda.</li>
+                      <li><code>"center"</code>: Desde el medio hacia los lados.</li>
+                      <li><code>"edges"</code>: De los extremos hacia el centro.</li>
+                    </ul>
+                  </li>
+                  <li><strong>Flexibilidad</strong>: Un solo bloque de código puede generar decenas de variantes solo cambiando estos 3 parámetros.</li>
               </ol>
             </div>
           </details>
@@ -136,9 +154,14 @@ gsap.from(split.chars, {
             </div>
           </div>
           <div class="demo-actions">
-            <button class="demo-restart" onclick="initEffect02()">
-              <i class="fas fa-rotate-right"></i> Reiniciar Efecto
-            </button>
+            <div class="direction-controls">
+              <button class="dir-btn" onclick="initEffect02('top')"><i class="fas fa-arrow-down"></i> Arriba</button>
+              <button class="dir-btn" onclick="initEffect02('bottom')"><i class="fas fa-arrow-up"></i> Abajo</button>
+              <button class="dir-btn" onclick="initEffect02('left')"><i class="fas fa-arrow-right"></i> Izquierda</button>
+              <button class="dir-btn" onclick="initEffect02('right')"><i class="fas fa-arrow-left"></i> Derecha</button>
+              <button class="dir-btn" onclick="initEffect02('center')"><i class="fas fa-arrows-left-right-to-line"></i> Centro</button>
+              <button class="dir-btn" onclick="initEffect02('edges')"><i class="fas fa-arrows-left-right"></i> Bordes</button>
+            </div>
           </div>
 
           <details class="effect-code">
@@ -186,23 +209,27 @@ lt.to(split.chars, {
           </details>
         </article>
 
-        <!-- EFECTO 03 -->
         <article class="effect-card" id="efecto-03">
           <div class="effect-header">
-            <h2 class="effect-title"><span class="effect-number">[03]</span> Despliegue 3D (Eje X)</h2>
+            <h2 class="effect-title"><span class="effect-number">[03]</span> Despliegue 3D Alterno (Eje Y)</h2>
             <div class="effect-plugins">
               <span class="plugin-tag gsap">GSAP</span>
               <span class="plugin-tag gsap">SplitText</span>
             </div>
           </div>
           <p class="effect-description">
-            Efecto de despliegue donde las líneas de texto rotan sobre su eje horizontal (X). Los caracteres se abren desde el centro del espacio 3D, creando una transición de revelado con gran profundidad.
+            Revelado 3D mediante rotación lateral alternada sobre el eje Y. Cada línea se despliega en una dirección opuesta, seguido de un revelado suave del contenido secundario (párrafos y botones) para una composición narrativa completa.
           </p>
 
           <div class="effect-demo effect-demo-03">
             <span class="effect-demo-label">Live Demo</span>
             <div id="demo-03-container" class="demo-container-3d">
-              <h2 id="demo-03" class="text-3d">Gsap Academy</h2>
+              <h2 id="demo-03" class="text-3d">
+                <div class="line"><span>Efecto Lateral con</span></div>
+                <div class="line"><span class="text-big">Gsap</span></div>
+                <div class="line"><span>Academy v3</span></div>
+              </h2>
+              <button class="gsap-academy-link">Ver efecto</button>
             </div>
           </div>
           <div class="demo-actions">
@@ -220,17 +247,21 @@ lt.to(split.chars, {
               <button class="copy-btn" onclick="copyCode(this)">
                 <i class="fas fa-copy"></i> Copiar
               </button>
-              <pre><code>// 1. División por líneas
-const split = new SplitText("#demo-03", { type: "lines" });
+              <pre><code>// 1. Estructura de Perspectiva Triple (CSS)
+// .text-3d { perspective: 1200px; }
+// .line { perspective: 1200px; }
 
-// 2. Animación RotateX
-gsap.from(split.lines, {
-  duration: 1,
-  rotateX: -90,
-  opacity: 0,
-  transformOrigin: "center center",
-  stagger: 0.15,
-  ease: "power2.out"
+// 2. Animación RotateY
+lines.forEach((line, i) => {
+  gsap.from(line, {
+    duration: 1,
+    rotateY: i % 2 === 0 ? -90 : 90,
+    opacity: 0,
+    transformOrigin: "center center",
+    transformStyle: "preserve-3d",
+    ease: "power2.out",
+    delay: i * 0.15
+  });
 });</code></pre>
             </div>
           </details>
@@ -239,10 +270,9 @@ gsap.from(split.lines, {
             <summary><i class="fas fa-list-ol"></i> Pasos del Efecto</summary>
             <div class="effect-steps-content">
               <ol>
-                <li><strong>División por Líneas</strong>: En este caso, animamos <code>lines</code> en lugar de caracteres para un efecto de bloque más sólido.</li>
-                <li><strong>Giro Horizontal</strong>: Iniciamos con <code>rotateX: -90</code>, lo que "pliega" la línea hacia atrás.</li>
-                <li><strong>Eje Central</strong>: Usamos <code>transformOrigin: "center center"</code> para que el despliegue parezca una puerta abriéndose desde el medio.</li>
-                <li><strong>Perspectiva</strong>: Vital que el contenedor tenga <code>perspective</code> (en este caso 1000px) para el realismo del giro.</li>
+                <li><strong>Perspectiva Anidada</strong>: Para un efecto 3D realista, aplicamos <code>perspective: 1200px</code> tanto al contenedor padre como a cada <code>.line</code> individual. Esto evita deformaciones extrañas en bloques grandes.</li>
+                <li><strong>Preserve-3D</strong>: Obligatorio en todos los niveles (h2, div, span) para que el navegador no aplane la escena antes de renderizarla.</li>
+                <li><strong>Jerarquía de Contraste</strong>: Combinamos textos pequeños en mayúsculas con una palabra central masiva para guiar el foco visual durante el giro.</li>
               </ol>
             </div>
           </details>
@@ -251,20 +281,24 @@ gsap.from(split.lines, {
         <!-- EFECTO 04 -->
         <article class="effect-card" id="efecto-04">
           <div class="effect-header">
-            <h2 class="effect-title"><span class="effect-number">[04]</span> Despliegue Lateral (Eje Y)</h2>
+            <h2 class="effect-title"><span class="effect-number">[04]</span> Despliegue 3D Combinado (X + Y)</h2>
             <div class="effect-plugins">
               <span class="plugin-tag gsap">GSAP</span>
-              <span class="plugin-tag gsap">SplitText</span>
             </div>
           </div>
           <p class="effect-description">
-            Rotación sobre el eje vertical (Y) con alternancia de dirección. Las líneas de texto se abren como puertas batientes, creando una transición dinámica y rítmica de gran impacto visual.
+            Efecto complejo que combina rotaciones sobre los ejes X e Y simultáneamente. Esta doble transformación genera una sensación de apertura en abanico con gran profundidad, ideal para revelados de sección dinámicos.
           </p>
 
           <div class="effect-demo effect-demo-04">
             <span class="effect-demo-label">Live Demo</span>
             <div id="demo-04-container" class="demo-container-3d">
-              <h2 id="demo-04" class="text-3d">Gsap Academy</h2>
+              <h2 id="demo-04" class="text-3d">
+                <div class="line"><span>Combinación de</span></div>
+                <div class="line"><span class="text-big">Gsap</span></div>
+                <div class="line"><span>y Ejes 3D</span></div>
+              </h2>
+              <button class="gsap-academy-link">Explorar</button>
             </div>
           </div>
           <div class="demo-actions">
@@ -282,16 +316,15 @@ gsap.from(split.lines, {
               <button class="copy-btn" onclick="copyCode(this)">
                 <i class="fas fa-copy"></i> Copiar
               </button>
-              <pre><code>// 1. División
-const split = new SplitText("#demo-04", { type: "lines" });
-
-// 2. Animación RotateY alternada
-split.lines.forEach((line, i) => {
+              <pre><code>// 1. Doble Rotación (X + Y)
+lines.forEach((line, i) => {
   gsap.from(line, {
-    duration: 1,
-    rotateY: i % 2 === 0 ? -90 : 90,
+    duration: 1.2,
+    rotateX: -90,
+    rotateY: i % 2 === 0 ? 45 : -45,
     opacity: 0,
     transformOrigin: "center center",
+    transformStyle: "preserve-3d",
     ease: "power2.out",
     delay: i * 0.15
   });
@@ -303,10 +336,9 @@ split.lines.forEach((line, i) => {
             <summary><i class="fas fa-list-ol"></i> Pasos del Efecto</summary>
             <div class="effect-steps-content">
               <ol>
-                <li><strong>Alternancia</strong>: Usamos el índice de la línea (<code>i % 2</code>) para alternar el giro entre 90 y -90 grados.</li>
-                <li><strong>Puerta Vertical</strong>: La rotación sobre el eje Y crea esa sensación de "puerta" que se abre hacia el espectador.</li>
-                <li><strong>Faseado</strong>: Aplicamos un pequeño <code>delay</code> incremental para que las líneas no se abran todas a la vez, sino en cascada.</li>
-                <li><strong>Renderizado 3D</strong>: Al igual que en los anteriores, la propiedad <code>preserve-3d</code> en el contenedor es obligatoria.</li>
+                <li><strong>Dualidad de Ejes</strong>: Al combinar <code>rotateX</code> y <code>rotateY</code>, el elemento realiza una trayectoria curva que añade mucha naturalidad al movimiento.</li>
+                <li><strong>Timing Desfasado</strong>: El uso de <code>delay</code> basado en el índice asegura que la cascada sea rítmica, permitiendo que el ojo siga la formación de la estructura completa.</li>
+                <li><strong>Fidelidad 3D</strong>: Al igual que el efecto anterior, requiere una configuración de perspectiva rigurosa en todos los niveles del DOM para no perder el volumen.</li>
               </ol>
             </div>
           </details>
